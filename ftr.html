@@ -1375,7 +1375,10 @@
       const total = active.reduce((sum, e) => sum + e.amount, 0);
       const personAPaid = active.filter(e => e.paidBy === "personA").reduce((sum, e) => sum + e.amount, 0);
       const personBPaid = active.filter(e => e.paidBy === "personB").reduce((sum, e) => sum + e.amount, 0);
-      const personAOwed = active.reduce((sum, e) => sum + e.amount * (Number(e.splitA) || 50) / 100, 0);
+      const personAOwed = active.reduce((sum, e) => {
+        const splitA = Number.isFinite(Number(e.splitA)) ? Number(e.splitA) : 50;
+        return sum + e.amount * splitA / 100;
+      }, 0);
       const personAOverpaid = personAPaid - personAOwed;
       return {
         total,
