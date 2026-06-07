@@ -5,8 +5,256 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#fafbfc">
   <title>VAMRSS HUB</title>
-  <link rel="stylesheet" href="./style.css">
+
   <style>
+    :root {
+      --bg: #fafbfc;
+      --surface: #ffffff;
+      --line: #dfe7ef;
+      --deep: #071c16;
+      --danger: #9b3144;
+      --ink: #101722;
+      --sub: #607084;
+      --radius: 28px;
+      --radius-small: 18px;
+      --shadow: 0 18px 50px rgba(15, 30, 48, 0.055);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      min-height: 100vh;
+    }
+
+    a,
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .container {
+      width: min(760px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 0 max(24px, env(safe-area-inset-bottom));
+    }
+
+    .page {
+      display: grid;
+      gap: 16px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      min-height: 44px;
+    }
+
+    .brand,
+    .top-action,
+    .section-number,
+    .status-pill,
+    .app-role,
+    .app-action,
+    .site-footer,
+    .small-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+    }
+
+    .brand {
+      grid-column: 1;
+      justify-self: start;
+      align-self: center;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      color: var(--sub);
+      opacity: .78;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .top-action {
+      grid-column: 2;
+      justify-self: end;
+      align-self: center;
+      height: 36px;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      padding: 0 12px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .hero,
+    .section {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+    }
+
+    .kicker {
+      margin-bottom: 12px;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    .big-number {
+      margin: 0;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        "Hiragino Mincho ProN",
+        "Yu Mincho",
+        serif;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: clamp(38px, 13vw, 78px);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+    }
+
+    h2 {
+      font-size: clamp(25px, 7vw, 38px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    h3 {
+      font-size: clamp(24px, 8vw, 42px);
+      line-height: .96;
+      letter-spacing: -0.07em;
+    }
+
+    .jp-note {
+      display: inline-block;
+      margin-left: 8px;
+      color: var(--sub);
+      opacity: .62;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      vertical-align: middle;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.85;
+      font-weight: 400;
+    }
+
+    .solid-rule {
+      height: 1px;
+      background: var(--line);
+    }
+
+    .section {
+      padding: 18px;
+      box-shadow: 0 8px 22px rgba(15,30,48,0.03);
+    }
+
+    .section-head {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 18px;
+    }
+
+    .section-number {
+      color: var(--sub);
+      opacity: .62;
+    }
+
+    .site-footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 4px 2px 0;
+      color: var(--sub);
+      opacity: .58;
+    }
+
+    /* HUB / App List */
+    .hub-app-section {
+      background: var(--bg);
+      border-color: var(--line);
+      box-shadow: none;
+      padding: 18px;
+    }
+
     .hub-record-list {
       display: grid;
       gap: 12px;
@@ -14,10 +262,10 @@
 
     .hub-record-card {
       display: grid;
-      gap: 12px;
-      padding: 14px;
+      gap: 14px;
+      padding: 16px;
       border: 1px solid var(--line);
-      border-radius: 22px;
+      border-radius: 24px;
       background: var(--surface);
       color: inherit;
       text-decoration: none;
@@ -39,69 +287,109 @@
       }
     }
 
-    .hub-record-top {
+    .hub-record-body {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
       gap: 12px;
-      align-items: start;
     }
 
-    .hub-record-number {
-      color: var(--sub);
-      opacity: .62;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .hub-record-title {
-      margin: 4px 0 0;
+    .hub-record-logotype {
+      margin: 0;
+      color: var(--ink);
       font-family:
         Georgia,
         "Times New Roman",
-        "Yu Mincho",
         "Hiragino Mincho ProN",
+        "Yu Mincho",
         serif;
-      font-size: clamp(25px, 7vw, 38px);
-      line-height: 0.98;
-      letter-spacing: -0.06em;
+      font-size: clamp(34px, 10vw, 64px);
+      line-height: .88;
+      letter-spacing: -0.085em;
       font-weight: 500;
     }
 
-    .hub-record-action {
-      min-height: 34px;
-      padding: 0 12px;
-      border: 1px solid var(--deep);
+    .hub-record-copy {
+      margin: 0;
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.72;
+      font-weight: 400;
+    }
+
+    .hub-record-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .hub-record-open {
+      min-height: 52px;
+      width: 100%;
+      border: 1px solid var(--line);
       border-radius: 999px;
-      background: var(--deep);
-      color: var(--surface);
+      background: var(--surface);
+      color: var(--ink);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       line-height: 1;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .09em;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .11em;
       text-transform: uppercase;
-      white-space: nowrap;
     }
 
-    .hub-record-meta {
-      margin: 0;
-      color: var(--sub);
-      font-size: 12px;
-      line-height: 1.75;
-      font-weight: 400;
+    @media (min-width: 640px) {
+      .container { padding-top: 28px; }
+
+      .hero {
+        grid-template-columns: 1.05fr .95fr;
+        min-height: 245px;
+        align-items: end;
+      }
+
+      .hub-record-card {
+        min-height: 150px;
+        grid-template-columns: minmax(240px, .9fr) minmax(220px, 1.1fr);
+        align-items: stretch;
+        gap: 18px;
+      }
+
+      .hub-record-body {
+        display: grid;
+        align-content: space-between;
+        gap: 12px;
+      }
+
+      .hub-record-copy {
+        padding-top: 4px;
+        align-self: start;
+      }
+
+      .hub-record-actions {
+        grid-column: 2;
+        align-self: end;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hub-record-open {
+        grid-column: 1;
+      }
     }
 
     @media (max-width: 420px) {
-      .hub-record-top {
-        grid-template-columns: minmax(0, 1fr);
+      .hub-record-logotype {
+        font-size: clamp(38px, 13vw, 58px);
       }
+    }
 
-      .hub-record-action {
-        width: fit-content;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -127,37 +415,39 @@
 
       <div class="solid-rule"></div>
 
-      <section class="section">
+      <section class="section hub-app-section">
         <div class="section-head">
           <div class="section-number">Applications</div>
-          <h2>Record List<span class="jp-note">一覧</span></h2>
+          <h2>App List<span class="jp-note">アプリ一覧</span></h2>
         </div>
 
         <div class="hub-record-list">
           <a class="hub-record-card" href="./wsv.html" aria-label="Open Worksheet Vault">
-            <div class="hub-record-top">
-              <div>
-                <div class="hub-record-number">No.01 / Artwork Management</div>
-                <h3 class="hub-record-title">Worksheet<br>Vault</h3>
-              </div>
-              <span class="hub-record-action">OPEN</span>
+            <div class="hub-record-body">
+              <h3 class="hub-record-logotype">Worksheet<br>Vault</h3>
             </div>
-            <p class="hub-record-meta">
-              作品情報、展示履歴、寸法、価格、制作状態などを管理するための作品台帳システム。
-            </p>
+            <div class="hub-record-body">
+              <p class="hub-record-copy">
+                作品情報、展示履歴、寸法、価格、制作状態などを管理するための作品台帳システム。
+              </p>
+              <div class="hub-record-actions">
+                <span class="hub-record-open">OPEN</span>
+              </div>
+            </div>
           </a>
 
           <a class="hub-record-card" href="./ftr.html?book=ftr-futariseisan-7q4m9v2k" aria-label="Open Futari Seisan">
-            <div class="hub-record-top">
-              <div>
-                <div class="hub-record-number">No.02 / Settlement Tool</div>
-                <h3 class="hub-record-title">Futari<br>Seisan</h3>
-              </div>
-              <span class="hub-record-action">OPEN</span>
+            <div class="hub-record-body">
+              <h3 class="hub-record-logotype">Futari<br>Seisan</h3>
             </div>
-            <p class="hub-record-meta">
-              ふたりの支払い記録を整理し、現在の差額や精算状況を確認するための精算アプリ。
-            </p>
+            <div class="hub-record-body">
+              <p class="hub-record-copy">
+                ふたりの支払い記録を整理し、現在の差額や精算状況を確認するための精算アプリ。
+              </p>
+              <div class="hub-record-actions">
+                <span class="hub-record-open">OPEN</span>
+              </div>
+            </div>
           </a>
         </div>
       </section>
