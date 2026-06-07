@@ -6,6 +6,105 @@
   <meta name="theme-color" content="#fafbfc">
   <title>VAMRSS HUB</title>
   <link rel="stylesheet" href="./style.css">
+  <style>
+    .hub-record-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hub-record-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface);
+      color: inherit;
+      text-decoration: none;
+      transition:
+        border-color 120ms cubic-bezier(.2,.8,.2,1),
+        transform 120ms cubic-bezier(.2,.8,.2,1),
+        box-shadow 120ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    .hub-record-card:active {
+      transform: scale(.995);
+    }
+
+    @media (hover:hover) {
+      .hub-record-card:hover {
+        border-color: rgba(7, 28, 22, 0.22);
+        box-shadow: 0 12px 30px rgba(15,30,48,0.055);
+        transform: translateY(-1px);
+      }
+    }
+
+    .hub-record-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .hub-record-number {
+      color: var(--sub);
+      opacity: .62;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hub-record-title {
+      margin: 4px 0 0;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        serif;
+      font-size: clamp(25px, 7vw, 38px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      font-weight: 500;
+    }
+
+    .hub-record-action {
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid var(--deep);
+      border-radius: 999px;
+      background: var(--deep);
+      color: var(--surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hub-record-meta {
+      margin: 0;
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.75;
+      font-weight: 400;
+    }
+
+    @media (max-width: 420px) {
+      .hub-record-top {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hub-record-action {
+        width: fit-content;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -31,44 +130,34 @@
       <section class="section">
         <div class="section-head">
           <div class="section-number">Applications</div>
-          <h2>App List<span class="jp-note">一覧</span></h2>
+          <h2>Record List<span class="jp-note">一覧</span></h2>
         </div>
 
-        <div class="app-list">
-          <a class="app-card" href="./wsv.html" data-app-id="WSV" aria-label="Open WSV">
-            <div class="app-main">
+        <div class="hub-record-list">
+          <a class="hub-record-card" href="./wsv.html" aria-label="Open Worksheet Vault">
+            <div class="hub-record-top">
               <div>
-                <div class="app-role">Artwork Management</div>
-                <h3>Worksheet<br>Vault</h3>
-                <p class="app-text">
-                  作品情報、展示履歴、寸法、価格、制作状態などを管理するための作品台帳システム。
-                </p>
+                <div class="hub-record-number">No.01 / Artwork Management</div>
+                <h3 class="hub-record-title">Worksheet<br>Vault</h3>
               </div>
-              <div class="app-meta">
-                <span class="app-action">OPEN</span>
-              </div>
+              <span class="hub-record-action">OPEN</span>
             </div>
-            <div class="app-code-box" aria-hidden="true">
-              <div class="app-code">WSV</div>
-            </div>
+            <p class="hub-record-meta">
+              作品情報、展示履歴、寸法、価格、制作状態などを管理するための作品台帳システム。
+            </p>
           </a>
 
-          <a class="app-card" href="./ftr.html?book=ftr-futariseisan-7q4m9v2k" data-app-id="FTR" aria-label="Open FTR">
-            <div class="app-main">
+          <a class="hub-record-card" href="./ftr.html?book=ftr-futariseisan-7q4m9v2k" aria-label="Open Futari Seisan">
+            <div class="hub-record-top">
               <div>
-                <div class="app-role">Settlement Tool</div>
-                <h3>Futari<br>Seisan</h3>
-                <p class="app-text">
-                  ふたりの支払い記録を整理し、現在の差額や精算状況を確認するための精算アプリ。
-                </p>
+                <div class="hub-record-number">No.02 / Settlement Tool</div>
+                <h3 class="hub-record-title">Futari<br>Seisan</h3>
               </div>
-              <div class="app-meta">
-                <span class="app-action">OPEN</span>
-              </div>
+              <span class="hub-record-action">OPEN</span>
             </div>
-            <div class="app-code-box" aria-hidden="true">
-              <div class="app-code">FTR</div>
-            </div>
+            <p class="hub-record-meta">
+              ふたりの支払い記録を整理し、現在の差額や精算状況を確認するための精算アプリ。
+            </p>
           </a>
         </div>
       </section>
