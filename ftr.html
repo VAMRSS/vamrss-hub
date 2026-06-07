@@ -4,67 +4,1651 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#fafbfc">
-  <title>FTR / Futari Seisan</title>
-  <link rel="stylesheet" href="./style.css">
-</head>
+  <title>(VAMRSS) FUTARI SEISAN / FTR v1.0</title>
+  <style>
 
+    :root {
+      /* Surface / 面・構造 */
+      --bg: #fafbfc;
+      --surface: #ffffff;
+      --line: #dfe7ef;
+      --deep: #071c16;
+      --danger: #9b3144;
+
+      /* Text / 文字 */
+      --ink: #101722;
+      --sub: #607084;
+
+      /* Shared */
+      --radius: 28px;
+      --radius-small: 18px;
+      --shadow: 0 18px 50px rgba(15, 30, 48, 0.055);
+      --nav-height: 72px;
+
+      /* Compatibility */
+      --surface-soft: var(--bg);
+      --muted: var(--sub);
+      --line-strong: var(--line);
+      --accent: transparent;
+      --accent-soft: rgba(7, 28, 22, 0.045);
+      --nav: rgba(255,255,255,0.36);
+      --balance-bg: var(--deep);
+      --balance-ink: var(--surface);
+      --balance-sub: rgba(255,255,255,0.62);
+      --balance-line: rgba(255,255,255,0.16);
+
+      --motion-fast: 120ms;
+      --motion-base: 180ms;
+      --motion-ease: cubic-bezier(.2, .8, .2, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      min-height: 100vh;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .48;
+      cursor: not-allowed;
+    }
+
+    .serif {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        serif;
+    }
+
+    .container {
+      width: min(760px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 0 calc(var(--nav-height) + max(24px, env(safe-area-inset-bottom)));
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .page {
+      display: grid;
+      gap: 16px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      min-height: 44px;
+    }
+
+    .brand,
+    .top-title,
+    .top-action,
+    .section-number,
+    .label,
+    .chip,
+    .status-pill,
+    .nav-button,
+    label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+    }
+
+    .brand {
+      justify-self: start;
+      align-self: center;
+      min-width: 0;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      color: var(--sub);
+      opacity: .78;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .top-title {
+      display: none;
+    }
+
+    .top-action {
+      justify-self: end;
+      align-self: center;
+      height: 36px;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      padding: 0 12px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+      color: var(--ink);
+    }
+
+
+    .top-action,
+    button,
+    .primary,
+    .secondary,
+    .danger,
+    .payer-button,
+    .nav-button,
+    .chip {
+      font-weight: 800;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-main {
+      display: grid;
+      gap: 14px;
+    }
+
+    .kicker {
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    h1,
+    h2,
+    .settlement-message,
+    .setting-title,
+    .settlement-title,
+    .expense-title {
+      margin: 0;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        serif;
+      font-weight: 500;
+    }
+
+    h1 {
+      max-width: 10em;
+      font-size: clamp(38px, 13vw, 78px);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+    }
+
+    h2 {
+      font-size: clamp(25px, 7vw, 38px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    .jp-note {
+      display: inline-block;
+      margin-left: 8px;
+      margin-top: 0;
+      color: var(--sub);
+      opacity: .62;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      vertical-align: middle;
+    }
+
+    h1 .jp-note,
+    .settlement-message .jp-note,
+    .setting-title .jp-note,
+    .settlement-title .jp-note {
+      display: inline-block;
+      margin-left: 8px;
+    }
+
+    .powered-by {
+      display: block;
+      margin-top: 10px;
+      color: var(--sub);
+      opacity: .72;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 36em;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.85;
+      letter-spacing: 0;
+    }
+
+    .accent-rule {
+      height: 1px;
+      background: var(--line);
+    }
+
+    .section {
+      padding: 18px;
+      border: 0.5px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(15,30,48,0.03);
+    }
+
+    .section:last-child {
+      border-bottom: 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .section-number {
+      color: var(--sub);
+      opacity: .62;
+    }
+
+    .balance-panel {
+      position: relative;
+      margin: 0;
+      padding: 22px 26px 16px;
+      border-radius: var(--radius);
+      background: var(--deep);
+      color: var(--surface);
+      border: 1px solid rgba(7, 28, 22, 0.22);
+      box-shadow: 0 18px 46px rgba(7, 28, 22, 0.16);
+    }
+
+    .balance-panel .section-number,
+    .balance-panel .jp-note,
+    .balance-panel .stat span {
+      color: rgba(255,255,255,0.62);
+      opacity: 1;
+    }
+
+    .settlement-message {
+      font-size: clamp(34px, 10vw, 56px);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .amount-large {
+      display: block;
+      margin-top: 10px;
+      font-size: clamp(58px, 18vw, 104px);
+      line-height: 0.82;
+      letter-spacing: -0.08em;
+      font-weight: 500;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .stat {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.16);
+      align-items: center;
+    }
+
+    .stat:last-child {
+      border-bottom: 0;
+    }
+
+    .stat span {
+      color: var(--sub);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .stat strong {
+      min-width: 72px;
+      text-align: right;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+      font-size: clamp(32px, 9vw, 54px);
+      line-height: 0.86;
+      letter-spacing: -0.08em;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    label {
+      color: var(--sub);
+    }
+
+    input {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-small);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 13px 14px;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      outline: none;
+      text-align: left;
+    }
+
+    input[type="date"] {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      text-align: left;
+      text-align-last: left;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="date"]::-webkit-date-and-time-value {
+      text-align: left;
+    }
+
+    input:focus {
+      border-color: var(--sub);
+      background: var(--surface);
+      box-shadow: none;
+    }
+
+    button,
+    .primary,
+    .secondary,
+    .danger,
+    .payer-button {
+      min-height: 48px;
+      border-radius: 999px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition:
+        background-color var(--motion-fast) var(--motion-ease),
+        color var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease),
+        opacity var(--motion-fast) var(--motion-ease);
+    }
+
+    .payer-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .payer-button {
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .payer-button.selected {
+      border-color: var(--deep);
+      background: var(--deep);
+      color: var(--surface);
+      box-shadow: none;
+    }
+
+    .button-row {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .primary {
+      border-color: var(--deep);
+      background: var(--deep);
+      color: var(--surface);
+      box-shadow: none;
+    }
+
+    .secondary {
+      border-color: var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .danger {
+      border-color: rgba(155,49,68,0.16);
+      background: rgba(155,49,68,0.07);
+      color: var(--danger);
+      min-height: 42px;
+    }
+
+    .expense-list {
+      display: grid;
+      gap: 12px;
+      border-top: 0;
+    }
+
+    .expense-item,
+    .settlement-group,
+    .setting-group {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface);
+    }
+
+    .expense-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .expense-date {
+      color: var(--sub);
+      opacity: .62;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .expense-title {
+      margin-top: 4px;
+      font-size: 22px;
+      line-height: 1.08;
+      letter-spacing: -0.055em;
+    }
+
+    .expense-meta {
+      margin-top: 5px;
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.65;
+      font-weight: 400;
+    }
+
+    .expense-amount {
+      white-space: nowrap;
+      text-align: right;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .item-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .empty {
+      padding: 22px;
+      border: 1px dashed var(--line);
+      border-radius: 22px;
+      color: var(--sub);
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.75;
+      background: transparent;
+    }
+
+    .hint {
+      margin: 0 0 14px;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .setting-list {
+      display: grid;
+      gap: 12px;
+      border-top: 0;
+    }
+
+    .setting-title {
+      font-size: 22px;
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    .settlement-summary {
+      display: grid;
+      gap: 8px;
+    }
+
+    .settlement-title {
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    .settlement-meta {
+      margin: 0;
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .settlement-detail {
+      display: none;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .settlement-detail.show {
+      display: block;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 10;
+      width: min(430px, calc(100% - 24px));
+      height: 58px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      padding: 6px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+    }
+
+    .nav-button {
+      border: 0;
+      background: transparent;
+      color: rgba(16,23,34,0.58);
+      min-height: 46px;
+      border-radius: 999px;
+      padding: 0 10px;
+    }
+
+    .nav-button.active {
+      background: rgba(235,240,244,0.88);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    .split-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-small);
+      background: var(--bg);
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .split-summary strong {
+      color: var(--ink);
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+      font-size: 24px;
+      letter-spacing: -0.06em;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .split-panel {
+      display: none;
+      gap: 10px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-small);
+      background: var(--bg);
+    }
+
+    .split-panel.open,
+    .split-panel.show {
+      display: grid;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .percent-field {
+      position: relative;
+    }
+
+    .percent-field input {
+      padding-right: 34px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .percent-field::after {
+      content: "%";
+      position: absolute;
+      right: 13px;
+      bottom: 15px;
+      color: var(--sub);
+      opacity: .62;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .split-error {
+      display: none;
+      color: var(--danger);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .split-error.show {
+      display: block;
+    }
+
+    .reset-box {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px dashed var(--line);
+      border-radius: 22px;
+      background: transparent;
+    }
+
+    .reset-box p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .settled-label {
+      display: inline-block;
+      margin-left: 6px;
+      color: var(--sub);
+      opacity: .62;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      letter-spacing: 0.01em;
+    }
+
+    .site-footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 4px 2px 0;
+      color: var(--sub);
+      opacity: .58;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    .nav-button:focus-visible {
+      outline: 2px solid rgba(7, 28, 22, 0.42);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 420px) {
+      .expense-top {
+        grid-template-columns: 1fr;
+      }
+
+      .expense-amount {
+        text-align: left;
+      }
+
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding-top: 28px;
+      }
+
+      .hero {
+        grid-template-columns: 1.2fr 0.8fr;
+        min-height: 245px;
+        align-items: end;
+      }
+
+      .stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stat {
+        display: block;
+        border-bottom: 0;
+        border-right: 1px solid rgba(255,255,255,0.16);
+        padding: 12px;
+      }
+
+      .stat:first-child {
+        padding-left: 0;
+      }
+
+      .stat:last-child {
+        border-right: 0;
+        padding-right: 0;
+      }
+
+      .stat span {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .stat strong {
+        display: block;
+        text-align: left;
+      }
+
+      .button-row {
+        grid-template-columns: 1fr auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+  </style>
+</head>
 <body>
   <main class="container">
-    <div class="page">
-      <div class="topbar">
-        <div class="brand">＊(VAMRSS) FTR</div>
+    <section id="mainScreen" class="screen active">
+      <div class="page">
+        <div class="topbar">
+          <div class="brand">＊(VAMRSS) FUTARI SEISAN</div>
+          <button class="top-action" type="button" onclick="showScreen('settings')">SETTINGS</button>
+        </div>
+
+        <header class="hero">
+          <div class="hero-main">
+            <div class="kicker">Two-person settlement ledger</div>
+            <h1>Futari<br>Seisan<span class="powered-by">Powered by VAMRSS</span><span class="jp-note">ふたり精算</span></h1>
+          </div>
+          <p class="lead">Record only when, where, and how much you paid. The current amount to give or receive is shown instantly.<br>いつ・どこで・いくら使ったかだけを記録し、今の精算額をすぐ確認できます。</p>
+        </header>
+
+        <div class="accent-rule"></div>
+
+        <section class="section balance-panel">
+          <div class="section-head">
+            <div class="section-number">Balance</div>
+            <h2>Current Balance<span class="jp-note">現在の精算</span></h2>
+          </div>
+          <p class="settlement-message" id="settlementText">Settled<span class="jp-note">精算は不要です</span></p>
+          <div class="stats">
+            <div class="stat"><span>Total / 共有出費</span><strong id="total">¥0</strong></div>
+            <div class="stat"><span id="personAStatLabel">Person A / 支払い</span><strong id="personAPaid">¥0</strong></div>
+            <div class="stat"><span id="personBStatLabel">Person B / 支払い</span><strong id="personBPaid">¥0</strong></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">Entry</div>
+            <h2 id="formTitle">New Entry<span class="jp-note">出費を追加</span></h2>
+          </div>
+          <form id="expenseForm">
+            <div class="field"><label for="date">Date / 日付</label><input id="date" type="date"></div>
+            <div class="field"><label for="title">Place or Purpose / 場所・用途</label><input id="title" type="text" placeholder="例：スーパー、外食、日用品"></div>
+            <div class="field"><label for="amount">Amount / 金額</label><input id="amount" type="number" inputmode="numeric" min="1" placeholder="例：4000"></div>
+            <div class="field">
+              <label>Paid by / 支払った人</label>
+              <div class="payer-buttons">
+                <button class="payer-button selected" type="button" id="payerAButton">Person A</button>
+                <button class="payer-button" type="button" id="payerBButton">Person B</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Split / 分担割合</label>
+              <div class="split-summary">
+                <span id="entrySplitLabel">Default Split<br>基本分担割合</span>
+                <strong id="entrySplitValue">50 / 50</strong>
+              </div>
+              <button class="secondary" type="button" id="toggleSplitButton">Change Split / 個別変更</button>
+              <div class="split-panel" id="entrySplitPanel">
+                <div class="split-grid">
+                  <div class="field percent-field">
+                    <label for="entrySplitA">Person A</label>
+                    <input id="entrySplitA" type="number" inputmode="numeric" min="0" max="100" step="1">
+                  </div>
+                  <div class="field percent-field">
+                    <label for="entrySplitB">Person B</label>
+                    <input id="entrySplitB" type="number" inputmode="numeric" min="0" max="100" step="1">
+                  </div>
+                </div>
+                <div class="split-error" id="entrySplitError">Total must be 100%.<br>合計が100%になるようにしてください。</div>
+              </div>
+            </div>
+            <div class="button-row">
+              <button class="primary" type="submit" id="submitButton">Save Entry</button>
+              <button class="secondary" type="button" id="cancelButton" style="display:none;">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">History</div>
+            <h2>Expense History<span class="jp-note">出費履歴</span></h2>
+          </div>
+          <button class="secondary" type="button" id="newButton" style="width:100%; margin-bottom:14px;">New Entry / 新規入力</button>
+          <div id="expenseList"></div>
+        </section>
+        <footer class="site-footer">＊(VAMRSS) FUTARI SEISAN / © 2026 VAMRSS</footer>
       </div>
+    </section>
 
-      <header class="hero">
-        <div>
-          <div class="kicker">Settlement tool / Shared access</div>
-          <h1>Futari<br>Seisan<span class="jp-note">精算</span></h1>
-        </div>
-        <p class="lead">
-          このページに既存のFTR本体を接続します。
-          共有相手にも渡すページのため、TOP画面へ戻る導線は配置していません。
-        </p>
-      </header>
 
-      <div class="solid-rule"></div>
-
-      <section class="section emphasis-section">
-        <div class="section-head">
-          <div class="section-number">APP ID</div>
-          <h2>FTR<span class="jp-note">共有</span></h2>
-        </div>
-        <p class="lead">
-          ふたりの支払い記録、現在の差額、精算状況を確認する領域です。
-        </p>
-        <strong class="big-number">FTR</strong>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <div class="section-number">Access</div>
-          <h2>Shared Rule<span class="jp-note">共有</span></h2>
+    <section id="historyScreen" class="screen">
+      <div class="page">
+        <div class="topbar">
+          <div class="brand">＊(VAMRSS) FUTARI SEISAN</div>
+          <button class="top-action" type="button" onclick="showScreen('main')">BACK</button>
         </div>
 
-        <div class="placeholder-grid">
-          <article class="placeholder-card">
-            <p class="placeholder-title">TOPへの戻り導線なし</p>
-            <p class="placeholder-text">
-              このページには <span class="mono">index.html</span> へのリンクを置いていません。
-            </p>
-          </article>
-          <article class="placeholder-card">
-            <p class="placeholder-title">共有URL</p>
-            <p class="placeholder-text">
-              共有相手には <span class="mono">ftr.html</span> のURLだけを渡す運用を想定します。
-            </p>
-          </article>
-        </div>
-      </section>
+        <header class="hero">
+          <div class="hero-main">
+            <div class="kicker">Settlement archive</div>
+            <h1>History<span class="jp-note">精算履歴</span></h1>
+          </div>
+          <p class="lead">Settled entries are grouped by reset date. Tap a group to review the entries inside.<br>精算済みの出費は、リセットした日付ごとにグループ化されます。</p>
+        </header>
 
-      <footer class="site-footer">
-        FUTARI SEISAN / SHARED AREA
-      </footer>
-    </div>
+        <div class="accent-rule"></div>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">Archive</div>
+            <h2>Settled History<span class="jp-note">精算済み一覧</span></h2>
+          </div>
+          <div id="settlementGroupList"></div>
+        </section>
+        <footer class="site-footer">＊(VAMRSS) FUTARI SEISAN / © 2026 VAMRSS</footer>
+      </div>
+    </section>
+
+    <section id="settingsScreen" class="screen">
+      <div class="page">
+        <div class="topbar">
+          <div class="brand">＊(VAMRSS) FUTARI SEISAN</div>
+          <button class="top-action" type="button" onclick="showScreen('main')">BACK</button>
+        </div>
+
+        <header class="hero">
+          <div class="hero-main">
+            <div class="kicker">Application settings</div>
+            <h1>Settings<span class="jp-note">設定</span></h1>
+          </div>
+          <p class="lead">Manage names and future preferences here.<br>名前や表示など、今後の各種設定をここにまとめます。</p>
+        </header>
+
+        <div class="accent-rule"></div>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">Members</div>
+            <h2>Member Names<span class="jp-note">名前設定</span></h2>
+          </div>
+          <p class="hint">Only display names are changed. Existing expense records remain usable.<br>表示名だけを変更します。過去の出費データはそのまま使えます。</p>
+          <div class="setting-list">
+            <div class="setting-group">
+              <p class="setting-title">Person A<span class="jp-note">1人目</span></p>
+              <div class="field">
+                <label for="personAName">Display Name / 表示名</label>
+                <input id="personAName" type="text" placeholder="例：自分">
+              </div>
+            </div>
+            <div class="setting-group">
+              <p class="setting-title">Person B<span class="jp-note">2人目</span></p>
+              <div class="field">
+                <label for="personBName">Display Name / 表示名</label>
+                <input id="personBName" type="text" placeholder="例：相手">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">Default</div>
+            <h2>Default Split<span class="jp-note">基本分担割合</span></h2>
+          </div>
+          <p class="hint">This split is applied to new entries only. Existing entries remain unchanged.<br>この割合は新しく追加する出費に適用されます。既存の出費には影響しません。</p>
+          <div class="setting-list">
+            <div class="setting-group">
+              <p class="setting-title">Standard Ratio<span class="jp-note">通常の割合</span></p>
+              <div class="split-grid">
+                <div class="field percent-field">
+                  <label for="defaultSplitA">Person A</label>
+                  <input id="defaultSplitA" type="number" inputmode="numeric" min="0" max="100" step="1">
+                </div>
+                <div class="field percent-field">
+                  <label for="defaultSplitB">Person B</label>
+                  <input id="defaultSplitB" type="number" inputmode="numeric" min="0" max="100" step="1">
+                </div>
+              </div>
+              <div class="split-error" id="defaultSplitError">Total must be 100%.<br>合計が100%になるようにしてください。</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">Reset</div>
+            <h2>Settlement Reset<span class="jp-note">精算リセット</span></h2>
+          </div>
+          <div class="reset-box">
+            <p>Mark all current unsettled entries as settled. The history remains, but the current balance starts from zero.<br>現在の未精算分をすべて精算済みにします。履歴は残り、現在の精算額だけがゼロから再計算されます。</p>
+            <button class="secondary" type="button" id="settlementResetButton">Reset Current Balance / 現在の精算をリセット</button>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-number">Data Scope</div>
+            <h2>Shared Book<span class="jp-note">共有範囲</span></h2>
+          </div>
+          <div class="empty">This page uses the book ID in the URL query. Default book is used when no query is provided.<br>URLの <span class="mono">?book=...</span> で共有台帳を切り替えます。指定がない場合はdefaultを使用します。</div>
+        </section>
+        <footer class="site-footer">＊(VAMRSS) FUTARI SEISAN / © 2026 VAMRSS</footer>
+      </div>
+    </section>
   </main>
+
+  <nav class="bottom-nav" aria-label="FTR navigation">
+    <button class="nav-button active" type="button" id="mainNavButton" onclick="showScreen('main')">INPUT</button>
+    <button class="nav-button" type="button" id="historyNavButton" onclick="showScreen('history')">HISTORY</button>
+    <button class="nav-button" type="button" id="settingsNavButton" onclick="showScreen('settings')">SETTING</button>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const APP_TITLE = "(VAMRSS) FUTARI SEISAN";
+    const APP_ABBREVIATION = "FTR";
+    const APP_VERSION = "ftr-1.0";
+
+    const SUPABASE_URL = "https://adkfnvkgryjkacycayld.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_euhvg-L_FKU8GTM8S9moJw_9h-i2Wc4";
+
+    const TABLES = {
+      books: "books",
+      expenses: "expenses",
+      settlements: "settlements"
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const BOOK_ID = urlParams.get("book") || "default";
+
+    let db = null;
+    let realtimeChannel = null;
+    let expenses = [];
+    let settlements = [];
+    let editingId = null;
+    let selectedPayer = "personA";
+    let entrySplitA = 50;
+    let entrySplitB = 50;
+    let isCustomSplitOpen = false;
+    let names = { personA: "Person A", personB: "Person B" };
+    let settings = { defaultSplitA: 50, defaultSplitB: 50 };
+    let isSavingBook = false;
+
+    const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
+
+    const dateInput = document.getElementById("date");
+    const titleInput = document.getElementById("title");
+    const amountInput = document.getElementById("amount");
+    const form = document.getElementById("expenseForm");
+    const list = document.getElementById("expenseList");
+    const settlementGroupList = document.getElementById("settlementGroupList");
+    const personANameInput = document.getElementById("personAName");
+    const personBNameInput = document.getElementById("personBName");
+    const payerAButton = document.getElementById("payerAButton");
+    const payerBButton = document.getElementById("payerBButton");
+    const defaultSplitAInput = document.getElementById("defaultSplitA");
+    const defaultSplitBInput = document.getElementById("defaultSplitB");
+    const entrySplitAInput = document.getElementById("entrySplitA");
+    const entrySplitBInput = document.getElementById("entrySplitB");
+    const toggleSplitButton = document.getElementById("toggleSplitButton");
+    const entrySplitPanel = document.getElementById("entrySplitPanel");
+    const settlementResetButton = document.getElementById("settlementResetButton");
+
+    function todayString() {
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    function clampPercent(value) {
+      const n = Math.round(Number(value));
+      if (!Number.isFinite(n)) return 0;
+      return Math.max(0, Math.min(100, n));
+    }
+    function isConfigured() {
+      return SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY.length > 20 && !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
+    }
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    function formatDateLabel(isoString) {
+      const d = new Date(isoString);
+      if (Number.isNaN(d.getTime())) return "Unknown Date";
+      return d.toISOString().slice(0, 10);
+    }
+
+    function showScreen(screenName) {
+      const isMain = screenName === "main";
+      const isHistory = screenName === "history";
+      const isSettings = screenName === "settings";
+      document.getElementById("mainScreen").classList.toggle("active", isMain);
+      document.getElementById("historyScreen").classList.toggle("active", isHistory);
+      document.getElementById("settingsScreen").classList.toggle("active", isSettings);
+      document.getElementById("mainNavButton").classList.toggle("active", isMain);
+      document.getElementById("historyNavButton").classList.toggle("active", isHistory);
+      document.getElementById("settingsNavButton").classList.toggle("active", isSettings);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function toExpense(row) {
+      return {
+        id: row.id,
+        date: row.date,
+        title: row.title,
+        amount: Number(row.amount),
+        paidBy: row.paid_by,
+        splitA: Number(row.split_a),
+        splitB: Number(row.split_b),
+        settledAt: row.settled_at,
+        settlementId: row.settlement_id
+      };
+    }
+    function toSettlement(row) {
+      return {
+        id: row.id,
+        settledAt: row.settled_at,
+        label: row.label,
+        direction: row.direction,
+        amount: Number(row.amount),
+        total: Number(row.total),
+        count: Number(row.count)
+      };
+    }
+
+    async function ensureBook() {
+      const { data, error } = await db.from(TABLES.books).select("*").eq("id", BOOK_ID).maybeSingle();
+      if (error) throw error;
+      if (data) {
+        names = {
+          personA: data.person_a_name || "Person A",
+          personB: data.person_b_name || "Person B"
+        };
+        settings = {
+          defaultSplitA: Number(data.default_split_a ?? 50),
+          defaultSplitB: Number(data.default_split_b ?? 50)
+        };
+        return;
+      }
+      const { data: created, error: createError } = await db.from(TABLES.books).insert({
+        id: BOOK_ID,
+        person_a_name: "Person A",
+        person_b_name: "Person B",
+        default_split_a: 50,
+        default_split_b: 50
+      }).select("*").single();
+      if (createError) throw createError;
+      names = {
+        personA: created.person_a_name || "Person A",
+        personB: created.person_b_name || "Person B"
+      };
+      settings = {
+        defaultSplitA: Number(created.default_split_a ?? 50),
+        defaultSplitB: Number(created.default_split_b ?? 50)
+      };
+    }
+
+    async function loadAll(showAlert = true) {
+      if (!isConfigured()) {
+        const message = '<div class="empty">Supabase is not configured yet.<br>ftr.html の SUPABASE_URL と SUPABASE_ANON_KEY を設定してください。</div>';
+        list.innerHTML = message;
+        settlementGroupList.innerHTML = message;
+        return;
+      }
+      if (!window.supabase) {
+        const message = '<div class="empty">Supabase library could not be loaded.<br>通信環境またはCDNの読み込みを確認してください。</div>';
+        list.innerHTML = message;
+        settlementGroupList.innerHTML = message;
+        return;
+      }
+      if (!db) db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      try {
+        await ensureBook();
+        syncEntrySplitFromDefaultIfNeeded();
+        const [expenseResult, settlementResult] = await Promise.all([
+          db.from(TABLES.expenses).select("*").eq("book_id", BOOK_ID).order("date", { ascending: false }).order("created_at", { ascending: false }),
+          db.from(TABLES.settlements).select("*").eq("book_id", BOOK_ID).order("settled_at", { ascending: false })
+        ]);
+        if (expenseResult.error) throw expenseResult.error;
+        if (settlementResult.error) throw settlementResult.error;
+        expenses = (expenseResult.data || []).map(toExpense);
+        settlements = (settlementResult.data || []).map(toSettlement);
+        render();
+        subscribeRealtime();
+      } catch (error) {
+        console.error(error);
+        if (showAlert) alert("Supabaseからの読み込みに失敗しました。SQL・URL・anon keyを確認してください。");
+      }
+    }
+
+    async function loadAllSilently() {
+      await loadAll(false);
+    }
+
+    function subscribeRealtime() {
+      if (!db || realtimeChannel) return;
+      realtimeChannel = db
+        .channel("futari-seisan-" + BOOK_ID)
+        .on("postgres_changes", { event: "*", schema: "public", table: TABLES.books, filter: "id=eq." + BOOK_ID }, loadAllSilently)
+        .on("postgres_changes", { event: "*", schema: "public", table: TABLES.expenses, filter: "book_id=eq." + BOOK_ID }, loadAllSilently)
+        .on("postgres_changes", { event: "*", schema: "public", table: TABLES.settlements, filter: "book_id=eq." + BOOK_ID }, loadAllSilently)
+        .subscribe();
+    }
+
+    async function saveBookSettings() {
+      if (!db || isSavingBook) return;
+      isSavingBook = true;
+      const { error } = await db.from(TABLES.books).update({
+        person_a_name: names.personA,
+        person_b_name: names.personB,
+        default_split_a: settings.defaultSplitA,
+        default_split_b: settings.defaultSplitB
+      }).eq("id", BOOK_ID);
+      isSavingBook = false;
+      if (error) {
+        console.error(error);
+        alert("設定の保存に失敗しました。");
+      }
+    }
+
+    function setSelectedPayer(payer) {
+      selectedPayer = payer;
+      payerAButton.classList.toggle("selected", payer === "personA");
+      payerBButton.classList.toggle("selected", payer === "personB");
+    }
+    function updateNameLabels() {
+      personANameInput.value = names.personA;
+      personBNameInput.value = names.personB;
+      payerAButton.textContent = names.personA;
+      payerBButton.textContent = names.personB;
+      document.getElementById("personAStatLabel").textContent = `${names.personA} / 支払い`;
+      document.getElementById("personBStatLabel").textContent = `${names.personB} / 支払い`;
+      defaultSplitAInput.value = settings.defaultSplitA;
+      defaultSplitBInput.value = settings.defaultSplitB;
+    }
+    function setEntrySplit(splitA, splitB, customOpen = isCustomSplitOpen) {
+      entrySplitA = clampPercent(splitA);
+      entrySplitB = clampPercent(splitB);
+      entrySplitAInput.value = entrySplitA;
+      entrySplitBInput.value = entrySplitB;
+      isCustomSplitOpen = customOpen;
+      entrySplitPanel.classList.toggle("show", isCustomSplitOpen);
+      toggleSplitButton.textContent = isCustomSplitOpen ? "Hide Split / 閉じる" : "Change Split / 個別変更";
+      updateEntrySplitDisplay();
+    }
+    function updateEntrySplitDisplay() {
+      document.getElementById("entrySplitValue").textContent = `${entrySplitA} / ${entrySplitB}`;
+    }
+
+    function syncEntrySplitFromDefaultIfNeeded() {
+      if (!editingId && !isCustomSplitOpen) {
+        setEntrySplit(settings.defaultSplitA, settings.defaultSplitB, false);
+      }
+    }
+    function resetForm() {
+      editingId = null;
+      dateInput.value = todayString();
+      titleInput.value = "";
+      amountInput.value = "";
+      setSelectedPayer("personA");
+      setEntrySplit(settings.defaultSplitA, settings.defaultSplitB, false);
+      document.getElementById("formTitle").innerHTML = 'New Entry<span class="jp-note">出費を追加</span>';
+      document.getElementById("submitButton").textContent = "Save Entry";
+      document.getElementById("cancelButton").style.display = "none";
+    }
+    function validateEntrySplit(show = true) {
+      const total = clampPercent(entrySplitAInput.value) + clampPercent(entrySplitBInput.value);
+      const isValid = total === 100;
+      document.getElementById("entrySplitError").classList.toggle("show", show && !isValid);
+      return isValid;
+    }
+    function validateDefaultSplit(show = true) {
+      const total = clampPercent(defaultSplitAInput.value) + clampPercent(defaultSplitBInput.value);
+      const isValid = total === 100;
+      document.getElementById("defaultSplitError").classList.toggle("show", show && !isValid);
+      return isValid;
+    }
+
+    function getActiveExpenses() {
+      return expenses.filter(e => !e.settledAt);
+    }
+    function calculateSettlement() {
+      const active = getActiveExpenses();
+      const total = active.reduce((sum, e) => sum + e.amount, 0);
+      const personAPaid = active.filter(e => e.paidBy === "personA").reduce((sum, e) => sum + e.amount, 0);
+      const personBPaid = active.filter(e => e.paidBy === "personB").reduce((sum, e) => sum + e.amount, 0);
+      const personAOwed = active.reduce((sum, e) => sum + e.amount * (Number(e.splitA) || 50) / 100, 0);
+      const personAOverpaid = personAPaid - personAOwed;
+      return {
+        total,
+        personAPaid,
+        personBPaid,
+        activeCount: active.length,
+        amount: Math.round(Math.abs(personAOverpaid)),
+        direction: Math.abs(personAOverpaid) < 0.5 ? "SETTLED" : personAOverpaid > 0 ? "B_TO_A" : "A_TO_B"
+      };
+    }
+    function settlementDirectionText(direction) {
+      if (direction === "A_TO_B") return `${names.personA} → ${names.personB}`;
+      if (direction === "B_TO_A") return `${names.personB} → ${names.personA}`;
+      return "Settled";
+    }
+
+    function render() {
+      updateNameLabels();
+      updateEntrySplitDisplay();
+      const s = calculateSettlement();
+
+      document.getElementById("total").textContent = yen.format(s.total);
+      document.getElementById("personAPaid").textContent = yen.format(s.personAPaid);
+      document.getElementById("personBPaid").textContent = yen.format(s.personBPaid);
+
+      if (s.direction === "SETTLED") {
+        document.getElementById("settlementText").innerHTML = 'Settled<span class="jp-note">精算は不要です</span>';
+      } else if (s.direction === "A_TO_B") {
+        document.getElementById("settlementText").innerHTML =
+          `${escapeHtml(names.personA)} → ${escapeHtml(names.personB)}<span class="jp-note">渡す金額</span><span class="amount-large">${yen.format(s.amount)}</span>`;
+      } else {
+        document.getElementById("settlementText").innerHTML =
+          `${escapeHtml(names.personB)} → ${escapeHtml(names.personA)}<span class="jp-note">渡す金額</span><span class="amount-large">${yen.format(s.amount)}</span>`;
+      }
+
+      const active = getActiveExpenses().sort((a, b) => b.date.localeCompare(a.date));
+      if (active.length === 0) {
+        list.innerHTML = '<div class="empty">No unsettled entries.<br>現在の未精算分はありません。</div>';
+      } else {
+        list.innerHTML = '<div class="expense-list">' + active.map(e => {
+          const splitA = Number.isFinite(Number(e.splitA)) ? Number(e.splitA) : 50;
+          const splitB = Number.isFinite(Number(e.splitB)) ? Number(e.splitB) : 100 - splitA;
+          return `
+            <article class="expense-item">
+              <div class="expense-top">
+                <div>
+                  <div class="expense-date">${e.date}</div>
+                  <div class="expense-title">${escapeHtml(e.title)}</div>
+                  <div class="expense-meta">Paid by ${escapeHtml(e.paidBy === "personA" ? names.personA : names.personB)} / Split ${splitA}:${splitB}</div>
+                </div>
+                <div class="expense-amount">${yen.format(e.amount)}</div>
+              </div>
+              <div class="item-actions">
+                <button class="secondary" onclick="startEdit('${e.id}')">Edit</button>
+                <button class="danger" onclick="deleteExpense('${e.id}')">Delete</button>
+              </div>
+            </article>
+          `;
+        }).join("") + "</div>";
+      }
+
+      renderSettlementGroups();
+    }
+
+    function renderSettlementGroups() {
+      const groups = [...settlements].sort((a, b) => String(b.settledAt).localeCompare(String(a.settledAt)));
+      if (groups.length === 0) {
+        settlementGroupList.innerHTML = '<div class="empty">No settled groups yet.<br>まだ精算済みグループはありません。</div>';
+        return;
+      }
+      settlementGroupList.innerHTML = '<div class="expense-list">' + groups.map(group => {
+        const groupEntries = expenses.filter(e => e.settlementId === group.id).sort((a, b) => b.date.localeCompare(a.date));
+        const detailId = `detail-${group.id}`;
+        const total = groupEntries.reduce((sum, e) => sum + e.amount, 0);
+        const amount = Number.isFinite(Number(group.amount)) ? Number(group.amount) : 0;
+        return `
+          <article class="settlement-group">
+            <div class="settlement-summary">
+              <p class="settlement-title">${escapeHtml(group.label || formatDateLabel(group.settledAt))}<span class="jp-note">精算日</span></p>
+              <p class="settlement-meta">${escapeHtml(settlementDirectionText(group.direction))} / ${yen.format(amount)}<br>${groupEntries.length} entries / Total ${yen.format(total)}</p>
+              <button class="secondary" type="button" onclick="toggleSettlementGroup('${detailId}')">View Entries / 内訳を見る</button>
+            </div>
+            <div class="settlement-detail" id="${detailId}">
+              ${groupEntries.length === 0 ? '<div class="empty">No entries found.<br>該当する出費が見つかりません。</div>' : groupEntries.map(e => {
+                const splitA = Number.isFinite(Number(e.splitA)) ? Number(e.splitA) : 50;
+                const splitB = Number.isFinite(Number(e.splitB)) ? Number(e.splitB) : 100 - splitA;
+                return `
+                  <article class="expense-item">
+                    <div class="expense-top">
+                      <div>
+                        <div class="expense-date">${e.date}</div>
+                        <div class="expense-title">${escapeHtml(e.title)}</div>
+                        <div class="expense-meta">Paid by ${escapeHtml(e.paidBy === "personA" ? names.personA : names.personB)} / Split ${splitA}:${splitB}</div>
+                      </div>
+                      <div class="expense-amount">${yen.format(e.amount)}</div>
+                    </div>
+                  </article>
+                `;
+              }).join("")}
+            </div>
+          </article>
+        `;
+      }).join("") + "</div>";
+    }
+
+    window.toggleSettlementGroup = function(detailId) {
+      const detail = document.getElementById(detailId);
+      if (detail) detail.classList.toggle("show");
+    };
+
+    personANameInput.addEventListener("change", async () => {
+      names.personA = personANameInput.value.trim() || "Person A";
+      render();
+      await saveBookSettings();
+    });
+    personBNameInput.addEventListener("change", async () => {
+      names.personB = personBNameInput.value.trim() || "Person B";
+      render();
+      await saveBookSettings();
+    });
+    defaultSplitAInput.addEventListener("input", async () => {
+      const splitA = clampPercent(defaultSplitAInput.value);
+      settings.defaultSplitA = splitA;
+      settings.defaultSplitB = 100 - splitA;
+      defaultSplitBInput.value = settings.defaultSplitB;
+      validateDefaultSplit();
+      if (!isCustomSplitOpen && !editingId) setEntrySplit(settings.defaultSplitA, settings.defaultSplitB, false);
+      render();
+      saveBookSettings();
+    });
+    defaultSplitBInput.addEventListener("input", async () => {
+      const splitB = clampPercent(defaultSplitBInput.value);
+      settings.defaultSplitB = splitB;
+      settings.defaultSplitA = 100 - splitB;
+      defaultSplitAInput.value = settings.defaultSplitA;
+      validateDefaultSplit();
+      if (!isCustomSplitOpen && !editingId) setEntrySplit(settings.defaultSplitA, settings.defaultSplitB, false);
+      render();
+      saveBookSettings();
+    });
+    defaultSplitAInput.addEventListener("change", saveBookSettings);
+    defaultSplitBInput.addEventListener("change", saveBookSettings);
+
+    entrySplitAInput.addEventListener("input", () => {
+      entrySplitA = clampPercent(entrySplitAInput.value);
+      entrySplitB = 100 - entrySplitA;
+      entrySplitBInput.value = entrySplitB;
+      validateEntrySplit();
+      updateEntrySplitDisplay();
+    });
+    entrySplitBInput.addEventListener("input", () => {
+      entrySplitB = clampPercent(entrySplitBInput.value);
+      entrySplitA = 100 - entrySplitB;
+      entrySplitAInput.value = entrySplitA;
+      validateEntrySplit();
+      updateEntrySplitDisplay();
+    });
+    toggleSplitButton.addEventListener("click", () => setEntrySplit(entrySplitA, entrySplitB, !isCustomSplitOpen));
+    payerAButton.addEventListener("click", () => setSelectedPayer("personA"));
+    payerBButton.addEventListener("click", () => setSelectedPayer("personB"));
+    document.getElementById("cancelButton").addEventListener("click", resetForm);
+    document.getElementById("newButton").addEventListener("click", () => { resetForm(); showScreen("main"); });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const date = dateInput.value;
+      const title = titleInput.value.trim();
+      const amount = Math.round(Number(amountInput.value));
+      const paidBy = selectedPayer;
+      if (!date || !title || !Number.isFinite(amount) || amount <= 0) {
+        alert("日付、場所・用途、金額を確認してください。");
+        return;
+      }
+      if (!validateEntrySplit(true)) {
+        alert("分担割合の合計が100%になるようにしてください。");
+        return;
+      }
+
+      const payload = {
+        book_id: BOOK_ID,
+        date,
+        title,
+        amount,
+        paid_by: paidBy,
+        split_a: clampPercent(entrySplitAInput.value),
+        split_b: clampPercent(entrySplitBInput.value),
+        settled_at: null,
+        settlement_id: null
+      };
+
+      try {
+        if (editingId) {
+          const { error } = await db.from(TABLES.expenses).update(payload).eq("id", editingId).eq("book_id", BOOK_ID);
+          if (error) throw error;
+        } else {
+          const { error } = await db.from(TABLES.expenses).insert(payload);
+          if (error) throw error;
+        }
+        resetForm();
+        await loadAllSilently();
+      } catch (error) {
+        console.error(error);
+        alert("出費の保存に失敗しました。");
+      }
+    });
+
+    window.startEdit = function(id) {
+      const e = expenses.find(item => item.id === id);
+      if (!e) return;
+      editingId = id;
+      dateInput.value = e.date;
+      titleInput.value = e.title;
+      amountInput.value = e.amount;
+      setSelectedPayer(e.paidBy);
+      setEntrySplit(e.splitA, e.splitB, true);
+      document.getElementById("formTitle").innerHTML = 'Edit Entry<span class="jp-note">出費を編集</span>';
+      document.getElementById("submitButton").textContent = "Update Entry";
+      document.getElementById("cancelButton").style.display = "block";
+      showScreen("main");
+    };
+
+    window.deleteExpense = async function(id) {
+      if (!confirm("この出費を削除しますか？")) return;
+      try {
+        const { error } = await db.from(TABLES.expenses).delete().eq("id", id).eq("book_id", BOOK_ID);
+        if (error) throw error;
+        resetForm();
+        await loadAllSilently();
+      } catch (error) {
+        console.error(error);
+        alert("削除に失敗しました。");
+      }
+    };
+
+    settlementResetButton.addEventListener("click", async () => {
+      const s = calculateSettlement();
+      if (s.activeCount === 0 || s.direction === "SETTLED") {
+        alert("現在リセットする未精算分はありません。");
+        return;
+      }
+      const message = `現在の精算額 ${yen.format(s.amount)} を精算済みにします。\n\n履歴は残り、現在の精算額は0から再計算されます。\n実行しますか？`;
+      if (!confirm(message)) return;
+
+      const settledAt = new Date().toISOString();
+      const label = formatDateLabel(settledAt);
+      const activeIds = getActiveExpenses().map(e => e.id);
+
+      try {
+        const { data: settlement, error: settlementError } = await db.from(TABLES.settlements).insert({
+          book_id: BOOK_ID,
+          label,
+          settled_at: settledAt,
+          direction: s.direction,
+          amount: s.amount,
+          total: s.total,
+          count: s.activeCount
+        }).select("*").single();
+        if (settlementError) throw settlementError;
+
+        if (activeIds.length > 0) {
+          const { error: updateError } = await db.from(TABLES.expenses).update({
+            settled_at: settledAt,
+            settlement_id: settlement.id
+          }).in("id", activeIds).eq("book_id", BOOK_ID);
+          if (updateError) throw updateError;
+        }
+
+        resetForm();
+        await loadAllSilently();
+        showScreen("history");
+      } catch (error) {
+        console.error(error);
+        alert("精算リセットに失敗しました。");
+      }
+    });
+
+    dateInput.value = todayString();
+    loadAll();
+  </script>
 </body>
 </html>
