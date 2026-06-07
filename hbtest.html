@@ -422,7 +422,23 @@
       text-align: left;
     }
 
+    
     input[type="date"] { min-width: 0; }
+
+    .date-input {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      text-align: left !important;
+      appearance: none;
+      -webkit-appearance: none;
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 1.25;
+    }
+    .date-input::-webkit-date-and-time-value { text-align: left; }
+    .date-input::-webkit-input-placeholder { text-align: left; }
+
 
     textarea {
       min-height: 82px;
@@ -606,6 +622,13 @@
       padding: 8px 0;
     }
 
+    .name-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
     .settings-title { display: grid; gap: 6px; }
     .settings-label { color: var(--sub); opacity: .72; }
 
@@ -675,7 +698,7 @@
       -webkit-backdrop-filter: blur(18px) saturate(1.08);
       box-shadow: 0 14px 30px rgba(15,30,48,0.10);
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 5px;
       padding: 6px;
     }
@@ -762,7 +785,7 @@
       .section-head { grid-template-columns: minmax(0, 1fr); }
       .section-number { padding-top: 0; }
       .schedule-row {
-        grid-template-columns: minmax(49px, 57px) minmax(0, 1fr) auto;
+        grid-template-columns: minmax(54px, 62px) minmax(0, 1fr) auto;
         gap: 7px;
       }
       .schedule-monthday { font-size: 14px; }
@@ -781,7 +804,7 @@
     @media (max-width: 380px) {
       .bottom-nav { width: calc(100% - 16px); }
       .nav-button { font-size: 8px; letter-spacing: .025em; }
-      .schedule-row { grid-template-columns: 50px minmax(0, 1fr); }
+      .schedule-row { grid-template-columns: 54px minmax(0, 1fr); }
       .days-left { display: none; }
     }
   </style>
@@ -794,14 +817,14 @@
         <button class="top-action" type="button" id="settingsButton">Settings</button>
       </header>
 
-      <section class="app-view is-active" data-page="home" aria-label="Home page">
+      <section class="app-view is-active" data-page="schedule" aria-label="Schedule page">
         <section class="hero" aria-labelledby="pageTitle">
           <div>
             <p class="kicker">Shared home prototype</p>
             <h1 id="pageTitle">Home<br>Board</h1>
           </div>
           <p class="lead">
-            家庭内の予定、買い物、やりたいことを共有するためのボードです。直近の予定を確認し、下部の浮遊ナビから各ページへ移動できます。
+            家庭内の予定、買い物、やりたいことを共有するためのボードです。直近の予定を確認し、予定を確認・追加し、下部の浮遊ナビから各TODOページへ移動できます。
           </p>
         </section>
 
@@ -820,7 +843,7 @@
             <div class="form-grid">
               <div class="field">
                 <label class="label" for="scheduleDate">Date</label>
-                <input id="scheduleDate" name="date" type="date" required>
+                <input id="scheduleDate" class="date-input" name="date" type="text" inputmode="numeric" placeholder="2026/06/08" autocomplete="off" maxlength="10" required>
               </div>
               <div class="field">
                 <label class="label" for="scheduleTitle">Title</label>
@@ -844,26 +867,6 @@
               <button class="primary-button" type="submit" id="submitButton">Add Schedule</button>
             </div>
           </form>
-        </section>
-      </section>
-
-      <section class="app-view" data-page="schedule" aria-label="Schedule page">
-        <section class="hero" aria-labelledby="schedulePageTitle">
-          <div>
-            <p class="kicker">All schedule</p>
-            <h1 id="schedulePageTitle">Schedule<br>Room</h1>
-          </div>
-          <p class="lead">登録済みの今後の予定をすべて確認するページです。予定の追加・編集はHOMEの入力フォームから行えます。</p>
-        </section>
-        <section class="section" aria-labelledby="allScheduleHeading">
-          <div class="section-head">
-            <div>
-              <h2 id="allScheduleHeading">All Schedule<span class="jp-note">全予定</span></h2>
-              <p class="section-description">日付順に、今後の予定をすべて表示します。</p>
-            </div>
-            <div class="section-number">02</div>
-          </div>
-          <div class="schedule-list" id="allScheduleList" aria-live="polite"></div>
         </section>
       </section>
 
@@ -966,8 +969,7 @@
   </main>
 
   <nav class="bottom-nav" aria-label="Page navigation">
-    <button class="nav-button is-active" type="button" data-nav="home"><span>Home</span></button>
-    <button class="nav-button" type="button" data-nav="schedule"><span>Schedule</span></button>
+    <button class="nav-button is-active" type="button" data-nav="schedule"><span>Schedule</span></button>
     <button class="nav-button" type="button" data-nav="shopping"><span>Shopping</span></button>
     <button class="nav-button" type="button" data-nav="want"><span>Want</span></button>
   </nav>
@@ -999,13 +1001,12 @@
       showAll: false,
       editingId: null,
       activeId: null,
-      currentPage: 'home',
+      currentPage: 'schedule',
       toastTimer: null
     };
 
     const els = {
       list: document.getElementById('scheduleList'),
-      allList: document.getElementById('allScheduleList'),
       views: Array.from(document.querySelectorAll('.app-view')),
       navButtons: Array.from(document.querySelectorAll('.nav-button')),
       form: document.getElementById('scheduleForm'),
@@ -1035,6 +1036,23 @@
       const m = String(date.getMonth() + 1).padStart(2, '0');
       const d = String(date.getDate()).padStart(2, '0');
       return `${y}-${m}-${d}`;
+    }
+
+
+    function displayDateInput(dateString) {
+      return String(dateString || '').replaceAll('-', '/');
+    }
+
+    function normalizeDateInput(value) {
+      const raw = String(value || '').trim().replace(/[.]/g, '/').replace(/-/g, '/');
+      const match = raw.match(/^(\d{4})[\/](\d{1,2})[\/](\d{1,2})$/);
+      if (!match) return '';
+      const y = Number(match[1]);
+      const m = Number(match[2]);
+      const d = Number(match[3]);
+      const date = new Date(y, m - 1, d);
+      if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return '';
+      return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
     }
 
     function dateOnly(dateString) {
@@ -1212,9 +1230,13 @@
         row.className = 'name-row';
         row.innerHTML = `
           <div class="name-chip" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
-          <button class="small-action" type="button">Delete</button>
+          <div class="name-actions">
+            <button class="small-action" type="button" data-action="edit">Edit</button>
+            <button class="small-action" type="button" data-action="delete">Delete</button>
+          </div>
         `;
-        row.querySelector('button').addEventListener('click', () => deleteName(name));
+        row.querySelector('[data-action="edit"]').addEventListener('click', () => editName(name));
+        row.querySelector('[data-action="delete"]').addEventListener('click', () => deleteName(name));
         els.nameList.appendChild(row);
       });
     }
@@ -1290,13 +1312,12 @@
       renderNameList();
       renderPages();
       renderScheduleRows(els.list, visibleSchedules(), { showMore: true });
-      if (els.allList) renderScheduleRows(els.allList, sortedUpcoming(), { showMore: false });
     }
 
     function resetForm() {
       state.editingId = null;
       els.form.reset();
-      els.date.value = localDateString();
+      els.date.value = displayDateInput(localDateString());
       setOwnersValue(['EVERYONE']);
       els.submit.textContent = 'Add Schedule';
       els.formMode.textContent = '新しい予定を追加します。';
@@ -1304,7 +1325,7 @@
 
     function submitForm(event) {
       event.preventDefault();
-      const date = els.date.value;
+      const date = normalizeDateInput(els.date.value);
       const title = els.title.value.trim();
       const memo = els.memo.value.trim();
       const owners = getOwnersValue();
@@ -1349,9 +1370,9 @@
       const item = state.schedules.find(entry => entry.id === state.activeId);
       if (!item) return;
       state.editingId = item.id;
-      state.currentPage = 'home';
+      state.currentPage = 'schedule';
       renderPages();
-      els.date.value = item.date;
+      els.date.value = displayDateInput(item.date);
       els.title.value = item.title;
       setOwnersValue(normalizeOwners(item));
       els.memo.value = item.memo || '';
@@ -1394,6 +1415,30 @@
       showToast('Name added');
     }
 
+    function editName(name) {
+      const next = window.prompt('名前を編集します。', name);
+      if (next === null) return;
+      const trimmed = next.trim();
+      if (!trimmed) return;
+      if (trimmed.toUpperCase() === 'EVERYONE') {
+        showToast('Everyone is fixed');
+        return;
+      }
+      if (state.names.some(existing => existing !== name && existing.toLowerCase() === trimmed.toLowerCase())) {
+        showToast('Name already exists');
+        return;
+      }
+      state.names = state.names.map(item => item === name ? trimmed : item);
+      state.schedules = state.schedules.map(item => {
+        const owners = normalizeOwners(item).map(owner => owner === name ? trimmed : owner);
+        return { ...item, owners: Array.from(new Set(owners)) };
+      });
+      state.selectedOwners = state.selectedOwners.map(owner => owner === name ? trimmed : owner);
+      save();
+      render();
+      showToast('Name updated');
+    }
+
     function deleteName(name) {
       const used = state.schedules.some(item => normalizeOwners(item).includes(name));
       const message = used
@@ -1414,7 +1459,7 @@
     }
 
     function switchPage(page) {
-      if (!['home', 'schedule', 'shopping', 'want', 'settings'].includes(page)) return;
+      if (!['schedule', 'shopping', 'want', 'settings'].includes(page)) return;
       state.currentPage = page;
       renderPages();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1446,6 +1491,11 @@
       els.toast.classList.add('is-show');
       state.toastTimer = window.setTimeout(() => els.toast.classList.remove('is-show'), 1700);
     }
+
+    els.date.addEventListener('blur', () => {
+      const normalized = normalizeDateInput(els.date.value);
+      if (normalized) els.date.value = displayDateInput(normalized);
+    });
 
     els.form.addEventListener('submit', submitForm);
     els.close.addEventListener('click', closeDetail);
