@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Home Board - Identity Multi Page Prototype v4</title>
+  <title>Home Board - Identity Multi Page Prototype v6</title>
   <style>
     :root {
       --bg: #fafbfc;
@@ -244,12 +244,12 @@
       background: transparent;
       color: var(--ink);
       width: 100%;
-      min-height: 46px;
+      min-height: 54px;
       display: grid;
-      grid-template-columns: minmax(52px, 62px) minmax(0, 1fr) auto;
+      grid-template-columns: minmax(46px, 58px) minmax(0, 1fr);
       align-items: start;
-      gap: 9px;
-      padding: 9px 0;
+      gap: 10px;
+      padding: 10px 0;
       text-align: left;
       transition: background var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
     }
@@ -260,30 +260,30 @@
     }
 
     .date-chip {
-      display: inline-flex;
-      align-items: baseline;
-      justify-content: flex-start;
+      display: grid;
       gap: 4px;
+      justify-items: start;
+      align-content: start;
       color: var(--sub);
       opacity: .95;
       line-height: 1;
-      white-space: nowrap;
       min-width: 0;
       max-width: 100%;
       overflow: hidden;
+      padding-top: 1px;
     }
 
     .schedule-monthday {
       color: var(--ink);
       font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 500;
       letter-spacing: -0.04em;
       white-space: nowrap;
     }
 
     .schedule-weekday {
-      font-size: 8px;
+      font-size: 9px;
       color: var(--sub);
       opacity: .68;
       white-space: nowrap;
@@ -291,17 +291,31 @@
 
     .schedule-main {
       min-width: 0;
+      display: grid;
+      gap: 7px;
+      line-height: 1.25;
+    }
+
+    .schedule-meta-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .owner-line {
+      min-width: 0;
       display: flex;
       align-items: center;
       gap: 6px;
       flex-wrap: wrap;
-      line-height: 1.25;
     }
 
     .schedule-title {
       min-width: 0;
       max-width: 100%;
-      flex: 1 1 100%;
+      display: block;
       overflow: visible;
       white-space: normal;
       overflow-wrap: anywhere;
@@ -353,12 +367,28 @@
     }
 
     .days-left {
-      color: var(--sub);
-      opacity: .66;
+      justify-self: end;
+      align-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 20px;
+      color: rgba(96, 112, 132, .72);
+      background: transparent;
+      border: 0;
+      padding: 4px 0;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: .06em;
+      line-height: 1;
       white-space: nowrap;
-      padding-top: 3px;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    .days-left.is-today {
+      color: var(--danger);
+      opacity: .92;
     }
 
     .more-wrap {
@@ -394,6 +424,37 @@
       border-radius: 24px;
       background: var(--bg);
     }
+
+    .past-panel {
+      display: grid;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .past-filter {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--bg);
+    }
+
+    .past-filter-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .past-list-title {
+      color: var(--sub);
+      opacity: .72;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
 
     .form-grid {
       display: grid;
@@ -766,7 +827,12 @@
       padding: 4px 2px 0;
       color: var(--sub);
       opacity: .58;
-      font-weight: 800;
+      font-weight: 400;
+    }
+
+    .brand,
+    .top-action {
+      font-weight: 400;
     }
 
     .toast {
@@ -799,6 +865,8 @@
       .container { padding-top: 28px; }
       .hero { grid-template-columns: 1.1fr .9fr; min-height: 245px; align-items: end; }
       .form-grid { grid-template-columns: 150px minmax(0, 1fr); }
+      .past-filter-grid { grid-template-columns: 1fr 1fr; }
+      .past-filter-grid .wide { grid-column: 1 / -1; }
       .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
@@ -809,17 +877,18 @@
       .section-head { grid-template-columns: minmax(0, 1fr); }
       .section-number { padding-top: 0; }
       .schedule-row {
-        grid-template-columns: minmax(54px, 62px) minmax(0, 1fr) auto;
-        gap: 7px;
+        grid-template-columns: minmax(44px, 52px) minmax(0, 1fr);
+        gap: 8px;
       }
-      .schedule-monthday { font-size: 14px; }
-      .schedule-weekday { font-size: 7.5px; }
+      .schedule-monthday { font-size: 15px; }
+      .schedule-weekday { font-size: 8px; }
       .schedule-title { font-size: 16px; }
       .owner-pill { max-width: 126px; }
-      .days-left { font-size: 9px; max-width: 46px; overflow: hidden; text-overflow: ellipsis; }
+      .days-left { font-size: 9px; }
       .form-actions,
       .data-actions,
       .settings-add { grid-template-columns: 1fr; }
+      .past-filter-grid { grid-template-columns: 1fr; }
       .form-actions .primary-button,
       .data-actions .primary-button,
       .settings-add .secondary-button { width: 100%; }
@@ -828,8 +897,8 @@
     @media (max-width: 380px) {
       .bottom-nav { width: calc(100% - 16px); }
       .nav-button { font-size: 8px; letter-spacing: .025em; }
-      .schedule-row { grid-template-columns: 54px minmax(0, 1fr); }
-      .days-left { display: none; }
+      .schedule-row { grid-template-columns: 44px minmax(0, 1fr); }
+      .days-left { font-size: 8px; }
     }
   </style>
 </head>
@@ -891,6 +960,40 @@
               <button class="primary-button" type="submit" id="submitButton">Add Schedule</button>
             </div>
           </form>
+
+          <div class="past-panel" aria-labelledby="pastScheduleHeading">
+            <div class="section-head">
+              <div>
+                <h2 id="pastScheduleHeading">Past Schedule<span class="jp-note">過去</span></h2>
+                <p class="section-description">過去の予定を期間とキーワードで確認できます。初期表示は昨月の予定です。</p>
+              </div>
+              <div class="section-number">LOG</div>
+            </div>
+
+            <div class="past-filter">
+              <div class="past-filter-grid">
+                <div class="field">
+                  <label class="label" for="pastStart">From</label>
+                  <input id="pastStart" class="date-input" type="date" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="label" for="pastEnd">To</label>
+                  <input id="pastEnd" class="date-input" type="date" autocomplete="off">
+                </div>
+                <div class="field wide">
+                  <label class="label" for="pastSearch">Search</label>
+                  <input id="pastSearch" type="search" placeholder="タイトル・メモ・名前で検索">
+                </div>
+              </div>
+              <div class="form-actions">
+                <p class="form-note">昨月の内容を初期表示します。</p>
+                <button class="secondary-button" type="button" id="pastResetButton">Last Month</button>
+              </div>
+            </div>
+
+            <div class="past-list-title">Past Records</div>
+            <div class="schedule-list" id="pastScheduleList" aria-live="polite"></div>
+          </div>
         </section>
       </section>
 
@@ -1031,6 +1134,11 @@
 
     const els = {
       list: document.getElementById('scheduleList'),
+      pastList: document.getElementById('pastScheduleList'),
+      pastStart: document.getElementById('pastStart'),
+      pastEnd: document.getElementById('pastEnd'),
+      pastSearch: document.getElementById('pastSearch'),
+      pastReset: document.getElementById('pastResetButton'),
       views: Array.from(document.querySelectorAll('.app-view')),
       navButtons: Array.from(document.querySelectorAll('.nav-button')),
       form: document.getElementById('scheduleForm'),
@@ -1090,6 +1198,20 @@
       const next = new Date(date);
       next.setDate(next.getDate() + days);
       return next;
+    }
+
+    function previousMonthRange() {
+      const today = dateOnly(localDateString());
+      const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      const end = new Date(today.getFullYear(), today.getMonth(), 0);
+      return { start: localDateString(start), end: localDateString(end) };
+    }
+
+    function setPastDefaultRange() {
+      const range = previousMonthRange();
+      els.pastStart.value = range.start;
+      els.pastEnd.value = range.end;
+      els.pastSearch.value = '';
     }
 
     function formatCompactDate(dateString) {
@@ -1156,6 +1278,8 @@
           const today = dateOnly(localDateString());
           state.names = ['Mamoru', 'Partner'];
           state.schedules = [
+            { id: uid(), date: localDateString(addDays(today, -32)), title: '先月の通院記録', owners: ['Partner'], memo: '過去予定の初期表示確認用。' },
+            { id: uid(), date: localDateString(addDays(today, -18)), title: '先月の買い出し', owners: ['EVERYONE'], memo: 'Last Month範囲の表示テスト。' },
             { id: uid(), date: localDateString(today), title: '燃えるごみ', owners: ['EVERYONE'], memo: '朝のうちに出す。' },
             { id: uid(), date: localDateString(addDays(today, 3)), title: '買い出しと日用品の補充をする予定', owners: ['EVERYONE'], memo: '日用品とミルクを確認。' },
             { id: uid(), date: localDateString(addDays(today, 12)), title: '通院', owners: ['Partner'], memo: '' },
@@ -1194,6 +1318,24 @@
       const upcoming = sortedUpcoming();
       if (state.showAll) return upcoming;
       return upcoming.filter(item => item.date <= limit);
+    }
+
+    function filteredPastSchedules() {
+      const today = localDateString();
+      const start = normalizeDateInput(els.pastStart.value);
+      const end = normalizeDateInput(els.pastEnd.value);
+      const keyword = String(els.pastSearch.value || '').trim().toLowerCase();
+      return state.schedules
+        .filter(item => item.date < today)
+        .filter(item => !start || item.date >= start)
+        .filter(item => !end || item.date <= end)
+        .filter(item => {
+          if (!keyword) return true;
+          const owners = normalizeOwners(item).join(' ');
+          const haystack = `${item.title || ''} ${item.memo || ''} ${owners}`.toLowerCase();
+          return haystack.includes(keyword);
+        })
+        .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title, 'ja'));
     }
 
     function ownerOptions() {
@@ -1274,13 +1416,13 @@
     }
 
     function renderScheduleRows(container, items, options = {}) {
-      const { showMore = false } = options;
+      const { showMore = false, emptyText = 'No upcoming schedule' } = options;
       container.innerHTML = '';
 
       if (!items.length) {
         const empty = document.createElement('div');
         empty.className = 'empty';
-        empty.textContent = 'No upcoming schedule';
+        empty.textContent = emptyText;
         container.appendChild(empty);
       } else {
         items.forEach(item => {
@@ -1296,10 +1438,14 @@
             </span>
             <span class="schedule-main">
               <span class="schedule-title">${escapeHtml(item.title)}</span>
-              ${ownerPillsHtml(owners)}
-              ${item.memo && item.memo.trim() ? '<span class="memo-mark" title="Memoあり">✎</span>' : ''}
+              <span class="schedule-meta-line">
+                <span class="owner-line">
+                  ${ownerPillsHtml(owners)}
+                  ${item.memo && item.memo.trim() ? '<span class="memo-mark" title="Memoあり">✎</span>' : ''}
+                </span>
+                <span class="days-left ${daysLabel(item.date) === 'Today' ? 'is-today' : ''}">${escapeHtml(daysLabel(item.date))}</span>
+              </span>
             </span>
-            <span class="days-left">${escapeHtml(daysLabel(item.date))}</span>
           `;
           row.addEventListener('click', () => openDetail(item.id));
           container.appendChild(row);
@@ -1338,6 +1484,7 @@
       renderNameList();
       renderPages();
       renderScheduleRows(els.list, visibleSchedules(), { showMore: true });
+      renderScheduleRows(els.pastList, filteredPastSchedules(), { emptyText: 'No past schedule in this range' });
     }
 
     function resetForm() {
@@ -1531,11 +1678,16 @@
     els.settingsButton.addEventListener('click', () => switchPage('settings'));
     els.nameForm.addEventListener('submit', addName);
     els.exportButton.addEventListener('click', exportJson);
+    els.pastStart.addEventListener('change', render);
+    els.pastEnd.addEventListener('change', render);
+    els.pastSearch.addEventListener('input', render);
+    els.pastReset.addEventListener('click', () => { setPastDefaultRange(); render(); });
     els.navButtons.forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.nav)));
     window.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeDetail();
     });
 
+    setPastDefaultRange();
     load();
     resetForm();
     render();
