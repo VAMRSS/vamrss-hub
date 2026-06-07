@@ -915,7 +915,7 @@
           </div>
         </section>
 
-        <section class="section">
+        <section class="section" id="entrySection">
           <div class="section-head">
             <div class="section-number">Entry</div>
             <h2 id="formTitle">New Entry<span class="jp-note">出費を追加</span></h2>
@@ -1598,6 +1598,16 @@
       document.getElementById("submitButton").textContent = "Update Entry";
       document.getElementById("cancelButton").style.display = "block";
       showScreen("main");
+
+      requestAnimationFrame(() => {
+        const entrySection = document.getElementById("entrySection");
+        if (entrySection) {
+          entrySection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      });
     };
 
     window.deleteExpense = async function(id) {
