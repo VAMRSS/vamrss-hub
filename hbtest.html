@@ -3,15 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Home Board - Schedule Prototype v3</title>
+  <title>Home Board - Identity Multi Page Prototype v2</title>
   <style>
     :root {
       --bg: #fafbfc;
       --surface: #ffffff;
-      --surface-soft: #f4f7f9;
-      --surface-tint: #eef4f6;
       --line: #dfe7ef;
-      --line-soft: rgba(223, 231, 239, .72);
       --deep: #071c16;
       --danger: #9b3144;
       --ink: #101722;
@@ -19,6 +16,7 @@
       --radius: 28px;
       --radius-small: 18px;
       --shadow: 0 18px 50px rgba(15, 30, 48, 0.055);
+      --nav-height: 72px;
       --motion-fast: 120ms;
       --motion-base: 180ms;
       --motion-ease: cubic-bezier(.2, .8, .2, 1);
@@ -55,7 +53,8 @@
     input:focus-visible,
     textarea:focus-visible,
     .schedule-row:focus-visible,
-    .owner-button:focus-visible {
+    .owner-button:focus-visible,
+    .nav-button:focus-visible {
       outline: 2px solid rgba(7, 28, 22, 0.42);
       outline-offset: 3px;
     }
@@ -63,14 +62,14 @@
     .container {
       width: min(760px, calc(100% - 24px));
       margin: 0 auto;
-      padding: max(18px, env(safe-area-inset-top)) 0 max(34px, env(safe-area-inset-bottom));
+      padding: max(18px, env(safe-area-inset-top)) 0 calc(var(--nav-height) + max(24px, env(safe-area-inset-bottom)));
     }
 
     .page { display: grid; gap: 16px; }
 
     .topbar {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
       gap: 8px;
       height: 44px;
@@ -89,7 +88,10 @@
     .owner-pill,
     .owner-button,
     .settings-label,
-    .name-chip {
+    .name-chip,
+    .data-role,
+    .nav-button,
+    .site-footer {
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.09em;
@@ -107,6 +109,7 @@
       align-items: center;
       color: var(--sub);
       opacity: .78;
+      line-height: 1;
     }
 
     .top-action {
@@ -119,14 +122,15 @@
       border: none;
       border-radius: 999px;
       background: rgba(255,255,255,0.36);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: 0 14px 30px rgba(15,30,48,0.08);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
       color: var(--ink);
     }
 
     .hero,
-    .section {
+    .section,
+    .page-card {
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: var(--surface);
@@ -158,6 +162,7 @@
 
     h1,
     h2,
+    h3,
     p { margin: 0; }
 
     h1 {
@@ -192,11 +197,13 @@
 
     .solid-rule { height: 1px; background: var(--line); }
 
-    .section {
+    .section,
+    .page-card {
       display: grid;
       gap: 16px;
       padding: 18px;
       overflow: hidden;
+      box-shadow: 0 8px 22px rgba(15,30,48,0.03);
     }
 
     .section-head {
@@ -213,7 +220,12 @@
       padding-top: 4px;
     }
 
-    .section-description {
+    .section-description,
+    .data-text,
+    .settings-title p,
+    .owner-helper,
+    .placeholder-row,
+    .detail-memo {
       color: var(--sub);
       font-size: 12px;
       line-height: 1.7;
@@ -232,12 +244,12 @@
       background: transparent;
       color: var(--ink);
       width: 100%;
-      min-height: 43px;
+      min-height: 46px;
       display: grid;
-      grid-template-columns: 82px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 2px;
+      grid-template-columns: minmax(52px, 62px) minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 9px;
+      padding: 9px 0;
       text-align: left;
       transition: background var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
     }
@@ -248,29 +260,33 @@
     }
 
     .date-chip {
-      width: 78px;
       display: inline-flex;
       align-items: baseline;
       justify-content: flex-start;
-      gap: 5px;
+      gap: 4px;
       color: var(--sub);
       opacity: .95;
       line-height: 1;
       white-space: nowrap;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .schedule-monthday {
       color: var(--ink);
       font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 500;
       letter-spacing: -0.04em;
+      white-space: nowrap;
     }
 
     .schedule-weekday {
-      font-size: 9px;
+      font-size: 8px;
       color: var(--sub);
       opacity: .68;
+      white-space: nowrap;
     }
 
     .schedule-main {
@@ -278,15 +294,20 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
+      line-height: 1.25;
     }
 
     .schedule-title {
       min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      max-width: 100%;
+      flex: 1 1 100%;
+      overflow: visible;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: normal;
       font-size: 17px;
-      line-height: 1.2;
+      line-height: 1.24;
       letter-spacing: -0.04em;
     }
 
@@ -305,37 +326,39 @@
     }
 
     .owner-pill {
-      flex: 0 0 auto;
-      max-width: 92px;
+      flex: 0 1 auto;
+      max-width: min(152px, 100%);
       min-width: 0;
-      height: 20px;
+      min-height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0 8px;
-      border: 1px solid rgba(223, 231, 239, .95);
+      padding: 4px 8px;
+      border: 1px solid rgba(96, 112, 132, 0.18);
       border-radius: 999px;
-      color: rgba(96, 112, 132, .92);
-      background: rgba(238, 244, 246, .8);
+      color: rgba(96, 112, 132, .82);
+      background: transparent;
       line-height: 1;
       letter-spacing: .07em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      opacity: .76;
     }
 
     .owner-pill.is-everyone {
-      color: rgba(7, 28, 22, .78);
-      border-color: rgba(7, 28, 22, .12);
-      background: rgba(7, 28, 22, .055);
+      color: rgba(7, 28, 22, .72);
+      border-color: rgba(7, 28, 22, .14);
+      background: rgba(7, 28, 22, .035);
     }
 
     .days-left {
       color: var(--sub);
-      opacity: .75;
-      font-size: 11px;
+      opacity: .66;
+      font-size: 10px;
       font-weight: 700;
       white-space: nowrap;
+      padding-top: 3px;
     }
 
     .more-wrap {
@@ -369,32 +392,37 @@
       padding: 16px;
       border: 1px solid var(--line);
       border-radius: 24px;
-      background: var(--surface-soft);
+      background: var(--bg);
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: 150px minmax(0, 1fr);
+      grid-template-columns: 1fr;
       gap: 10px;
     }
 
     .field { display: grid; gap: 7px; min-width: 0; }
-
     .label { color: var(--sub); opacity: .72; }
 
     input,
     textarea {
       width: 100%;
       min-width: 0;
+      max-width: 100%;
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: var(--radius-small);
       background: var(--surface);
       color: var(--ink);
-      padding: 12px 13px;
+      min-height: 48px;
+      padding: 13px 14px;
       font-size: 16px;
       line-height: 1.25;
       box-shadow: none;
+      outline: none;
+      text-align: left;
     }
+
+    input[type="date"] { min-width: 0; }
 
     textarea {
       min-height: 82px;
@@ -411,7 +439,7 @@
       flex-wrap: wrap;
       align-items: center;
       min-width: 0;
-      max-height: 124px;
+      max-height: 132px;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       padding: 2px 2px 4px;
@@ -420,9 +448,9 @@
 
     .owner-button {
       flex: 0 0 auto;
-      max-width: 144px;
+      max-width: 148px;
       min-height: 38px;
-      border: 1px solid rgba(223, 231, 239, .95);
+      border: 1px solid var(--line);
       border-radius: 999px;
       background: var(--surface);
       color: var(--sub);
@@ -434,19 +462,15 @@
     }
 
     .owner-button.is-active {
-      background: rgba(7, 28, 22, .075);
-      border-color: rgba(7, 28, 22, .20);
-      color: var(--deep);
+      background: var(--deep);
+      border-color: var(--deep);
+      color: var(--surface);
     }
 
-    .owner-helper {
-      color: var(--sub);
-      opacity: .62;
-      font-size: 11px;
-      line-height: 1.55;
-    }
+    .owner-helper { opacity: .62; }
 
-    .form-actions {
+    .form-actions,
+    .data-actions {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
@@ -466,36 +490,42 @@
     .secondary-button,
     .danger-button,
     .small-action {
-      min-height: 44px;
+      min-height: 48px;
       border-radius: 999px;
       padding: 0 16px;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.09em;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
     }
 
+    .small-action { min-height: 36px; font-size: 10px; padding: 0 12px; }
+
     .primary-button {
-      border: 1px solid var(--deep);
       background: var(--deep);
-      color: #fff;
+      color: var(--surface);
+      border-color: var(--deep);
     }
 
     .secondary-button,
     .small-action {
-      border: 1px solid var(--line);
       background: var(--surface);
       color: var(--ink);
+      border-color: var(--line);
     }
 
     .danger-button {
-      border: 1px solid rgba(155, 49, 68, .2);
-      background: rgba(155, 49, 68, .08);
+      background: rgba(155,49,68,0.07);
       color: var(--danger);
+      border-color: rgba(155,49,68,0.16);
     }
 
-    .detail-panel,
-    .settings-panel {
+    .detail-panel {
       position: fixed;
       inset: 0;
       z-index: 30;
@@ -507,11 +537,9 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
-    .detail-panel.is-open,
-    .settings-panel.is-open { display: grid; }
+    .detail-panel.is-open { display: grid; }
 
-    .detail-card,
-    .settings-card {
+    .detail-card {
       width: min(760px, 100%);
       max-height: min(82vh, 720px);
       overflow: auto;
@@ -531,45 +559,54 @@
       font-weight: 800;
       letter-spacing: .08em;
       text-transform: uppercase;
+      line-height: 1.55;
     }
 
     .detail-title {
       font-size: 28px;
       line-height: 1.05;
       letter-spacing: -0.05em;
+      overflow-wrap: anywhere;
     }
 
     .detail-memo {
       min-height: 68px;
       border: 1px solid var(--line);
       border-radius: 18px;
-      background: var(--surface-soft);
+      background: var(--bg);
       color: var(--ink);
       padding: 14px;
-      font-size: 14px;
-      line-height: 1.8;
       white-space: pre-wrap;
     }
 
-    .detail-actions,
-    .settings-actions {
+    .detail-actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
 
-    .settings-title {
+    .app-view { display: none; gap: 18px; }
+    .app-view.is-active { display: grid; }
+
+    .placeholder-list,
+    .name-list {
       display: grid;
-      gap: 6px;
+      border-top: 1px solid var(--line);
     }
 
-    .settings-title p {
-      color: var(--sub);
-      font-size: 12px;
-      line-height: 1.7;
+    .placeholder-row,
+    .name-row {
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding: 8px 0;
     }
 
+    .settings-title { display: grid; gap: 6px; }
     .settings-label { color: var(--sub); opacity: .72; }
 
     .settings-add {
@@ -577,21 +614,6 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 8px;
       align-items: end;
-    }
-
-    .name-list {
-      display: grid;
-      border-top: 1px solid var(--line);
-    }
-
-    .name-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 8px;
-      align-items: center;
-      min-height: 44px;
-      border-bottom: 1px solid var(--line);
-      padding: 8px 0;
     }
 
     .name-chip {
@@ -602,10 +624,108 @@
       text-overflow: ellipsis;
     }
 
+    .data-grid { display: grid; gap: 12px; }
+
+    .data-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .data-card.caution {
+      background: transparent;
+      border-style: dashed;
+    }
+
+    .data-role { color: var(--sub); opacity: .72; }
+
+    .data-title {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .data-meta {
+      margin-top: 2px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      color: var(--sub);
+      font-size: 11px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 25;
+      width: min(430px, calc(100% - 24px));
+      height: 58px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 5px;
+      padding: 6px;
+    }
+
+    .nav-button {
+      min-width: 0;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: rgba(16,23,34,0.58);
+      min-height: 46px;
+      padding: 0 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+    }
+
+    .nav-button span {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nav-button.is-active {
+      background: rgba(235,240,244,0.88);
+      color: var(--ink);
+    }
+
+    .site-footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 4px 2px 0;
+      color: var(--sub);
+      opacity: .58;
+      font-weight: 800;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
-      bottom: calc(18px + env(safe-area-inset-bottom));
+      bottom: calc(84px + env(safe-area-inset-bottom));
       transform: translateX(-50%) translateY(20px);
       z-index: 40;
       min-width: 180px;
@@ -628,26 +748,41 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    @media (min-width: 640px) {
+      .container { padding-top: 28px; }
+      .hero { grid-template-columns: 1.1fr .9fr; min-height: 245px; align-items: end; }
+      .form-grid { grid-template-columns: 150px minmax(0, 1fr); }
+      .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 560px) {
       .container { width: min(100% - 20px, 760px); }
-      .topbar { grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px; }
-      .top-action { padding: 0 10px; }
       .hero { padding: 22px 18px; }
-      .section { padding: 16px 12px; }
-      .form-grid { grid-template-columns: 1fr; }
+      .section, .page-card { padding: 16px 12px; }
+      .section-head { grid-template-columns: minmax(0, 1fr); }
+      .section-number { padding-top: 0; }
       .schedule-row {
-        grid-template-columns: 76px minmax(0, 1fr) auto;
-        gap: 8px;
-        padding: 8px 0;
+        grid-template-columns: minmax(49px, 57px) minmax(0, 1fr) auto;
+        gap: 7px;
       }
-      .date-chip { width: 72px; gap: 4px; }
+      .schedule-monthday { font-size: 14px; }
+      .schedule-weekday { font-size: 7.5px; }
       .schedule-title { font-size: 16px; }
-      .owner-pill { max-width: 78px; }
-      .days-left { font-size: 10px; }
-      .form-actions { grid-template-columns: 1fr; }
-      .form-actions .primary-button { width: 100%; }
+      .owner-pill { max-width: 126px; }
+      .days-left { font-size: 9px; max-width: 46px; overflow: hidden; text-overflow: ellipsis; }
+      .form-actions,
+      .data-actions,
       .settings-add { grid-template-columns: 1fr; }
+      .form-actions .primary-button,
+      .data-actions .primary-button,
       .settings-add .secondary-button { width: 100%; }
+    }
+
+    @media (max-width: 380px) {
+      .bottom-nav { width: calc(100% - 16px); }
+      .nav-button { font-size: 8px; letter-spacing: .025em; }
+      .schedule-row { grid-template-columns: 50px minmax(0, 1fr); }
+      .days-left { display: none; }
     }
   </style>
 </head>
@@ -657,62 +792,185 @@
       <header class="topbar" aria-label="Topbar">
         <div class="brand">＊(VAMRSS) HOME BOARD</div>
         <button class="top-action" type="button" id="settingsButton">Settings</button>
-        <button class="top-action" type="button" id="exportButton">Export</button>
       </header>
 
-      <section class="hero" aria-labelledby="pageTitle">
-        <div>
-          <p class="kicker">Shared Schedule Prototype</p>
-          <h1 id="pageTitle">Home<br>Board</h1>
-        </div>
-        <div class="solid-rule"></div>
-        <p class="lead">
-          家庭内の予定を静かに共有するためのスケジュールボードです。今後1ヶ月の予定をコンパクトに確認し、必要に応じてMoreから先の予定まで展開できます。
-        </p>
-      </section>
-
-      <section class="section" aria-labelledby="scheduleHeading">
-        <div class="section-head">
+      <section class="app-view is-active" data-page="home" aria-label="Home page">
+        <section class="hero" aria-labelledby="pageTitle">
           <div>
-            <h2 id="scheduleHeading">Schedule<span class="jp-note">予定</span></h2>
-            <p class="section-description">今後1ヶ月の予定を横罫線のみでコンパクトに一覧表示します。予定の対象者はEveryoneまたは設定した名前から選択できます。</p>
+            <p class="kicker">Shared home prototype</p>
+            <h1 id="pageTitle">Home<br>Board</h1>
           </div>
-          <div class="section-number">01</div>
-        </div>
+          <p class="lead">
+            家庭内の予定、買い物、やりたいことを共有するためのボードです。直近の予定を確認し、下部の浮遊ナビから各ページへ移動できます。
+          </p>
+        </section>
 
-        <div class="schedule-list" id="scheduleList" aria-live="polite"></div>
-
-        <form class="form-card" id="scheduleForm" autocomplete="off">
-          <div class="form-grid">
-            <div class="field">
-              <label class="label" for="scheduleDate">Date</label>
-              <input id="scheduleDate" name="date" type="date" required>
+        <section class="section" aria-labelledby="homeScheduleHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="homeScheduleHeading">Schedule<span class="jp-note">予定</span></h2>
+              <p class="section-description">今後1ヶ月の予定を横罫線のみでコンパクトに表示します。Moreから今後の予定をすべて展開できます。</p>
             </div>
-            <div class="field">
-              <label class="label" for="scheduleTitle">Title</label>
-              <input id="scheduleTitle" name="title" type="text" inputmode="text" placeholder="予定名" required>
+            <div class="section-number">01</div>
+          </div>
+
+          <div class="schedule-list" id="scheduleList" aria-live="polite"></div>
+
+          <form class="form-card" id="scheduleForm" autocomplete="off">
+            <div class="form-grid">
+              <div class="field">
+                <label class="label" for="scheduleDate">Date</label>
+                <input id="scheduleDate" name="date" type="date" required>
+              </div>
+              <div class="field">
+                <label class="label" for="scheduleTitle">Title</label>
+                <input id="scheduleTitle" name="title" type="text" inputmode="text" placeholder="予定名" required>
+              </div>
             </div>
-          </div>
 
-          <div class="field">
-            <div class="label">For</div>
-            <div class="owner-button-area" id="ownerButtons" aria-label="予定の対象者"></div>
-            <p class="owner-helper">名前はSettingsから追加できます。人数が増えてもボタンは折り返し、必要に応じてこの欄だけスクロールします。</p>
-          </div>
+            <div class="field">
+              <div class="label">For</div>
+              <div class="owner-button-area" id="ownerButtons" aria-label="予定の対象者"></div>
+              <p class="owner-helper">複数選択できます。EVERYONEを選ぶと個別名の選択は解除されます。名前はSettingsから追加できます。</p>
+            </div>
 
-          <div class="field">
-            <label class="label" for="scheduleMemo">Memo</label>
-            <textarea id="scheduleMemo" name="memo" placeholder="メモは一覧には常時表示されません。予定をタップすると確認できます。"></textarea>
-          </div>
+            <div class="field">
+              <label class="label" for="scheduleMemo">Memo</label>
+              <textarea id="scheduleMemo" name="memo" placeholder="メモは一覧には常時表示されません。予定をタップすると確認できます。"></textarea>
+            </div>
 
-          <div class="form-actions">
-            <p class="form-note" id="formModeText">新しい予定を追加します。</p>
-            <button class="primary-button" type="submit" id="submitButton">Add Schedule</button>
-          </div>
-        </form>
+            <div class="form-actions">
+              <p class="form-note" id="formModeText">新しい予定を追加します。</p>
+              <button class="primary-button" type="submit" id="submitButton">Add Schedule</button>
+            </div>
+          </form>
+        </section>
       </section>
+
+      <section class="app-view" data-page="schedule" aria-label="Schedule page">
+        <section class="hero" aria-labelledby="schedulePageTitle">
+          <div>
+            <p class="kicker">All schedule</p>
+            <h1 id="schedulePageTitle">Schedule<br>Room</h1>
+          </div>
+          <p class="lead">登録済みの今後の予定をすべて確認するページです。予定の追加・編集はHOMEの入力フォームから行えます。</p>
+        </section>
+        <section class="section" aria-labelledby="allScheduleHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="allScheduleHeading">All Schedule<span class="jp-note">全予定</span></h2>
+              <p class="section-description">日付順に、今後の予定をすべて表示します。</p>
+            </div>
+            <div class="section-number">02</div>
+          </div>
+          <div class="schedule-list" id="allScheduleList" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="app-view" data-page="shopping" aria-label="Shopping todo page">
+        <section class="hero" aria-labelledby="shoppingPageTitle">
+          <div>
+            <p class="kicker">Shopping todo</p>
+            <h1 id="shoppingPageTitle">Shopping<br>TODO</h1>
+          </div>
+          <p class="lead">買い物リスト専用ページです。次の工程で、できるだけ少ない入力で追加できる共通TODOフォームをここに配置します。</p>
+        </section>
+        <section class="page-card">
+          <h2>Coming Next<span class="jp-note">次工程</span></h2>
+          <div class="placeholder-list">
+            <div class="placeholder-row"><span>入力フォーム：品名のみで追加できる構成</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>一覧表示：横罫線のみでコンパクト表示</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>完了済み：必要に応じて折りたたみ表示</span><span class="owner-pill">Plan</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-view" data-page="want" aria-label="Want todo page">
+        <section class="hero" aria-labelledby="wantPageTitle">
+          <div>
+            <p class="kicker">Want todo</p>
+            <h1 id="wantPageTitle">Want<br>TODO</h1>
+          </div>
+          <p class="lead">やりたいことTODO専用ページです。買い物TODOと同じ入力・確認UIを使い、カテゴリだけを分ける構成にします。</p>
+        </section>
+        <section class="page-card">
+          <h2>Coming Next<span class="jp-note">次工程</span></h2>
+          <div class="placeholder-list">
+            <div class="placeholder-row"><span>入力フォーム：やりたいことを短く追加</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>一覧表示：買い物TODOと共通UI</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>詳細確認：必要なメモはタップで確認</span><span class="owner-pill">Plan</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-view" data-page="settings" aria-label="Settings page">
+        <section class="hero" aria-labelledby="settingsPageTitle">
+          <div>
+            <p class="kicker">System settings</p>
+            <h1 id="settingsPageTitle">Settings<br>Room</h1>
+          </div>
+          <p class="lead">Home Boardの名前設定とバックアップ書き出しを管理します。右上のSettingsからいつでもこのページへ移動できます。</p>
+        </section>
+
+        <section class="section" aria-labelledby="nameSettingsHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="nameSettingsHeading">Name List<span class="jp-note">名前</span></h2>
+              <p class="section-description">予定の対象者として使う名前を追加できます。EVERYONEは固定項目です。</p>
+            </div>
+            <div class="section-number">SET</div>
+          </div>
+
+          <form class="settings-add" id="nameForm" autocomplete="off">
+            <div class="field">
+              <label class="settings-label" for="nameInput">Name</label>
+              <input id="nameInput" type="text" placeholder="例：Mamoru" maxlength="24">
+            </div>
+            <button class="secondary-button" type="submit">Add Name</button>
+          </form>
+
+          <div class="name-list" id="nameList" aria-live="polite"></div>
+        </section>
+
+        <section class="section" aria-labelledby="backupHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="backupHeading">Backup Data<span class="jp-note">保存</span></h2>
+              <p class="section-description">現在のHome BoardデータをJSONとして書き出します。</p>
+            </div>
+            <div class="section-number">DATA</div>
+          </div>
+
+          <div class="data-grid">
+            <article class="data-card">
+              <div class="data-role">Export / 書き出し</div>
+              <h3 class="data-title">Save a JSON backup</h3>
+              <p class="data-text">予定、名前設定、今後追加するTODOデータをバックアップできる構成にします。</p>
+              <div class="data-actions">
+                <span class="data-text">Filename: HMB-YYYYMMDD-HHMM.json</span>
+                <button class="primary-button" type="button" id="exportButton">Export</button>
+              </div>
+            </article>
+            <article class="data-card caution">
+              <div class="data-role">Backup Rule / 命名規則</div>
+              <h3 class="data-title">HMB-YYYYMMDD-HHMM.json</h3>
+              <p class="data-text">Home Boardの短縮コードHMBに、年月日8桁と時刻4桁を付けて保存します。</p>
+              <div class="data-meta">Example: HMB-20260608-0412.json</div>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / © 2026 VAMRSS</footer>
     </div>
   </main>
+
+  <nav class="bottom-nav" aria-label="Page navigation">
+    <button class="nav-button is-active" type="button" data-nav="home"><span>Home</span></button>
+    <button class="nav-button" type="button" data-nav="schedule"><span>Schedule</span></button>
+    <button class="nav-button" type="button" data-nav="shopping"><span>Shopping</span></button>
+    <button class="nav-button" type="button" data-nav="want"><span>Want</span></button>
+  </nav>
 
   <div class="detail-panel" id="detailPanel" aria-hidden="true">
     <div class="detail-card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
@@ -727,47 +985,29 @@
     </div>
   </div>
 
-  <div class="settings-panel" id="settingsPanel" aria-hidden="true">
-    <div class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-      <div class="settings-title">
-        <h2 id="settingsTitle">Settings<span class="jp-note">設定</span></h2>
-        <p>予定の対象者として使う名前を追加できます。Everyoneは固定項目のため削除できません。</p>
-      </div>
-
-      <form class="settings-add" id="nameForm" autocomplete="off">
-        <div class="field">
-          <label class="settings-label" for="nameInput">Name</label>
-          <input id="nameInput" type="text" placeholder="例：Mamoru" maxlength="24">
-        </div>
-        <button class="secondary-button" type="submit">Add Name</button>
-      </form>
-
-      <div class="name-list" id="nameList" aria-live="polite"></div>
-
-      <div class="settings-actions">
-        <button class="secondary-button" type="button" id="settingsClose">Close</button>
-      </div>
-    </div>
-  </div>
-
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const STORAGE_KEY = 'home-board-schedule-v3';
+    const STORAGE_KEY = 'home-board-v4';
+    const OLD_STORAGE_KEY = 'home-board-schedule-v3';
     const DAY_MS = 24 * 60 * 60 * 1000;
 
     const state = {
       schedules: [],
       names: [],
-      selectedOwner: 'EVERYONE',
+      selectedOwners: ['EVERYONE'],
       showAll: false,
       editingId: null,
       activeId: null,
+      currentPage: 'home',
       toastTimer: null
     };
 
     const els = {
       list: document.getElementById('scheduleList'),
+      allList: document.getElementById('allScheduleList'),
+      views: Array.from(document.querySelectorAll('.app-view')),
+      navButtons: Array.from(document.querySelectorAll('.nav-button')),
       form: document.getElementById('scheduleForm'),
       date: document.getElementById('scheduleDate'),
       title: document.getElementById('scheduleTitle'),
@@ -783,8 +1023,6 @@
       edit: document.getElementById('detailEdit'),
       del: document.getElementById('detailDelete'),
       settingsButton: document.getElementById('settingsButton'),
-      settingsPanel: document.getElementById('settingsPanel'),
-      settingsClose: document.getElementById('settingsClose'),
       nameForm: document.getElementById('nameForm'),
       nameInput: document.getElementById('nameInput'),
       nameList: document.getElementById('nameList'),
@@ -825,15 +1063,26 @@
       return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} ${formatWeekday(dateString)}`;
     }
 
-    function normalizeOwner(owner) {
+    function normalizeOwnerName(owner) {
       if (!owner) return 'EVERYONE';
-      if (owner === 'everyone') return 'EVERYONE';
-      if (owner === 'personal') return state.names[0] || 'Personal';
-      return String(owner);
+      const value = String(owner).trim();
+      if (!value) return 'EVERYONE';
+      if (value.toUpperCase() === 'EVERYONE' || value.toLowerCase() === 'everyone') return 'EVERYONE';
+      if (value.toLowerCase() === 'personal') return state.names[0] || 'Personal';
+      return value;
+    }
+
+    function normalizeOwners(item) {
+      const raw = Array.isArray(item.owners) ? item.owners : [item.owner || 'EVERYONE'];
+      let owners = raw.map(normalizeOwnerName).filter(Boolean);
+      owners = Array.from(new Set(owners));
+      if (!owners.length) owners = ['EVERYONE'];
+      if (owners.includes('EVERYONE') && owners.length > 1) owners = ['EVERYONE'];
+      return owners;
     }
 
     function isEveryone(owner) {
-      return normalizeOwner(owner).toUpperCase() === 'EVERYONE';
+      return normalizeOwnerName(owner).toUpperCase() === 'EVERYONE';
     }
 
     function daysLabel(dateString) {
@@ -852,25 +1101,22 @@
 
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>'"]/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        "'": '&#39;',
-        '"': '&quot;'
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
       })[char]);
     }
 
     function load() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(OLD_STORAGE_KEY);
         if (!raw) {
           const today = dateOnly(localDateString());
           state.names = ['Mamoru', 'Partner'];
           state.schedules = [
-            { id: uid(), date: localDateString(today), title: '燃えるごみ', owner: 'EVERYONE', memo: '朝のうちに出す。' },
-            { id: uid(), date: localDateString(addDays(today, 3)), title: '買い出し', owner: 'EVERYONE', memo: '日用品とミルクを確認。' },
-            { id: uid(), date: localDateString(addDays(today, 12)), title: '通院', owner: 'Partner', memo: '' },
-            { id: uid(), date: localDateString(addDays(today, 32)), title: '来月の予定', owner: 'Mamoru', memo: 'Moreで表示される確認用データ。' }
+            { id: uid(), date: localDateString(today), title: '燃えるごみ', owners: ['EVERYONE'], memo: '朝のうちに出す。' },
+            { id: uid(), date: localDateString(addDays(today, 3)), title: '買い出しと日用品の補充をする予定', owners: ['EVERYONE'], memo: '日用品とミルクを確認。' },
+            { id: uid(), date: localDateString(addDays(today, 12)), title: '通院', owners: ['Partner'], memo: '' },
+            { id: uid(), date: localDateString(addDays(today, 18)), title: '長いタイトルでも折り返して全体を確認できる予定のテスト', owners: ['Mamoru', 'Partner'], memo: 'タイトル折り返し確認用。' },
+            { id: uid(), date: localDateString(addDays(today, 32)), title: '来月の予定', owners: ['Mamoru'], memo: 'Moreで表示される確認用データ。' }
           ];
           save();
           return;
@@ -878,7 +1124,7 @@
         const parsed = JSON.parse(raw);
         state.names = Array.isArray(parsed.names) ? parsed.names.filter(Boolean).map(String) : ['Mamoru', 'Partner'];
         state.schedules = Array.isArray(parsed.schedules)
-          ? parsed.schedules.map(item => ({ ...item, owner: normalizeOwner(item.owner) }))
+          ? parsed.schedules.map(item => ({ ...item, owners: normalizeOwners(item), owner: undefined }))
           : [];
       } catch (error) {
         state.names = ['Mamoru', 'Partner'];
@@ -910,15 +1156,32 @@
       return ['EVERYONE', ...state.names];
     }
 
-    function setOwnerValue(owner) {
-      const normalized = normalizeOwner(owner);
-      const exists = ownerOptions().some(option => option === normalized);
-      state.selectedOwner = exists ? normalized : 'EVERYONE';
+    function setOwnersValue(owners) {
+      let normalized = Array.from(new Set((owners || []).map(normalizeOwnerName)));
+      normalized = normalized.filter(owner => ownerOptions().includes(owner));
+      if (!normalized.length) normalized = ['EVERYONE'];
+      if (normalized.includes('EVERYONE') && normalized.length > 1) normalized = ['EVERYONE'];
+      state.selectedOwners = normalized;
       renderOwnerButtons();
     }
 
-    function getOwnerValue() {
-      return state.selectedOwner || 'EVERYONE';
+    function toggleOwner(owner) {
+      const normalized = normalizeOwnerName(owner);
+      if (normalized === 'EVERYONE') {
+        setOwnersValue(['EVERYONE']);
+        return;
+      }
+      let next = state.selectedOwners.filter(item => item !== 'EVERYONE');
+      if (next.includes(normalized)) {
+        next = next.filter(item => item !== normalized);
+      } else {
+        next.push(normalized);
+      }
+      setOwnersValue(next.length ? next : ['EVERYONE']);
+    }
+
+    function getOwnersValue() {
+      return state.selectedOwners.length ? state.selectedOwners : ['EVERYONE'];
     }
 
     function renderOwnerButtons() {
@@ -926,11 +1189,11 @@
       ownerOptions().forEach(owner => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `owner-button${state.selectedOwner === owner ? ' is-active' : ''}`;
+        btn.className = `owner-button${state.selectedOwners.includes(owner) ? ' is-active' : ''}`;
         btn.textContent = owner;
         btn.title = owner;
-        btn.setAttribute('aria-pressed', state.selectedOwner === owner ? 'true' : 'false');
-        btn.addEventListener('click', () => setOwnerValue(owner));
+        btn.setAttribute('aria-pressed', state.selectedOwners.includes(owner) ? 'true' : 'false');
+        btn.addEventListener('click', () => toggleOwner(owner));
         els.ownerButtons.appendChild(btn);
       });
     }
@@ -956,26 +1219,24 @@
       });
     }
 
-    function render() {
-      renderOwnerButtons();
-      renderNameList();
+    function ownerPillsHtml(owners) {
+      return owners.map(owner => `
+        <span class="owner-pill ${isEveryone(owner) ? 'is-everyone' : ''}" title="${escapeHtml(owner)}">${escapeHtml(owner)}</span>
+      `).join('');
+    }
 
-      const upcoming = sortedUpcoming();
-      const items = visibleSchedules();
-      const today = dateOnly(localDateString());
-      const limit = localDateString(addDays(today, 30));
-      const hiddenCount = upcoming.filter(item => item.date > limit).length;
-
-      els.list.innerHTML = '';
+    function renderScheduleRows(container, items, options = {}) {
+      const { showMore = false } = options;
+      container.innerHTML = '';
 
       if (!items.length) {
         const empty = document.createElement('div');
         empty.className = 'empty';
         empty.textContent = 'No upcoming schedule';
-        els.list.appendChild(empty);
+        container.appendChild(empty);
       } else {
         items.forEach(item => {
-          const owner = normalizeOwner(item.owner);
+          const owners = normalizeOwners(item);
           const row = document.createElement('button');
           row.className = 'schedule-row';
           row.type = 'button';
@@ -987,37 +1248,56 @@
             </span>
             <span class="schedule-main">
               <span class="schedule-title">${escapeHtml(item.title)}</span>
-              <span class="owner-pill ${isEveryone(owner) ? 'is-everyone' : ''}" title="${escapeHtml(owner)}">${escapeHtml(owner)}</span>
+              ${ownerPillsHtml(owners)}
               ${item.memo && item.memo.trim() ? '<span class="memo-mark" title="Memoあり">✎</span>' : ''}
             </span>
             <span class="days-left">${escapeHtml(daysLabel(item.date))}</span>
           `;
           row.addEventListener('click', () => openDetail(item.id));
-          els.list.appendChild(row);
+          container.appendChild(row);
         });
       }
 
-      if (hiddenCount > 0 || state.showAll) {
-        const moreWrap = document.createElement('div');
-        moreWrap.className = 'more-wrap';
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'more-button';
-        btn.textContent = state.showAll ? 'Close Future Schedule' : `More / Show All ${hiddenCount}`;
-        btn.addEventListener('click', () => {
-          state.showAll = !state.showAll;
-          render();
-        });
-        moreWrap.appendChild(btn);
-        els.list.appendChild(moreWrap);
+      if (showMore) {
+        const upcoming = sortedUpcoming();
+        const today = dateOnly(localDateString());
+        const limit = localDateString(addDays(today, 30));
+        const hiddenCount = upcoming.filter(item => item.date > limit).length;
+        if (hiddenCount > 0 || state.showAll) {
+          const moreWrap = document.createElement('div');
+          moreWrap.className = 'more-wrap';
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'more-button';
+          btn.textContent = state.showAll ? 'Close Future Schedule' : `More / Show All ${hiddenCount}`;
+          btn.addEventListener('click', () => {
+            state.showAll = !state.showAll;
+            render();
+          });
+          moreWrap.appendChild(btn);
+          container.appendChild(moreWrap);
+        }
       }
+    }
+
+    function renderPages() {
+      els.views.forEach(view => view.classList.toggle('is-active', view.dataset.page === state.currentPage));
+      els.navButtons.forEach(btn => btn.classList.toggle('is-active', btn.dataset.nav === state.currentPage));
+    }
+
+    function render() {
+      renderOwnerButtons();
+      renderNameList();
+      renderPages();
+      renderScheduleRows(els.list, visibleSchedules(), { showMore: true });
+      if (els.allList) renderScheduleRows(els.allList, sortedUpcoming(), { showMore: false });
     }
 
     function resetForm() {
       state.editingId = null;
       els.form.reset();
       els.date.value = localDateString();
-      setOwnerValue('EVERYONE');
+      setOwnersValue(['EVERYONE']);
       els.submit.textContent = 'Add Schedule';
       els.formMode.textContent = '新しい予定を追加します。';
     }
@@ -1027,7 +1307,7 @@
       const date = els.date.value;
       const title = els.title.value.trim();
       const memo = els.memo.value.trim();
-      const owner = getOwnerValue();
+      const owners = getOwnersValue();
       if (!date || !title) {
         showToast('Date and title required');
         return;
@@ -1035,10 +1315,10 @@
 
       if (state.editingId) {
         const target = state.schedules.find(item => item.id === state.editingId);
-        if (target) Object.assign(target, { date, title, owner, memo });
+        if (target) Object.assign(target, { date, title, owners, memo });
         showToast('Schedule updated');
       } else {
-        state.schedules.push({ id: uid(), date, title, owner, memo });
+        state.schedules.push({ id: uid(), date, title, owners, memo });
         showToast('Schedule added');
       }
 
@@ -1050,9 +1330,9 @@
     function openDetail(id) {
       const item = state.schedules.find(entry => entry.id === id);
       if (!item) return;
-      const owner = normalizeOwner(item.owner);
+      const owners = normalizeOwners(item);
       state.activeId = id;
-      els.detailDate.textContent = `${formatDetailDate(item.date)} / ${owner}`;
+      els.detailDate.textContent = `${formatDetailDate(item.date)} / ${owners.join(', ')}`;
       els.detailTitle.textContent = item.title;
       els.detailMemo.textContent = item.memo && item.memo.trim() ? item.memo : 'メモはありません。';
       els.panel.classList.add('is-open');
@@ -1069,9 +1349,11 @@
       const item = state.schedules.find(entry => entry.id === state.activeId);
       if (!item) return;
       state.editingId = item.id;
+      state.currentPage = 'home';
+      renderPages();
       els.date.value = item.date;
       els.title.value = item.title;
-      setOwnerValue(item.owner);
+      setOwnersValue(normalizeOwners(item));
       els.memo.value = item.memo || '';
       els.submit.textContent = 'Update Schedule';
       els.formMode.textContent = '選択した予定を編集しています。';
@@ -1091,17 +1373,6 @@
       resetForm();
       render();
       showToast('Schedule deleted');
-    }
-
-    function openSettings() {
-      els.settingsPanel.classList.add('is-open');
-      els.settingsPanel.setAttribute('aria-hidden', 'false');
-      window.setTimeout(() => els.nameInput.focus(), 160);
-    }
-
-    function closeSettings() {
-      els.settingsPanel.classList.remove('is-open');
-      els.settingsPanel.setAttribute('aria-hidden', 'true');
     }
 
     function addName(event) {
@@ -1124,17 +1395,29 @@
     }
 
     function deleteName(name) {
-      const used = state.schedules.some(item => normalizeOwner(item.owner) === name);
+      const used = state.schedules.some(item => normalizeOwners(item).includes(name));
       const message = used
-        ? `「${name}」を削除しますか？既存予定の対象者はEVERYONEに変更されます。`
+        ? `「${name}」を削除しますか？既存予定からこの名前が外れ、対象者が空になる予定はEVERYONEに変更されます。`
         : `「${name}」を削除しますか？`;
       if (!window.confirm(message)) return;
       state.names = state.names.filter(item => item !== name);
-      state.schedules = state.schedules.map(item => normalizeOwner(item.owner) === name ? { ...item, owner: 'EVERYONE' } : item);
-      if (state.selectedOwner === name) state.selectedOwner = 'EVERYONE';
+      state.schedules = state.schedules.map(item => {
+        let owners = normalizeOwners(item).filter(owner => owner !== name);
+        if (!owners.length) owners = ['EVERYONE'];
+        return { ...item, owners };
+      });
+      state.selectedOwners = state.selectedOwners.filter(owner => owner !== name);
+      if (!state.selectedOwners.length) state.selectedOwners = ['EVERYONE'];
       save();
       render();
       showToast('Name deleted');
+    }
+
+    function switchPage(page) {
+      if (!['home', 'schedule', 'shopping', 'want', 'settings'].includes(page)) return;
+      state.currentPage = page;
+      renderPages();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function exportJson() {
@@ -1145,7 +1428,7 @@
       const h = String(now.getHours()).padStart(2, '0');
       const min = String(now.getMinutes()).padStart(2, '0');
       const filename = `HMB-${y}${m}${d}-${h}${min}.json`;
-      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: 3, names: state.names, schedules: state.schedules }, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: 4, names: state.names, schedules: state.schedules }, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1169,16 +1452,12 @@
     els.edit.addEventListener('click', editActive);
     els.del.addEventListener('click', deleteActive);
     els.panel.addEventListener('click', event => { if (event.target === els.panel) closeDetail(); });
-    els.settingsButton.addEventListener('click', openSettings);
-    els.settingsClose.addEventListener('click', closeSettings);
-    els.settingsPanel.addEventListener('click', event => { if (event.target === els.settingsPanel) closeSettings(); });
+    els.settingsButton.addEventListener('click', () => switchPage('settings'));
     els.nameForm.addEventListener('submit', addName);
     els.exportButton.addEventListener('click', exportJson);
+    els.navButtons.forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.nav)));
     window.addEventListener('keydown', event => {
-      if (event.key === 'Escape') {
-        closeDetail();
-        closeSettings();
-      }
+      if (event.key === 'Escape') closeDetail();
     });
 
     load();
