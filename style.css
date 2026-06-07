@@ -1,0 +1,495 @@
+
+:root {
+  --bg: #fafbfc;
+  --surface: #ffffff;
+  --line: #dfe7ef;
+  --deep: #071c16;
+  --danger: #9b3144;
+  --ink: #101722;
+  --sub: #607084;
+  --radius: 28px;
+  --radius-small: 18px;
+  --shadow: 0 18px 50px rgba(15, 30, 48, 0.055);
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Sans",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif;
+  min-height: 100vh;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.container {
+  width: min(760px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: max(18px, env(safe-area-inset-top)) 0 max(24px, env(safe-area-inset-bottom));
+}
+
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  min-height: 44px;
+}
+
+.brand,
+.top-action,
+.section-number,
+.status-pill,
+.app-role,
+.app-action,
+.site-footer,
+.small-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Sans",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif;
+}
+
+.brand {
+  grid-column: 1;
+  justify-self: start;
+  align-self: center;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  color: var(--sub);
+  opacity: .78;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-action {
+  grid-column: 2;
+  justify-self: end;
+  align-self: center;
+  height: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0 12px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.36);
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.hero,
+.section {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.hero {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+
+.kicker {
+  margin-bottom: 12px;
+  color: var(--sub);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+.app-code,
+.big-number {
+  margin: 0;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    "Hiragino Mincho ProN",
+    "Yu Mincho",
+    serif;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: clamp(38px, 13vw, 78px);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+}
+
+h2 {
+  font-size: clamp(25px, 7vw, 38px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+h3 {
+  font-size: clamp(24px, 8vw, 42px);
+  line-height: .96;
+  letter-spacing: -0.07em;
+}
+
+.jp-note {
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--sub);
+  opacity: .62;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Sans",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+
+.lead {
+  margin: 0;
+  color: var(--sub);
+  font-size: 13px;
+  line-height: 1.85;
+  font-weight: 400;
+}
+
+.solid-rule {
+  height: 1px;
+  background: var(--line);
+}
+
+.section {
+  padding: 18px;
+  box-shadow: 0 8px 22px rgba(15,30,48,0.03);
+}
+
+.section-head {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 18px;
+}
+
+.section-number {
+  color: var(--sub);
+  opacity: .62;
+}
+
+.app-list {
+  display: grid;
+  gap: 12px;
+}
+
+.app-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: stretch;
+  min-height: 156px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--surface);
+  transition:
+    border-color 120ms cubic-bezier(.2,.8,.2,1),
+    transform 120ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 120ms cubic-bezier(.2,.8,.2,1);
+}
+
+.app-card:active {
+  transform: scale(.995);
+}
+
+@media (hover:hover) {
+  .app-card:hover {
+    border-color: rgba(7, 28, 22, 0.22);
+    box-shadow: 0 12px 30px rgba(15,30,48,0.055);
+    transform: translateY(-1px);
+  }
+}
+
+.app-main {
+  display: grid;
+  align-content: space-between;
+  gap: 18px;
+  min-width: 0;
+}
+
+.app-role {
+  color: var(--sub);
+  opacity: .72;
+  margin-bottom: 10px;
+}
+
+.app-text {
+  margin: 10px 0 0;
+  color: var(--sub);
+  font-size: 12px;
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+.app-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.status-pill {
+  border: 1px solid rgba(96,112,132,0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sub);
+  opacity: .72;
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.app-action,
+.primary-button {
+  border: 1px solid var(--deep);
+  border-radius: 999px;
+  background: var(--deep);
+  color: var(--surface);
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.app-code-box {
+  width: 76px;
+  min-height: 100%;
+  border-radius: 22px;
+  background: var(--deep);
+  color: var(--surface);
+  display: grid;
+  place-items: center;
+  padding: 12px 8px;
+}
+
+.app-code {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: clamp(32px, 10vw, 56px);
+  line-height: .82;
+  letter-spacing: -0.1em;
+}
+
+.note-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.note-card {
+  border: 1px dashed var(--line);
+  border-radius: 22px;
+  padding: 16px;
+  color: var(--sub);
+  font-size: 12px;
+  line-height: 1.75;
+  background: transparent;
+  font-weight: 400;
+}
+
+.note-card strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 4px 2px 0;
+  color: var(--sub);
+  opacity: .58;
+}
+
+.placeholder-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.placeholder-card {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface);
+  padding: 14px;
+}
+
+.placeholder-title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.placeholder-text {
+  margin: 8px 0 0;
+  color: var(--sub);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.emphasis-section {
+  padding: 22px 26px 16px;
+  border-color: rgba(7, 28, 22, 0.22);
+  background: var(--deep);
+  color: var(--surface);
+  box-shadow: 0 18px 46px rgba(7, 28, 22, 0.16);
+}
+
+.emphasis-section .section-number,
+.emphasis-section .jp-note {
+  color: rgba(255,255,255,0.58);
+  opacity: 1;
+}
+
+.emphasis-section .lead {
+  color: rgba(255,255,255,.68);
+}
+
+.big-number {
+  width: 100%;
+  display: block;
+  margin-top: 18px;
+  font-size: clamp(98px, 29vw, 166px);
+  line-height: .72;
+  letter-spacing: -0.08em;
+}
+
+@media (min-width: 640px) {
+  .container { padding-top: 28px; }
+
+  .hero {
+    grid-template-columns: 1.05fr .95fr;
+    min-height: 245px;
+    align-items: end;
+  }
+
+  .app-list,
+  .note-grid,
+  .placeholder-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-card {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 300px;
+  }
+
+  .app-code-box {
+    width: 100%;
+    min-height: 86px;
+  }
+
+  .app-code {
+    writing-mode: horizontal-tb;
+    font-size: clamp(54px, 10vw, 76px);
+    letter-spacing: -0.1em;
+  }
+}
+
+@media (max-width: 420px) {
+  .top-action { padding: 0 10px; }
+
+  .app-card { grid-template-columns: minmax(0, 1fr); }
+
+  .app-code-box {
+    width: 100%;
+    min-height: 72px;
+  }
+
+  .app-code {
+    writing-mode: horizontal-tb;
+    font-size: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

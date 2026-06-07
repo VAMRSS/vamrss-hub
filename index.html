@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fafbfc">
+  <title>VAMRSS HUB</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <main class="container">
+    <div class="page">
+      <div class="topbar">
+        <div class="brand">＊(VAMRSS) HUB</div>
+        <a class="top-action" href="./ftr.html" aria-label="Open Futari Seisan">FTR</a>
+      </div>
+
+      <header class="hero">
+        <div class="hero-main">
+          <div class="kicker">Personal application entrance</div>
+          <h1>System<br>Hub<span class="jp-note">入口</span></h1>
+        </div>
+        <p class="lead">
+          WSVとFTRをひとつの入口から起動するためのTOP画面です。
+          Supabaseは一本化しつつ、各アプリは3文字のAPP IDで静かに管理します。
+        </p>
+      </header>
+
+      <div class="solid-rule"></div>
+
+      <section class="section">
+        <div class="section-head">
+          <div class="section-number">Applications</div>
+          <h2>App List<span class="jp-note">一覧</span></h2>
+        </div>
+
+        <div class="app-list">
+          <a class="app-card" href="./wsv.html" data-app-id="WSV" aria-label="Open WSV">
+            <div class="app-main">
+              <div>
+                <div class="app-role">Artwork Management</div>
+                <h3>Worksheet<br>Vault</h3>
+                <p class="app-text">
+                  作品情報、展示履歴、寸法、価格、制作状態などを管理するための作品台帳システム。
+                </p>
+              </div>
+              <div class="app-meta">
+                <span class="status-pill">OWNER</span>
+                <span class="status-pill">PRIVATE</span>
+                <span class="app-action">OPEN</span>
+              </div>
+            </div>
+            <div class="app-code-box" aria-hidden="true">
+              <div class="app-code">WSV</div>
+            </div>
+          </a>
+
+          <a class="app-card" href="./ftr.html" data-app-id="FTR" aria-label="Open FTR">
+            <div class="app-main">
+              <div>
+                <div class="app-role">Settlement Tool</div>
+                <h3>Futari<br>Seisan</h3>
+                <p class="app-text">
+                  ふたりの支払い記録を整理し、現在の差額や精算状況を確認するための精算アプリ。
+                </p>
+              </div>
+              <div class="app-meta">
+                <span class="status-pill">SHARED</span>
+                <span class="status-pill">NO HUB LINK</span>
+                <span class="app-action">OPEN</span>
+              </div>
+            </div>
+            <div class="app-code-box" aria-hidden="true">
+              <div class="app-code">FTR</div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div class="section-number">Operation</div>
+          <h2>Access Rule<span class="jp-note">運用</span></h2>
+        </div>
+
+        <div class="note-grid">
+          <div class="note-card">
+            <strong>FTR共有:</strong>
+            共有相手には <span class="mono">ftr.html</span> のURLだけを渡します。
+            FTR側には、このTOP画面へ戻るリンクを置かない想定です。
+          </div>
+          <div class="note-card">
+            <strong>次の接続:</strong>
+            既存のWSVを <span class="mono">wsv.html</span>、
+            既存のFTRを <span class="mono">ftr.html</span> として接続します。
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        VAMRSS PERSONAL APPS / WSV + FTR
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

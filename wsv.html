@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fafbfc">
+  <title>WSV / WORKSHEET VAULT SYSTEM</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <main class="container">
+    <div class="page">
+      <div class="topbar">
+        <div class="brand">＊(VAMRSS) WSV</div>
+        <a class="top-action" href="./index.html" aria-label="Back to VAMRSS HUB">HUB</a>
+      </div>
+
+      <header class="hero">
+        <div>
+          <div class="kicker">Artwork management / Owner only</div>
+          <h1>Worksheet<br>Vault<span class="jp-note">作品管理</span></h1>
+        </div>
+        <p class="lead">
+          このページに既存のWSV本体を接続します。
+          WSVはマモルさん専用想定のため、TOP画面へ戻る導線を配置しています。
+        </p>
+      </header>
+
+      <div class="solid-rule"></div>
+
+      <section class="section emphasis-section">
+        <div class="section-head">
+          <div class="section-number">APP ID</div>
+          <h2>WSV<span class="jp-note">専用</span></h2>
+        </div>
+        <p class="lead">
+          作品情報、展示履歴、寸法、価格、制作状態などを管理する領域です。
+        </p>
+        <strong class="big-number">WSV</strong>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div class="section-number">Connection</div>
+          <h2>Next Step<span class="jp-note">接続</span></h2>
+        </div>
+
+        <div class="placeholder-grid">
+          <article class="placeholder-card">
+            <p class="placeholder-title">既存WSVコードの移植</p>
+            <p class="placeholder-text">
+              既存の作品管理HTMLをこのページへ接続します。TOPへ戻るリンクは維持します。
+            </p>
+          </article>
+          <article class="placeholder-card">
+            <p class="placeholder-title">Supabase prefix</p>
+            <p class="placeholder-text">
+              テーブル名は <span class="mono">wsv_works</span> など、APP IDを小文字prefixとして扱います。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        WORKSHEET VAULT SYSTEM / OWNER AREA
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
