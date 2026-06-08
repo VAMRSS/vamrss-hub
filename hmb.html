@@ -1,0 +1,2104 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>(VAMRSS) HOME BOARD / HMB Supabase v1</title>
+  <style>
+    :root {
+      --bg: #fafbfc;
+      --surface: #ffffff;
+      --line: #dfe7ef;
+      --deep: #071c16;
+      --danger: #9b3144;
+      --ink: #101722;
+      --sub: #607084;
+      --radius: 28px;
+      --radius-small: 18px;
+      --shadow: 0 18px 50px rgba(15, 30, 48, 0.055);
+      --nav-height: 72px;
+      --motion-fast: 120ms;
+      --motion-base: 180ms;
+      --motion-ease: cubic-bezier(.2, .8, .2, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea { font: inherit; }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    .schedule-row:focus-visible,
+    .owner-button:focus-visible,
+    .nav-button:focus-visible {
+      outline: 2px solid rgba(7, 28, 22, 0.42);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(760px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 0 calc(var(--nav-height) + max(24px, env(safe-area-inset-bottom)));
+    }
+
+    .page { display: grid; gap: 16px; }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      min-height: 44px;
+    }
+
+    .brand,
+    .top-action,
+    .section-number,
+    .label,
+    .small-action,
+    .empty,
+    .date-chip,
+    .schedule-weekday,
+    .form-note,
+    .owner-pill,
+    .owner-button,
+    .settings-label,
+    .name-chip,
+    .data-role,
+    .nav-button,
+    .site-footer {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+    }
+
+    .brand {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--sub);
+      opacity: .78;
+      line-height: 1;
+    }
+
+    .top-action {
+      height: 36px;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+      color: var(--ink);
+    }
+
+    .hero,
+    .section,
+    .page-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    h1,
+    h2,
+    .schedule-title,
+    .detail-title {
+      font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      font-weight: 500;
+    }
+
+    h1,
+    h2,
+    h3,
+    p { margin: 0; }
+
+    h1 {
+      font-size: clamp(44px, 13vw, 86px);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+    }
+
+    h2 {
+      font-size: clamp(27px, 7vw, 40px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    .jp-note {
+      display: inline-block;
+      margin-left: 8px;
+      color: var(--sub);
+      opacity: .62;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      vertical-align: middle;
+    }
+
+    .lead {
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .solid-rule { height: 1px; background: var(--line); }
+
+    .section,
+    .page-card {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 22px rgba(15,30,48,0.03);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .section-number {
+      color: var(--sub);
+      opacity: .62;
+      align-self: start;
+      padding-top: 4px;
+    }
+
+    .section-description,
+    .data-text,
+    .settings-title p,
+    .owner-helper,
+    .placeholder-row,
+    .detail-memo {
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .schedule-list {
+      display: grid;
+      background: transparent;
+      border-top: 1px solid var(--line);
+    }
+
+    .schedule-row {
+      appearance: none;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      width: 100%;
+      min-height: 54px;
+      display: grid;
+      grid-template-columns: minmax(46px, 58px) minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      column-gap: 10px;
+      row-gap: 7px;
+      padding: 10px 0;
+      text-align: left;
+      transition: background var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
+    }
+
+    .schedule-row:active {
+      transform: scale(.996);
+      background: rgba(244, 247, 249, .72);
+    }
+
+    .schedule-date-cell,
+    .schedule-weekday-cell,
+    .schedule-title-cell,
+    .schedule-meta-cell {
+      min-width: 0;
+    }
+
+    .schedule-date-cell {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+      overflow: hidden;
+    }
+
+    .schedule-weekday-cell {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: center;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .schedule-title-cell {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+
+    .schedule-meta-cell {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .schedule-meta-left {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 7px;
+      flex-wrap: wrap;
+      text-align: left;
+    }
+
+    .schedule-meta-right {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+      text-align: right;
+    }
+
+    .schedule-monthday {
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      font-size: 17px;
+      line-height: 1.24;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+
+    .schedule-weekday {
+      min-height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 4px 0;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--sub);
+      opacity: .68;
+      white-space: nowrap;
+    }
+
+    .schedule-weekday,
+    .schedule-time,
+    .days-left {
+      flex: 0 0 auto;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .schedule-main,
+    .date-chip,
+    .schedule-title-line,
+    .schedule-meta-line {
+      display: contents;
+    }
+
+    .owner-line {
+      min-width: 0;
+      display: contents;
+    }
+
+    .schedule-title {
+      min-width: 0;
+      max-width: 100%;
+      display: block;
+      overflow: visible;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      font-size: 17px;
+      line-height: 1.24;
+      letter-spacing: -0.04em;
+    }
+
+    .schedule-time {
+      color: var(--sub);
+      opacity: .72;
+      overflow-wrap: anywhere;
+    }
+
+    .memo-mark {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid rgba(223, 231, 239, .9);
+      border-radius: 999px;
+      color: var(--sub);
+      font-size: 10px;
+      line-height: 1;
+      background: rgba(244, 247, 249, .85);
+    }
+
+    .owner-pill {
+      flex: 0 1 auto;
+      max-width: min(152px, 100%);
+      min-width: 0;
+      min-height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border: 1px solid rgba(96, 112, 132, 0.18);
+      border-radius: 999px;
+      color: rgba(96, 112, 132, .82);
+      background: transparent;
+      line-height: 1;
+      letter-spacing: .07em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: .76;
+    }
+
+    .owner-pill.is-everyone {
+      color: rgba(7, 28, 22, .72);
+      border-color: rgba(7, 28, 22, .14);
+      background: rgba(7, 28, 22, .035);
+    }
+
+    .days-left {
+      justify-self: end;
+      align-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 20px;
+      color: rgba(96, 112, 132, .72);
+      background: transparent;
+      border: 0;
+      padding: 4px 0;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      line-height: 1;
+      white-space: nowrap;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    .days-left.is-today {
+      color: var(--danger);
+      opacity: .92;
+    }
+
+    .more-wrap {
+      display: grid;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+    }
+
+    .more-button {
+      min-height: 42px;
+      border: none;
+      background: transparent;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+    }
+
+    .empty {
+      padding: 18px 2px;
+      color: var(--sub);
+      opacity: .66;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .form-card {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--bg);
+    }
+
+    .past-panel {
+      display: grid;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .past-filter {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--bg);
+    }
+
+    .past-filter-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .past-list-title {
+      color: var(--sub);
+      opacity: .72;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .date-time-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .date-time-pair {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    input[type="time"] {
+      -webkit-appearance: none;
+      appearance: none;
+      text-align: left;
+      text-align-last: left;
+    }
+
+    .field { display: grid; gap: 7px; min-width: 0; }
+    .label { color: var(--sub); opacity: .72; }
+    .label-sub { opacity: .62; font-weight: 500; letter-spacing: .06em; }
+
+    input,
+    textarea {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-small);
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 48px;
+      padding: 13px 14px;
+      font-size: 16px;
+      line-height: 1.25;
+      box-shadow: none;
+      outline: none;
+      text-align: left;
+    }
+
+
+    .date-field {
+      min-width: 0;
+      max-width: 100%;
+      overflow: visible;
+    }
+
+    /* FTR参考：iPhoneでdate入力の内部表示が横に膨らまないよう、
+       ネイティブdateのまま外形だけを通常inputと同じ扱いにする。 */
+    input[type="date"].date-input {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      min-inline-size: 0;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-small);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 13px 14px;
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      text-align: left;
+      text-align-last: left;
+      -webkit-appearance: none;
+      appearance: none;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    input[type="date"].date-input::-webkit-date-and-time-value {
+      text-align: left;
+    }
+
+    input[type="date"].date-input::-webkit-calendar-picker-indicator {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    input::placeholder,
+    textarea::placeholder { color: rgba(96, 112, 132, .54); }
+
+    .owner-button-area {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      min-width: 0;
+      max-height: 132px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px 2px 4px;
+      scrollbar-width: thin;
+    }
+
+    .owner-button {
+      flex: 0 0 auto;
+      max-width: 148px;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--sub);
+      padding: 0 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: background var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease);
+    }
+
+    .owner-button.is-active {
+      background: var(--deep);
+      border-color: var(--deep);
+      color: var(--surface);
+    }
+
+    .owner-helper { opacity: .62; }
+
+    .form-actions,
+    .data-actions {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .form-note {
+      color: var(--sub);
+      opacity: .62;
+      line-height: 1.5;
+      text-transform: none;
+      letter-spacing: .02em;
+      font-weight: 700;
+    }
+
+    .primary-button,
+    .secondary-button,
+    .danger-button,
+    .small-action {
+      min-height: 48px;
+      border-radius: 999px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .small-action { min-height: 36px; font-size: 10px; padding: 0 12px; }
+
+    .primary-button {
+      background: var(--deep);
+      color: var(--surface);
+      border-color: var(--deep);
+    }
+
+    .secondary-button,
+    .small-action {
+      background: var(--surface);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .danger-button {
+      background: rgba(155,49,68,0.07);
+      color: var(--danger);
+      border-color: rgba(155,49,68,0.16);
+    }
+
+    .detail-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      align-items: end;
+      padding: 14px;
+      background: rgba(7, 28, 22, .16);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .detail-panel.is-open { display: grid; }
+
+    .detail-card {
+      width: min(760px, 100%);
+      max-height: min(82vh, 720px);
+      overflow: auto;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--surface);
+      box-shadow: 0 24px 70px rgba(15, 30, 48, 0.16);
+      padding: 18px;
+    }
+
+    .detail-meta {
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      line-height: 1.55;
+    }
+
+    .detail-title {
+      font-size: 28px;
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-memo {
+      min-height: 68px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 14px;
+      white-space: pre-wrap;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .app-view { display: none; gap: 18px; }
+    .app-view.is-active { display: grid; }
+
+    .placeholder-list,
+    .name-list {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .placeholder-row,
+    .name-row {
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding: 8px 0;
+    }
+
+    .name-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .settings-title { display: grid; gap: 6px; }
+    .settings-label { color: var(--sub); opacity: .72; }
+
+    .settings-add {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .name-chip {
+      min-width: 0;
+      color: var(--ink);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .data-grid { display: grid; gap: 12px; }
+
+    .data-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .data-card.caution {
+      background: transparent;
+      border-style: dashed;
+    }
+
+    .data-role { color: var(--sub); opacity: .72; }
+
+    .data-title {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .data-meta {
+      margin-top: 2px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      color: var(--sub);
+      font-size: 11px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 25;
+      width: min(430px, calc(100% - 24px));
+      height: 58px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 5px;
+      padding: 6px;
+    }
+
+    .nav-button {
+      min-width: 0;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: rgba(16,23,34,0.58);
+      min-height: 46px;
+      padding: 0 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+    }
+
+    .nav-button span {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nav-button.is-active {
+      background: rgba(235,240,244,0.88);
+      color: var(--ink);
+    }
+
+    .site-footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 4px 2px 0;
+      color: var(--sub);
+      opacity: .58;
+      font-weight: 400;
+    }
+
+    .brand,
+    .top-action {
+      font-weight: 400;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(84px + env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(20px);
+      z-index: 40;
+      min-width: 180px;
+      max-width: calc(100% - 28px);
+      padding: 12px 14px;
+      border-radius: 999px;
+      background: rgba(7, 28, 22, .92);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+    }
+
+    .toast.is-show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (min-width: 640px) {
+      .container { padding-top: 28px; }
+      .hero { grid-template-columns: 1.1fr .9fr; min-height: 245px; align-items: end; }
+      .form-grid { grid-template-columns: 1fr; }
+      .date-time-pair { grid-template-columns: minmax(0, 1fr) 120px; }
+      .past-filter-grid { grid-template-columns: 1fr 1fr; }
+      .past-filter-grid .wide { grid-column: 1 / -1; }
+      .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .container { width: min(100% - 20px, 760px); }
+      .hero { padding: 22px 18px; }
+      .section, .page-card { padding: 16px 12px; }
+      .section-head { grid-template-columns: minmax(0, 1fr); }
+      .section-number { padding-top: 0; }
+      .schedule-row {
+        grid-template-columns: minmax(44px, 52px) minmax(0, 1fr);
+        column-gap: 8px;
+        row-gap: 7px;
+      }
+      .schedule-monthday { font-size: 15px; }
+      .schedule-title { font-size: 16px; }
+      .owner-pill { max-width: 126px; }
+      .days-left { font-size: 9px; }
+      .form-actions,
+      .data-actions,
+      .settings-add { grid-template-columns: 1fr; }
+      .past-filter-grid { grid-template-columns: 1fr; }
+      .form-actions .primary-button,
+      .data-actions .primary-button,
+      .settings-add .secondary-button { width: 100%; }
+    }
+
+    @media (max-width: 380px) {
+      .bottom-nav { width: calc(100% - 16px); }
+      .nav-button { font-size: 8px; letter-spacing: .025em; }
+      .schedule-row { grid-template-columns: 44px minmax(0, 1fr); }
+      .days-left { font-size: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="page">
+      <header class="topbar" aria-label="Topbar">
+        <div class="brand">＊(VAMRSS) HOME BOARD</div>
+        <button class="top-action" type="button" id="settingsButton">Settings</button>
+      </header>
+
+      <section class="app-view is-active" data-page="schedule" aria-label="Schedule page">
+        <section class="hero" aria-labelledby="pageTitle">
+          <div>
+            <p class="kicker">Shared home prototype</p>
+            <h1 id="pageTitle">Home<br>Board</h1>
+          </div>
+          <p class="lead">
+            家庭内の予定、買い物、やりたいことを共有するためのボードです。直近の予定を確認し、予定を確認・追加し、下部の浮遊ナビから各TODOページへ移動できます。
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="homeScheduleHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="homeScheduleHeading">Schedule<span class="jp-note">予定</span></h2>
+              <p class="section-description">今後1ヶ月の予定を横罫線のみでコンパクトに表示します。Moreから今後の予定をすべて展開できます。</p>
+            </div>
+            <div class="section-number">01</div>
+          </div>
+
+          <div class="schedule-list" id="scheduleList" aria-live="polite"></div>
+
+          <form class="form-card" id="scheduleForm" autocomplete="off">
+            <div class="date-time-grid">
+              <div class="date-time-pair">
+                <div class="field date-field">
+                  <label class="label" for="scheduleStartDate">Start Date</label>
+                  <input id="scheduleStartDate" class="date-input" name="startDate" type="date" autocomplete="off" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="scheduleStartTime">Start Time <span class="label-sub">Optional</span></label>
+                  <input id="scheduleStartTime" name="startTime" type="time" autocomplete="off">
+                </div>
+              </div>
+              <div class="date-time-pair">
+                <div class="field date-field">
+                  <label class="label" for="scheduleEndDate">End Date</label>
+                  <input id="scheduleEndDate" class="date-input" name="endDate" type="date" autocomplete="off" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="scheduleEndTime">End Time <span class="label-sub">Optional</span></label>
+                  <input id="scheduleEndTime" name="endTime" type="time" autocomplete="off">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="scheduleTitle">Title</label>
+                <input id="scheduleTitle" name="title" type="text" inputmode="text" placeholder="予定名" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label">For</div>
+              <div class="owner-button-area" id="ownerButtons" aria-label="予定の対象者"></div>
+              <p class="owner-helper">複数選択できます。EVERYONEを選ぶと個別名の選択は解除されます。名前はSettingsから追加できます。</p>
+            </div>
+
+            <div class="field">
+              <label class="label" for="scheduleMemo">Memo</label>
+              <textarea id="scheduleMemo" name="memo" placeholder="メモは一覧には常時表示されません。予定をタップすると確認できます。"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <p class="form-note" id="formModeText">新しい予定を追加します。</p>
+              <button class="primary-button" type="submit" id="submitButton">Add Schedule</button>
+            </div>
+          </form>
+
+          <div class="past-panel" aria-labelledby="pastScheduleHeading">
+            <div class="section-head">
+              <div>
+                <h2 id="pastScheduleHeading">Past Schedule<span class="jp-note">過去</span></h2>
+                <p class="section-description">過去の予定を期間とキーワードで確認できます。初期表示は昨月の予定です。</p>
+              </div>
+              <div class="section-number">LOG</div>
+            </div>
+
+            <div class="past-filter">
+              <div class="past-filter-grid">
+                <div class="field">
+                  <label class="label" for="pastStart">From</label>
+                  <input id="pastStart" class="date-input" type="date" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="label" for="pastEnd">To</label>
+                  <input id="pastEnd" class="date-input" type="date" autocomplete="off">
+                </div>
+                <div class="field wide">
+                  <label class="label" for="pastSearch">Search</label>
+                  <input id="pastSearch" type="search" placeholder="タイトル・メモ・名前で検索">
+                </div>
+              </div>
+              <div class="form-actions">
+                <p class="form-note">昨月の内容を初期表示します。</p>
+                <button class="secondary-button" type="button" id="pastResetButton">Last Month</button>
+              </div>
+            </div>
+
+            <div class="past-list-title">Past Records</div>
+            <div class="schedule-list" id="pastScheduleList" aria-live="polite"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-view" data-page="shopping" aria-label="Shopping todo page">
+        <section class="hero" aria-labelledby="shoppingPageTitle">
+          <div>
+            <p class="kicker">Shopping todo</p>
+            <h1 id="shoppingPageTitle">Shopping<br>TODO</h1>
+          </div>
+          <p class="lead">買い物リスト専用ページです。次の工程で、できるだけ少ない入力で追加できる共通TODOフォームをここに配置します。</p>
+        </section>
+        <section class="page-card">
+          <h2>Coming Next<span class="jp-note">次工程</span></h2>
+          <div class="placeholder-list">
+            <div class="placeholder-row"><span>入力フォーム：品名のみで追加できる構成</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>一覧表示：横罫線のみでコンパクト表示</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>完了済み：必要に応じて折りたたみ表示</span><span class="owner-pill">Plan</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-view" data-page="want" aria-label="Want todo page">
+        <section class="hero" aria-labelledby="wantPageTitle">
+          <div>
+            <p class="kicker">Want todo</p>
+            <h1 id="wantPageTitle">Want<br>TODO</h1>
+          </div>
+          <p class="lead">やりたいことTODO専用ページです。買い物TODOと同じ入力・確認UIを使い、カテゴリだけを分ける構成にします。</p>
+        </section>
+        <section class="page-card">
+          <h2>Coming Next<span class="jp-note">次工程</span></h2>
+          <div class="placeholder-list">
+            <div class="placeholder-row"><span>入力フォーム：やりたいことを短く追加</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>一覧表示：買い物TODOと共通UI</span><span class="owner-pill">Plan</span></div>
+            <div class="placeholder-row"><span>詳細確認：必要なメモはタップで確認</span><span class="owner-pill">Plan</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-view" data-page="settings" aria-label="Settings page">
+        <section class="hero" aria-labelledby="settingsPageTitle">
+          <div>
+            <p class="kicker">System settings</p>
+            <h1 id="settingsPageTitle">Settings<br>Room</h1>
+          </div>
+          <p class="lead">Home Boardの名前設定、共有ID、バックアップ書き出しを管理します。右上のSettingsからいつでもこのページへ移動できます。</p>
+        </section>
+
+        <section class="section" aria-labelledby="nameSettingsHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="nameSettingsHeading">Name List<span class="jp-note">名前</span></h2>
+              <p class="section-description">予定の対象者として使う名前を追加できます。EVERYONEは固定項目です。</p>
+            </div>
+            <div class="section-number">SET</div>
+          </div>
+
+          <form class="settings-add" id="nameForm" autocomplete="off">
+            <div class="field">
+              <label class="settings-label" for="nameInput">Name</label>
+              <input id="nameInput" type="text" placeholder="例：Mamoru" maxlength="24">
+            </div>
+            <button class="secondary-button" type="submit">Add Name</button>
+          </form>
+
+          <div class="name-list" id="nameList" aria-live="polite"></div>
+        </section>
+
+
+        <section class="section" aria-labelledby="bookScopeHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="bookScopeHeading">Shared Book<span class="jp-note">共有</span></h2>
+              <p class="section-description">URLの book ID ごとに、別々のHome Boardとして保存されます。</p>
+            </div>
+            <div class="section-number">BOOK</div>
+          </div>
+
+          <div class="data-grid">
+            <article class="data-card">
+              <div class="data-role">Book ID / 共有ID</div>
+              <h3 class="data-title" id="bookIdLabel">default</h3>
+              <p class="data-text">同じURLを開く端末同士で、同じ予定を共有します。</p>
+              <div class="data-meta">Example: ?book=family</div>
+            </article>
+            <article class="data-card caution">
+              <div class="data-role">Access / 注意</div>
+              <h3 class="data-title">URL based sharing</h3>
+              <p class="data-text">この版はログインなしの共有プロトタイプです。URLを知っている人は同じデータへアクセスできます。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="backupHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="backupHeading">Backup Data<span class="jp-note">保存</span></h2>
+              <p class="section-description">現在のHome BoardデータをJSONとして書き出します。</p>
+            </div>
+            <div class="section-number">DATA</div>
+          </div>
+
+          <div class="data-grid">
+            <article class="data-card">
+              <div class="data-role">Export / 書き出し</div>
+              <h3 class="data-title">Save a JSON backup</h3>
+              <p class="data-text">予定、名前設定、今後追加するTODOデータをバックアップできる構成にします。</p>
+              <div class="data-actions">
+                <span class="data-text">Filename: HMB-YYYYMMDD-HHMM.json</span>
+                <button class="primary-button" type="button" id="exportButton">Export</button>
+              </div>
+            </article>
+            <article class="data-card caution">
+              <div class="data-role">Backup Rule / 命名規則</div>
+              <h3 class="data-title">HMB-YYYYMMDD-HHMM.json</h3>
+              <p class="data-text">Home Boardの短縮コードHMBに、年月日8桁と時刻4桁を付けて保存します。</p>
+              <div class="data-meta">Example: HMB-20260608-0412.json</div>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / © 2026 VAMRSS</footer>
+    </div>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Page navigation">
+    <button class="nav-button is-active" type="button" data-nav="schedule"><span>Schedule</span></button>
+    <button class="nav-button" type="button" data-nav="shopping"><span>Shopping</span></button>
+    <button class="nav-button" type="button" data-nav="want"><span>Want</span></button>
+  </nav>
+
+  <div class="detail-panel" id="detailPanel" aria-hidden="true">
+    <div class="detail-card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="detail-meta" id="detailDate"></div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div class="detail-memo" id="detailMemo"></div>
+      <div class="detail-actions">
+        <button class="secondary-button" type="button" id="detailClose">Close</button>
+        <button class="secondary-button" type="button" id="detailEdit">Edit</button>
+        <button class="danger-button" type="button" id="detailDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const APP_TITLE = '(VAMRSS) HOME BOARD';
+    const APP_ABBREVIATION = 'HMB';
+    const APP_VERSION = 'hmb-supabase-1.0';
+
+    /*
+      Supabase settings:
+      1. Supabase SQL Editorで hmb_supabase_schema.sql を実行
+      2. Project Settings > API の Project URL と anon public key を貼り付け
+    */
+    const SUPABASE_URL = 'https://exjbkerilywuepwtyyjg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_cFR85j6uz9xo5Wl-GDk-CQ_d7RPjr6U';
+
+    const TABLES = {
+      books: 'hmb_books',
+      schedules: 'hmb_schedules'
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const BOOK_ID = urlParams.get('book') || 'default';
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
+    let db = null;
+    let realtimeChannel = null;
+    let isSavingBook = false;
+    let isLoading = false;
+
+    const state = {
+      schedules: [],
+      names: [],
+      selectedOwners: ['EVERYONE'],
+      showAll: false,
+      editingId: null,
+      activeId: null,
+      currentPage: 'schedule',
+      toastTimer: null
+    };
+
+    const els = {
+      list: document.getElementById('scheduleList'),
+      pastList: document.getElementById('pastScheduleList'),
+      pastStart: document.getElementById('pastStart'),
+      pastEnd: document.getElementById('pastEnd'),
+      pastSearch: document.getElementById('pastSearch'),
+      pastReset: document.getElementById('pastResetButton'),
+      views: Array.from(document.querySelectorAll('.app-view')),
+      navButtons: Array.from(document.querySelectorAll('.nav-button')),
+      form: document.getElementById('scheduleForm'),
+      startDate: document.getElementById('scheduleStartDate'),
+      startTime: document.getElementById('scheduleStartTime'),
+      endDate: document.getElementById('scheduleEndDate'),
+      endTime: document.getElementById('scheduleEndTime'),
+      title: document.getElementById('scheduleTitle'),
+      memo: document.getElementById('scheduleMemo'),
+      ownerButtons: document.getElementById('ownerButtons'),
+      submit: document.getElementById('submitButton'),
+      formMode: document.getElementById('formModeText'),
+      panel: document.getElementById('detailPanel'),
+      detailDate: document.getElementById('detailDate'),
+      detailTitle: document.getElementById('detailTitle'),
+      detailMemo: document.getElementById('detailMemo'),
+      close: document.getElementById('detailClose'),
+      edit: document.getElementById('detailEdit'),
+      del: document.getElementById('detailDelete'),
+      settingsButton: document.getElementById('settingsButton'),
+      nameForm: document.getElementById('nameForm'),
+      nameInput: document.getElementById('nameInput'),
+      nameList: document.getElementById('nameList'),
+      exportButton: document.getElementById('exportButton'),
+      toast: document.getElementById('toast'),
+      bookIdLabel: document.getElementById('bookIdLabel')
+    };
+
+    function isConfigured() {
+      return SUPABASE_URL.startsWith('https://')
+        && SUPABASE_ANON_KEY.length > 20
+        && !SUPABASE_URL.includes('YOUR_')
+        && !SUPABASE_ANON_KEY.includes('YOUR_');
+    }
+
+    function localDateString(date = new Date()) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function displayDateInput(dateString) {
+      return String(dateString || '');
+    }
+
+    function normalizeDateInput(value) {
+      const raw = String(value || '').trim();
+      const iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      const slash = raw.replace(/[.]/g, '/').match(/^(\d{4})[\/](\d{1,2})[\/](\d{1,2})$/);
+      const match = iso || slash;
+      if (!match) return '';
+      const y = Number(match[1]);
+      const m = Number(match[2]);
+      const d = Number(match[3]);
+      const date = new Date(y, m - 1, d);
+      if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return '';
+      return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    }
+
+    function normalizeTimeInput(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      const match = raw.match(/^(\d{1,2}):(\d{2})/);
+      if (!match) return '';
+      const h = Number(match[1]);
+      const m = Number(match[2]);
+      if (h < 0 || h > 23 || m < 0 || m > 59) return '';
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    function scheduleStartDate(item) {
+      return normalizeDateInput(item.startDate || item.date || '');
+    }
+
+    function scheduleEndDate(item) {
+      return normalizeDateInput(item.endDate || item.startDate || item.date || '');
+    }
+
+    function scheduleStartTime(item) {
+      return normalizeTimeInput(item.startTime || '');
+    }
+
+    function scheduleEndTime(item) {
+      return normalizeTimeInput(item.endTime || '');
+    }
+
+    function scheduleStartKey(item) {
+      return `${scheduleStartDate(item)}T${scheduleStartTime(item) || '00:00'}`;
+    }
+
+    function scheduleEndKey(item) {
+      return `${scheduleEndDate(item)}T${scheduleEndTime(item) || '23:59'}`;
+    }
+
+    function nowLocalDateTimeKey() {
+      const d = new Date();
+      const date = localDateString(d);
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      return `${date}T${hh}:${mm}`;
+    }
+
+    function dateOnly(dateString) {
+      const normalized = normalizeDateInput(dateString) || localDateString();
+      const [y, m, d] = normalized.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function addDays(date, days) {
+      const next = new Date(date);
+      next.setDate(next.getDate() + days);
+      return next;
+    }
+
+    function previousMonthRange() {
+      const today = dateOnly(localDateString());
+      const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      const end = new Date(today.getFullYear(), today.getMonth(), 0);
+      return { start: localDateString(start), end: localDateString(end) };
+    }
+
+    function setPastDefaultRange() {
+      const range = previousMonthRange();
+      els.pastStart.value = range.start;
+      els.pastEnd.value = range.end;
+      els.pastSearch.value = '';
+    }
+
+    function formatCompactDate(dateString) {
+      const date = dateOnly(dateString);
+      return `${date.getMonth() + 1}/${date.getDate()}`;
+    }
+
+    function formatWeekday(dateString) {
+      const date = dateOnly(dateString);
+      return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+    }
+
+    function formatDetailDate(dateString) {
+      const date = dateOnly(dateString);
+      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} ${formatWeekday(dateString)}`;
+    }
+
+    function formatScheduleTime(item) {
+      const startDate = scheduleStartDate(item);
+      const endDate = scheduleEndDate(item);
+      const startTime = scheduleStartTime(item);
+      const endTime = scheduleEndTime(item);
+      if (!startTime && !endTime) {
+        return startDate === endDate ? 'All Day' : `${formatCompactDate(startDate)} → ${formatCompactDate(endDate)} / All Day`;
+      }
+      if (!startTime || !endTime) return 'Time TBD';
+      if (startDate === endDate) return `${startTime} → ${endTime}`;
+      return `${formatCompactDate(startDate)} ${startTime} → ${formatCompactDate(endDate)} ${endTime}`;
+    }
+
+    function formatScheduleDetailDate(item) {
+      const startDate = scheduleStartDate(item);
+      const endDate = scheduleEndDate(item);
+      const startTime = scheduleStartTime(item);
+      const endTime = scheduleEndTime(item);
+      if (!startTime && !endTime) {
+        if (startDate && endDate && startDate !== endDate) return `${formatDetailDate(startDate)} → ${formatDetailDate(endDate)} / All Day`;
+        return `${formatDetailDate(startDate)} / All Day`;
+      }
+      if (!startTime || !endTime) {
+        if (startDate && endDate && startDate !== endDate) return `${formatDetailDate(startDate)} → ${formatDetailDate(endDate)} / Time TBD`;
+        return `${formatDetailDate(startDate)} / Time TBD`;
+      }
+      if (startDate && endDate && startDate !== endDate) return `${formatDetailDate(startDate)} ${startTime} → ${formatDetailDate(endDate)} ${endTime}`;
+      return `${formatDetailDate(startDate)} / ${startTime} → ${endTime}`;
+    }
+
+    function normalizeOwnerName(owner) {
+      if (!owner) return 'EVERYONE';
+      const value = String(owner).trim();
+      if (!value) return 'EVERYONE';
+      if (value.toUpperCase() === 'EVERYONE' || value.toLowerCase() === 'everyone') return 'EVERYONE';
+      if (value.toLowerCase() === 'personal') return state.names[0] || 'Personal';
+      return value;
+    }
+
+    function normalizeOwners(item) {
+      const raw = Array.isArray(item.owners) ? item.owners : [item.owner || 'EVERYONE'];
+      let owners = raw.map(normalizeOwnerName).filter(Boolean);
+      owners = Array.from(new Set(owners));
+      if (!owners.length) owners = ['EVERYONE'];
+      if (owners.includes('EVERYONE') && owners.length > 1) owners = ['EVERYONE'];
+      return owners;
+    }
+
+    function isEveryone(owner) {
+      return normalizeOwnerName(owner).toUpperCase() === 'EVERYONE';
+    }
+
+    function daysLabel(dateString) {
+      const today = dateOnly(localDateString());
+      const target = dateOnly(dateString);
+      const diff = Math.round((target - today) / DAY_MS);
+      if (diff === 0) return 'Today';
+      if (diff === 1) return 'Tomorrow';
+      if (diff > 1) return `+${diff}d`;
+      return `${Math.abs(diff)}d ago`;
+    }
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>'"]/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      })[char]);
+    }
+
+    function toSchedule(row) {
+      return {
+        id: row.id,
+        date: row.start_date,
+        startDate: row.start_date,
+        startTime: normalizeTimeInput(row.start_time || ''),
+        endDate: row.end_date || row.start_date,
+        endTime: normalizeTimeInput(row.end_time || ''),
+        title: row.title || '',
+        memo: row.memo || '',
+        owners: Array.isArray(row.owners) ? row.owners : ['EVERYONE']
+      };
+    }
+
+    function toSchedulePayload() {
+      const startDate = normalizeDateInput(els.startDate.value);
+      const endDate = normalizeDateInput(els.endDate.value);
+      const startTime = normalizeTimeInput(els.startTime.value);
+      const endTime = normalizeTimeInput(els.endTime.value);
+      const title = els.title.value.trim();
+      const memo = els.memo.value.trim();
+      const owners = getOwnersValue();
+      return { startDate, endDate, startTime, endTime, title, memo, owners };
+    }
+
+    function dbSchedulePayload(payload) {
+      return {
+        book_id: BOOK_ID,
+        start_date: payload.startDate,
+        start_time: payload.startTime || null,
+        end_date: payload.endDate,
+        end_time: payload.endTime || null,
+        title: payload.title,
+        memo: payload.memo,
+        owners: payload.owners
+      };
+    }
+
+    function seedDemoData() {
+      const today = dateOnly(localDateString());
+      state.names = ['Mamoru', 'Partner'];
+      state.schedules = [
+        { id: 'demo-1', date: localDateString(addDays(today, -18)), startDate: localDateString(addDays(today, -18)), startTime: '15:00', endDate: localDateString(addDays(today, -18)), endTime: '16:30', title: '先月の買い出し', owners: ['EVERYONE'], memo: 'Supabase未設定時の表示確認用。' },
+        { id: 'demo-2', date: localDateString(today), startDate: localDateString(today), startTime: '', endDate: localDateString(today), endTime: '', title: '燃えるごみ', owners: ['EVERYONE'], memo: '朝のうちに出す。' },
+        { id: 'demo-3', date: localDateString(addDays(today, 3)), startDate: localDateString(addDays(today, 3)), startTime: '10:00', endDate: localDateString(addDays(today, 3)), endTime: '12:00', title: '買い出しと日用品の補充をする予定', owners: ['EVERYONE'], memo: '日用品とミルクを確認。' },
+        { id: 'demo-4', date: localDateString(addDays(today, 32)), startDate: localDateString(addDays(today, 32)), startTime: '22:00', endDate: localDateString(addDays(today, 33)), endTime: '02:00', title: '来月の日付をまたぐ予定', owners: ['Mamoru'], memo: 'Moreで表示される確認用データ。' }
+      ];
+    }
+
+    function getDb() {
+      if (!isConfigured()) return null;
+      if (!window.supabase) return null;
+      if (!db) db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      return db;
+    }
+
+    async function ensureBook() {
+      const client = getDb();
+      if (!client) throw new Error('Supabase is not configured');
+      const { data, error } = await client.from(TABLES.books).select('*').eq('id', BOOK_ID).maybeSingle();
+      if (error) throw error;
+      if (data) {
+        state.names = Array.isArray(data.members) ? data.members.filter(Boolean).map(String) : ['Mamoru', 'Partner'];
+        return;
+      }
+      const { data: created, error: createError } = await client.from(TABLES.books).insert({
+        id: BOOK_ID,
+        title: 'Home Board',
+        members: ['Mamoru', 'Partner']
+      }).select('*').single();
+      if (createError) throw createError;
+      state.names = Array.isArray(created.members) ? created.members.filter(Boolean).map(String) : ['Mamoru', 'Partner'];
+    }
+
+    async function loadAll(showAlert = true) {
+      els.bookIdLabel.textContent = BOOK_ID;
+      if (!isConfigured() || !window.supabase) {
+        seedDemoData();
+        render();
+        if (showAlert) showToast('Supabase settings required');
+        return;
+      }
+      const client = getDb();
+      isLoading = true;
+      try {
+        await ensureBook();
+        const { data, error } = await client
+          .from(TABLES.schedules)
+          .select('*')
+          .eq('book_id', BOOK_ID)
+          .order('start_date', { ascending: true })
+          .order('start_time', { ascending: true, nullsFirst: true })
+          .order('created_at', { ascending: true });
+        if (error) throw error;
+        state.schedules = (data || []).map(toSchedule);
+        render();
+        subscribeRealtime();
+      } catch (error) {
+        console.error(error);
+        if (showAlert) showToast('Supabase load error');
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    async function loadAllSilently() {
+      await loadAll(false);
+    }
+
+    function subscribeRealtime() {
+      const client = getDb();
+      if (!client || realtimeChannel) return;
+      realtimeChannel = client
+        .channel('home-board-' + BOOK_ID)
+        .on('postgres_changes', { event: '*', schema: 'public', table: TABLES.books, filter: 'id=eq.' + BOOK_ID }, loadAllSilently)
+        .on('postgres_changes', { event: '*', schema: 'public', table: TABLES.schedules, filter: 'book_id=eq.' + BOOK_ID }, loadAllSilently)
+        .subscribe();
+    }
+
+    async function saveBookSettings() {
+      const client = getDb();
+      if (!client || isSavingBook) return;
+      isSavingBook = true;
+      try {
+        const { error } = await client.from(TABLES.books).update({ members: state.names }).eq('id', BOOK_ID);
+        if (error) throw error;
+      } catch (error) {
+        console.error(error);
+        showToast('Name save error');
+      } finally {
+        isSavingBook = false;
+      }
+    }
+
+    function sortedUpcoming() {
+      const nowKey = nowLocalDateTimeKey();
+      return state.schedules
+        .filter(item => scheduleEndKey(item) >= nowKey)
+        .sort((a, b) => scheduleStartKey(a).localeCompare(scheduleStartKey(b)) || a.title.localeCompare(b.title, 'ja'));
+    }
+
+    function visibleSchedules() {
+      const today = dateOnly(localDateString());
+      const limit = localDateString(addDays(today, 30));
+      const upcoming = sortedUpcoming();
+      if (state.showAll) return upcoming;
+      return upcoming.filter(item => scheduleStartDate(item) <= limit || scheduleEndDate(item) <= limit);
+    }
+
+    function filteredPastSchedules() {
+      const nowKey = nowLocalDateTimeKey();
+      const start = normalizeDateInput(els.pastStart.value);
+      const end = normalizeDateInput(els.pastEnd.value);
+      const keyword = String(els.pastSearch.value || '').trim().toLowerCase();
+      return state.schedules
+        .filter(item => scheduleEndKey(item) < nowKey)
+        .filter(item => !start || scheduleEndDate(item) >= start)
+        .filter(item => !end || scheduleEndDate(item) <= end)
+        .filter(item => {
+          if (!keyword) return true;
+          const owners = normalizeOwners(item).join(' ');
+          const haystack = `${item.title || ''} ${item.memo || ''} ${owners}`.toLowerCase();
+          return haystack.includes(keyword);
+        })
+        .sort((a, b) => scheduleEndKey(b).localeCompare(scheduleEndKey(a)) || a.title.localeCompare(b.title, 'ja'));
+    }
+
+    function ownerOptions() {
+      return ['EVERYONE', ...state.names];
+    }
+
+    function setOwnersValue(owners) {
+      let normalized = Array.from(new Set((owners || []).map(normalizeOwnerName)));
+      normalized = normalized.filter(owner => ownerOptions().includes(owner));
+      if (!normalized.length) normalized = ['EVERYONE'];
+      if (normalized.includes('EVERYONE') && normalized.length > 1) normalized = ['EVERYONE'];
+      state.selectedOwners = normalized;
+      renderOwnerButtons();
+    }
+
+    function toggleOwner(owner) {
+      const normalized = normalizeOwnerName(owner);
+      if (normalized === 'EVERYONE') {
+        setOwnersValue(['EVERYONE']);
+        return;
+      }
+      let next = state.selectedOwners.filter(item => item !== 'EVERYONE');
+      if (next.includes(normalized)) next = next.filter(item => item !== normalized);
+      else next.push(normalized);
+      setOwnersValue(next.length ? next : ['EVERYONE']);
+    }
+
+    function getOwnersValue() {
+      return state.selectedOwners.length ? state.selectedOwners : ['EVERYONE'];
+    }
+
+    function renderOwnerButtons() {
+      els.ownerButtons.innerHTML = '';
+      ownerOptions().forEach(owner => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `owner-button${state.selectedOwners.includes(owner) ? ' is-active' : ''}`;
+        btn.textContent = owner;
+        btn.title = owner;
+        btn.setAttribute('aria-pressed', state.selectedOwners.includes(owner) ? 'true' : 'false');
+        btn.addEventListener('click', () => toggleOwner(owner));
+        els.ownerButtons.appendChild(btn);
+      });
+    }
+
+    function renderNameList() {
+      els.nameList.innerHTML = '';
+      if (!state.names.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'No personal names';
+        els.nameList.appendChild(empty);
+        return;
+      }
+      state.names.forEach(name => {
+        const row = document.createElement('div');
+        row.className = 'name-row';
+        row.innerHTML = `
+          <div class="name-chip" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
+          <div class="name-actions">
+            <button class="small-action" type="button" data-action="edit">Edit</button>
+            <button class="small-action" type="button" data-action="delete">Delete</button>
+          </div>
+        `;
+        row.querySelector('[data-action="edit"]').addEventListener('click', () => editName(name));
+        row.querySelector('[data-action="delete"]').addEventListener('click', () => deleteName(name));
+        els.nameList.appendChild(row);
+      });
+    }
+
+    function ownerPillsHtml(owners) {
+      return owners.map(owner => `
+        <span class="owner-pill ${isEveryone(owner) ? 'is-everyone' : ''}" title="${escapeHtml(owner)}">${escapeHtml(owner)}</span>
+      `).join('');
+    }
+
+    function renderScheduleRows(container, items, options = {}) {
+      const { showMore = false, emptyText = 'No upcoming schedule' } = options;
+      container.innerHTML = '';
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = emptyText;
+        container.appendChild(empty);
+      } else {
+        items.forEach(item => {
+          const owners = normalizeOwners(item);
+          const row = document.createElement('button');
+          row.className = 'schedule-row';
+          row.type = 'button';
+          row.dataset.id = item.id;
+          const label = daysLabel(scheduleStartDate(item));
+          row.innerHTML = `
+            <span class="schedule-date-cell" aria-hidden="true">
+              <span class="schedule-monthday">${escapeHtml(formatCompactDate(scheduleStartDate(item)))}</span>
+            </span>
+            <span class="schedule-title-cell">
+              <span class="schedule-title">${escapeHtml(item.title)}</span>
+              ${item.memo && item.memo.trim() ? '<span class="memo-mark" title="Memoあり">✎</span>' : ''}
+            </span>
+            <span class="schedule-weekday-cell" aria-hidden="true">
+              <span class="schedule-weekday">${escapeHtml(formatWeekday(scheduleStartDate(item)))}</span>
+            </span>
+            <span class="schedule-meta-cell">
+              <span class="schedule-meta-left">
+                <span class="schedule-time">${escapeHtml(formatScheduleTime(item))}</span>
+              </span>
+              <span class="schedule-meta-right">
+                <span class="owner-line">${ownerPillsHtml(owners)}</span>
+                <span class="days-left ${label === 'Today' ? 'is-today' : ''}">${escapeHtml(label)}</span>
+              </span>
+            </span>
+          `;
+          row.addEventListener('click', () => openDetail(item.id));
+          container.appendChild(row);
+        });
+      }
+      if (showMore) {
+        const upcoming = sortedUpcoming();
+        const today = dateOnly(localDateString());
+        const limit = localDateString(addDays(today, 30));
+        const hiddenCount = upcoming.filter(item => scheduleStartDate(item) > limit && scheduleEndDate(item) > limit).length;
+        if (hiddenCount > 0 || state.showAll) {
+          const moreWrap = document.createElement('div');
+          moreWrap.className = 'more-wrap';
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'more-button';
+          btn.textContent = state.showAll ? 'Close Future Schedule' : `More / Show All ${hiddenCount}`;
+          btn.addEventListener('click', () => {
+            state.showAll = !state.showAll;
+            render();
+          });
+          moreWrap.appendChild(btn);
+          container.appendChild(moreWrap);
+        }
+      }
+    }
+
+    function renderPages() {
+      els.views.forEach(view => view.classList.toggle('is-active', view.dataset.page === state.currentPage));
+      els.navButtons.forEach(btn => btn.classList.toggle('is-active', btn.dataset.nav === state.currentPage));
+    }
+
+    function render() {
+      renderOwnerButtons();
+      renderNameList();
+      renderPages();
+      renderScheduleRows(els.list, visibleSchedules(), { showMore: true });
+      renderScheduleRows(els.pastList, filteredPastSchedules(), { emptyText: 'No past schedule in this range' });
+    }
+
+    function resetForm() {
+      state.editingId = null;
+      els.form.reset();
+      const today = localDateString();
+      els.startDate.value = displayDateInput(today);
+      els.endDate.value = displayDateInput(today);
+      els.startTime.value = '';
+      els.endTime.value = '';
+      setOwnersValue(['EVERYONE']);
+      els.submit.textContent = 'Add Schedule';
+      els.formMode.textContent = '新しい予定を追加します。';
+    }
+
+    function validatePayload(payload) {
+      if (!payload.startDate || !payload.endDate || !payload.title) {
+        showToast('Date and title required');
+        return false;
+      }
+      if ((payload.startTime && !payload.endTime) || (!payload.startTime && payload.endTime)) {
+        showToast('Set both start and end time, or leave both blank');
+        return false;
+      }
+      if (payload.startTime && payload.endTime && `${payload.endDate}T${payload.endTime}` < `${payload.startDate}T${payload.startTime}`) {
+        showToast('End must be after start');
+        return false;
+      }
+      if (!payload.startTime && !payload.endTime && payload.endDate < payload.startDate) {
+        showToast('End date must be after start date');
+        return false;
+      }
+      return true;
+    }
+
+    async function submitForm(event) {
+      event.preventDefault();
+      const payload = toSchedulePayload();
+      if (!validatePayload(payload)) return;
+      const client = getDb();
+      if (!client) {
+        showToast('Supabase settings required');
+        return;
+      }
+      els.submit.disabled = true;
+      try {
+        if (state.editingId) {
+          const { error } = await client.from(TABLES.schedules)
+            .update(dbSchedulePayload(payload))
+            .eq('id', state.editingId)
+            .eq('book_id', BOOK_ID);
+          if (error) throw error;
+          showToast('Schedule updated');
+        } else {
+          const { error } = await client.from(TABLES.schedules).insert(dbSchedulePayload(payload));
+          if (error) throw error;
+          showToast('Schedule added');
+        }
+        resetForm();
+        await loadAllSilently();
+      } catch (error) {
+        console.error(error);
+        showToast('Schedule save error');
+      } finally {
+        els.submit.disabled = false;
+      }
+    }
+
+    function openDetail(id) {
+      const item = state.schedules.find(entry => entry.id === id);
+      if (!item) return;
+      const owners = normalizeOwners(item);
+      state.activeId = id;
+      els.detailDate.textContent = `${formatScheduleDetailDate(item)} / ${owners.join(', ')}`;
+      els.detailTitle.textContent = item.title;
+      els.detailMemo.textContent = item.memo && item.memo.trim() ? item.memo : 'メモはありません。';
+      els.panel.classList.add('is-open');
+      els.panel.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeDetail() {
+      state.activeId = null;
+      els.panel.classList.remove('is-open');
+      els.panel.setAttribute('aria-hidden', 'true');
+    }
+
+    function editActive() {
+      const item = state.schedules.find(entry => entry.id === state.activeId);
+      if (!item) return;
+      state.editingId = item.id;
+      state.currentPage = 'schedule';
+      renderPages();
+      els.startDate.value = displayDateInput(scheduleStartDate(item));
+      els.startTime.value = scheduleStartTime(item);
+      els.endDate.value = displayDateInput(scheduleEndDate(item));
+      els.endTime.value = scheduleEndTime(item);
+      els.title.value = item.title;
+      setOwnersValue(normalizeOwners(item));
+      els.memo.value = item.memo || '';
+      els.submit.textContent = 'Update Schedule';
+      els.formMode.textContent = '選択した予定を編集しています。';
+      closeDetail();
+      els.form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(() => els.title.focus(), 260);
+    }
+
+    async function deleteActive() {
+      const item = state.schedules.find(entry => entry.id === state.activeId);
+      if (!item) return;
+      const ok = window.confirm(`「${item.title}」を削除しますか？`);
+      if (!ok) return;
+      const client = getDb();
+      if (!client) {
+        showToast('Supabase settings required');
+        return;
+      }
+      try {
+        const { error } = await client.from(TABLES.schedules).delete().eq('id', item.id).eq('book_id', BOOK_ID);
+        if (error) throw error;
+        closeDetail();
+        resetForm();
+        await loadAllSilently();
+        showToast('Schedule deleted');
+      } catch (error) {
+        console.error(error);
+        showToast('Delete error');
+      }
+    }
+
+    async function addName(event) {
+      event.preventDefault();
+      const name = els.nameInput.value.trim();
+      if (!name) return;
+      if (name.toUpperCase() === 'EVERYONE') {
+        showToast('Everyone is fixed');
+        return;
+      }
+      if (state.names.some(existing => existing.toLowerCase() === name.toLowerCase())) {
+        showToast('Name already exists');
+        return;
+      }
+      state.names.push(name);
+      els.nameInput.value = '';
+      await saveBookSettings();
+      render();
+      showToast('Name added');
+    }
+
+    async function editName(name) {
+      const next = window.prompt('名前を編集します。', name);
+      if (next === null) return;
+      const trimmed = next.trim();
+      if (!trimmed) return;
+      if (trimmed.toUpperCase() === 'EVERYONE') {
+        showToast('Everyone is fixed');
+        return;
+      }
+      if (state.names.some(existing => existing !== name && existing.toLowerCase() === trimmed.toLowerCase())) {
+        showToast('Name already exists');
+        return;
+      }
+      const oldName = name;
+      const newName = trimmed;
+      state.names = state.names.map(item => item === oldName ? newName : item);
+      const client = getDb();
+      try {
+        if (client) {
+          await saveBookSettings();
+          const affected = state.schedules.filter(item => normalizeOwners(item).includes(oldName));
+          for (const item of affected) {
+            const owners = normalizeOwners(item).map(owner => owner === oldName ? newName : owner);
+            const { error } = await client.from(TABLES.schedules).update({ owners: Array.from(new Set(owners)) }).eq('id', item.id).eq('book_id', BOOK_ID);
+            if (error) throw error;
+          }
+        }
+        state.selectedOwners = state.selectedOwners.map(owner => owner === oldName ? newName : owner);
+        await loadAllSilently();
+        render();
+        showToast('Name updated');
+      } catch (error) {
+        console.error(error);
+        showToast('Name update error');
+      }
+    }
+
+    async function deleteName(name) {
+      const used = state.schedules.some(item => normalizeOwners(item).includes(name));
+      const message = used
+        ? `「${name}」を削除しますか？既存予定からこの名前が外れ、対象者が空になる予定はEVERYONEに変更されます。`
+        : `「${name}」を削除しますか？`;
+      if (!window.confirm(message)) return;
+      const client = getDb();
+      try {
+        state.names = state.names.filter(item => item !== name);
+        if (client) {
+          await saveBookSettings();
+          const affected = state.schedules.filter(item => normalizeOwners(item).includes(name));
+          for (const item of affected) {
+            let owners = normalizeOwners(item).filter(owner => owner !== name);
+            if (!owners.length) owners = ['EVERYONE'];
+            const { error } = await client.from(TABLES.schedules).update({ owners }).eq('id', item.id).eq('book_id', BOOK_ID);
+            if (error) throw error;
+          }
+        }
+        state.selectedOwners = state.selectedOwners.filter(owner => owner !== name);
+        if (!state.selectedOwners.length) state.selectedOwners = ['EVERYONE'];
+        await loadAllSilently();
+        render();
+        showToast('Name deleted');
+      } catch (error) {
+        console.error(error);
+        showToast('Name delete error');
+      }
+    }
+
+    function switchPage(page) {
+      if (!['schedule', 'shopping', 'want', 'settings'].includes(page)) return;
+      state.currentPage = page;
+      renderPages();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function exportJson() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      const h = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const filename = `HMB-${y}${m}${d}-${h}${min}.json`;
+      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: APP_VERSION, book: BOOK_ID, names: state.names, schedules: state.schedules }, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('Exported');
+    }
+
+    function showToast(message) {
+      window.clearTimeout(state.toastTimer);
+      els.toast.textContent = message;
+      els.toast.classList.add('is-show');
+      state.toastTimer = window.setTimeout(() => els.toast.classList.remove('is-show'), 1700);
+    }
+
+    [els.startDate, els.endDate, els.pastStart, els.pastEnd].forEach(input => {
+      input.addEventListener('blur', () => {
+        const normalized = normalizeDateInput(input.value);
+        if (normalized) input.value = displayDateInput(normalized);
+      });
+    });
+
+    els.startDate.addEventListener('change', () => {
+      if (!els.endDate.value || els.endDate.value < els.startDate.value) {
+        els.endDate.value = els.startDate.value;
+      }
+    });
+
+    els.form.addEventListener('submit', submitForm);
+    els.close.addEventListener('click', closeDetail);
+    els.edit.addEventListener('click', editActive);
+    els.del.addEventListener('click', deleteActive);
+    els.panel.addEventListener('click', event => { if (event.target === els.panel) closeDetail(); });
+    els.settingsButton.addEventListener('click', () => switchPage('settings'));
+    els.nameForm.addEventListener('submit', addName);
+    els.exportButton.addEventListener('click', exportJson);
+    els.pastStart.addEventListener('change', render);
+    els.pastEnd.addEventListener('change', render);
+    els.pastSearch.addEventListener('input', render);
+    els.pastReset.addEventListener('click', () => { setPastDefaultRange(); render(); });
+    els.navButtons.forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.nav)));
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeDetail();
+    });
+
+    setPastDefaultRange();
+    resetForm();
+    loadAll();
+  </script>
+</body>
+</html>
