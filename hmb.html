@@ -1601,7 +1601,10 @@
         subscribeRealtime();
       } catch (error) {
         console.error(error);
-        if (showAlert) showToast('Supabase load error');
+        const message = error && (error.message || error.details || error.hint || error.code)
+          ? `${error.message || 'Supabase load error'}${error.details ? ' / ' + error.details : ''}${error.hint ? ' / ' + error.hint : ''}${error.code ? ' [' + error.code + ']' : ''}`
+          : 'Supabase load error';
+        if (showAlert) showToast(message);
       } finally {
         isLoading = false;
       }
