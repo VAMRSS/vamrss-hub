@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Home Board - Identity Multi Page Prototype v6</title>
+  <title>Home Board - Identity Multi Page Prototype v10</title>
   <style>
     :root {
       --bg: #fafbfc;
@@ -247,8 +247,9 @@
       min-height: 54px;
       display: grid;
       grid-template-columns: minmax(46px, 58px) minmax(0, 1fr);
-      align-items: start;
-      gap: 10px;
+      grid-template-rows: auto auto;
+      column-gap: 10px;
+      row-gap: 7px;
       padding: 10px 0;
       text-align: left;
       transition: background var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
@@ -259,57 +260,107 @@
       background: rgba(244, 247, 249, .72);
     }
 
-    .date-chip {
-      display: grid;
-      gap: 4px;
-      justify-items: start;
-      align-content: start;
-      color: var(--sub);
-      opacity: .95;
-      line-height: 1;
+    .schedule-date-cell,
+    .schedule-weekday-cell,
+    .schedule-title-cell,
+    .schedule-meta-cell {
       min-width: 0;
-      max-width: 100%;
+    }
+
+    .schedule-date-cell {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
       overflow: hidden;
-      padding-top: 1px;
+    }
+
+    .schedule-weekday-cell {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .schedule-title-cell {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+
+    .schedule-meta-cell {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .schedule-meta-left {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 7px;
+      flex-wrap: wrap;
+      text-align: left;
+    }
+
+    .schedule-meta-right {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+      text-align: right;
     }
 
     .schedule-monthday {
       color: var(--ink);
       font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
       font-size: 17px;
+      line-height: 1.24;
       font-weight: 500;
       letter-spacing: -0.04em;
       white-space: nowrap;
     }
 
     .schedule-weekday {
-      font-size: 9px;
       color: var(--sub);
       opacity: .68;
       white-space: nowrap;
+      transform: translateY(-2px);
     }
 
-    .schedule-main {
-      min-width: 0;
-      display: grid;
-      gap: 7px;
-      line-height: 1.25;
+    .schedule-weekday,
+    .schedule-time,
+    .days-left {
+      flex: 0 0 auto;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
+    .schedule-main,
+    .date-chip,
+    .schedule-title-line,
     .schedule-meta-line {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
-      gap: 8px;
-      min-width: 0;
+      display: contents;
     }
 
     .owner-line {
       min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+      display: contents;
     }
 
     .schedule-title {
@@ -325,10 +376,17 @@
       letter-spacing: -0.04em;
     }
 
+    .schedule-time {
+      color: var(--sub);
+      opacity: .72;
+      overflow-wrap: anywhere;
+    }
+
     .memo-mark {
       flex: 0 0 auto;
       width: 18px;
       height: 18px;
+      margin-top: 1px;
       display: inline-grid;
       place-items: center;
       border: 1px solid rgba(223, 231, 239, .9);
@@ -462,8 +520,29 @@
       gap: 10px;
     }
 
+    .date-time-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .date-time-pair {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    input[type="time"] {
+      -webkit-appearance: none;
+      appearance: none;
+      text-align: left;
+      text-align-last: left;
+    }
+
     .field { display: grid; gap: 7px; min-width: 0; }
     .label { color: var(--sub); opacity: .72; }
+    .label-sub { opacity: .62; font-weight: 500; letter-spacing: .06em; }
 
     input,
     textarea {
@@ -864,7 +943,8 @@
     @media (min-width: 640px) {
       .container { padding-top: 28px; }
       .hero { grid-template-columns: 1.1fr .9fr; min-height: 245px; align-items: end; }
-      .form-grid { grid-template-columns: 150px minmax(0, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .date-time-pair { grid-template-columns: minmax(0, 1fr) 120px; }
       .past-filter-grid { grid-template-columns: 1fr 1fr; }
       .past-filter-grid .wide { grid-column: 1 / -1; }
       .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -878,10 +958,10 @@
       .section-number { padding-top: 0; }
       .schedule-row {
         grid-template-columns: minmax(44px, 52px) minmax(0, 1fr);
-        gap: 8px;
+        column-gap: 8px;
+        row-gap: 7px;
       }
       .schedule-monthday { font-size: 15px; }
-      .schedule-weekday { font-size: 8px; }
       .schedule-title { font-size: 16px; }
       .owner-pill { max-width: 126px; }
       .days-left { font-size: 9px; }
@@ -933,10 +1013,26 @@
           <div class="schedule-list" id="scheduleList" aria-live="polite"></div>
 
           <form class="form-card" id="scheduleForm" autocomplete="off">
-            <div class="form-grid">
-              <div class="field date-field">
-                <label class="label" for="scheduleDate">Date</label>
-                <input id="scheduleDate" class="date-input" name="date" type="date" autocomplete="off" required>
+            <div class="date-time-grid">
+              <div class="date-time-pair">
+                <div class="field date-field">
+                  <label class="label" for="scheduleStartDate">Start Date</label>
+                  <input id="scheduleStartDate" class="date-input" name="startDate" type="date" autocomplete="off" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="scheduleStartTime">Start Time <span class="label-sub">Optional</span></label>
+                  <input id="scheduleStartTime" name="startTime" type="time" autocomplete="off">
+                </div>
+              </div>
+              <div class="date-time-pair">
+                <div class="field date-field">
+                  <label class="label" for="scheduleEndDate">End Date</label>
+                  <input id="scheduleEndDate" class="date-input" name="endDate" type="date" autocomplete="off" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="scheduleEndTime">End Time <span class="label-sub">Optional</span></label>
+                  <input id="scheduleEndTime" name="endTime" type="time" autocomplete="off">
+                </div>
               </div>
               <div class="field">
                 <label class="label" for="scheduleTitle">Title</label>
@@ -1117,7 +1213,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const STORAGE_KEY = 'home-board-v4';
+    const STORAGE_KEY = 'home-board-v5';
     const OLD_STORAGE_KEY = 'home-board-schedule-v3';
     const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -1142,7 +1238,10 @@
       views: Array.from(document.querySelectorAll('.app-view')),
       navButtons: Array.from(document.querySelectorAll('.nav-button')),
       form: document.getElementById('scheduleForm'),
-      date: document.getElementById('scheduleDate'),
+      startDate: document.getElementById('scheduleStartDate'),
+      startTime: document.getElementById('scheduleStartTime'),
+      endDate: document.getElementById('scheduleEndDate'),
+      endTime: document.getElementById('scheduleEndTime'),
       title: document.getElementById('scheduleTitle'),
       memo: document.getElementById('scheduleMemo'),
       ownerButtons: document.getElementById('ownerButtons'),
@@ -1189,6 +1288,49 @@
       return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
     }
 
+
+    function normalizeTimeInput(value) {
+      const raw = String(value || '').trim();
+      const match = raw.match(/^(\d{1,2}):(\d{2})$/);
+      if (!match) return '';
+      const h = Number(match[1]);
+      const m = Number(match[2]);
+      if (h < 0 || h > 23 || m < 0 || m > 59) return '';
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    function scheduleStartDate(item) {
+      return normalizeDateInput(item.startDate || item.date || '');
+    }
+
+    function scheduleEndDate(item) {
+      return normalizeDateInput(item.endDate || item.startDate || item.date || '');
+    }
+
+    function scheduleStartTime(item) {
+      return normalizeTimeInput(item.startTime || '');
+    }
+
+    function scheduleEndTime(item) {
+      return normalizeTimeInput(item.endTime || '');
+    }
+
+    function scheduleStartKey(item) {
+      return `${scheduleStartDate(item)}T${scheduleStartTime(item) || '00:00'}`;
+    }
+
+    function scheduleEndKey(item) {
+      return `${scheduleEndDate(item)}T${scheduleEndTime(item) || '23:59'}`;
+    }
+
+    function nowLocalDateTimeKey() {
+      const d = new Date();
+      const date = localDateString(d);
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      return `${date}T${hh}:${mm}`;
+    }
+
     function dateOnly(dateString) {
       const [y, m, d] = dateString.split('-').map(Number);
       return new Date(y, m - 1, d);
@@ -1227,6 +1369,45 @@
     function formatDetailDate(dateString) {
       const date = dateOnly(dateString);
       return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} ${formatWeekday(dateString)}`;
+    }
+
+    function formatScheduleTime(item) {
+      const startDate = scheduleStartDate(item);
+      const endDate = scheduleEndDate(item);
+      const startTime = scheduleStartTime(item);
+      const endTime = scheduleEndTime(item);
+
+      if (!startTime && !endTime) {
+        return startDate === endDate ? 'All Day' : `${formatCompactDate(startDate)} → ${formatCompactDate(endDate)} / All Day`;
+      }
+      if (!startTime || !endTime) {
+        return 'Time TBD';
+      }
+      if (startDate === endDate) return `${startTime} → ${endTime}`;
+      return `${formatCompactDate(startDate)} ${startTime} → ${formatCompactDate(endDate)} ${endTime}`;
+    }
+
+    function formatScheduleDetailDate(item) {
+      const startDate = scheduleStartDate(item);
+      const endDate = scheduleEndDate(item);
+      const startTime = scheduleStartTime(item);
+      const endTime = scheduleEndTime(item);
+      if (!startTime && !endTime) {
+        if (startDate && endDate && startDate !== endDate) {
+          return `${formatDetailDate(startDate)} → ${formatDetailDate(endDate)} / All Day`;
+        }
+        return `${formatDetailDate(startDate)} / All Day`;
+      }
+      if (!startTime || !endTime) {
+        if (startDate && endDate && startDate !== endDate) {
+          return `${formatDetailDate(startDate)} → ${formatDetailDate(endDate)} / Time TBD`;
+        }
+        return `${formatDetailDate(startDate)} / Time TBD`;
+      }
+      if (startDate && endDate && startDate !== endDate) {
+        return `${formatDetailDate(startDate)} ${startTime} → ${formatDetailDate(endDate)} ${endTime}`;
+      }
+      return `${formatDetailDate(startDate)} / ${startTime} → ${endTime}`;
     }
 
     function normalizeOwnerName(owner) {
@@ -1278,13 +1459,13 @@
           const today = dateOnly(localDateString());
           state.names = ['Mamoru', 'Partner'];
           state.schedules = [
-            { id: uid(), date: localDateString(addDays(today, -32)), title: '先月の通院記録', owners: ['Partner'], memo: '過去予定の初期表示確認用。' },
-            { id: uid(), date: localDateString(addDays(today, -18)), title: '先月の買い出し', owners: ['EVERYONE'], memo: 'Last Month範囲の表示テスト。' },
-            { id: uid(), date: localDateString(today), title: '燃えるごみ', owners: ['EVERYONE'], memo: '朝のうちに出す。' },
-            { id: uid(), date: localDateString(addDays(today, 3)), title: '買い出しと日用品の補充をする予定', owners: ['EVERYONE'], memo: '日用品とミルクを確認。' },
-            { id: uid(), date: localDateString(addDays(today, 12)), title: '通院', owners: ['Partner'], memo: '' },
-            { id: uid(), date: localDateString(addDays(today, 18)), title: '長いタイトルでも折り返して全体を確認できる予定のテスト', owners: ['Mamoru', 'Partner'], memo: 'タイトル折り返し確認用。' },
-            { id: uid(), date: localDateString(addDays(today, 32)), title: '来月の予定', owners: ['Mamoru'], memo: 'Moreで表示される確認用データ。' }
+            { id: uid(), date: localDateString(addDays(today, -32)), startDate: localDateString(addDays(today, -32)), startTime: '10:00', endDate: localDateString(addDays(today, -32)), endTime: '11:00', title: '先月の通院記録', owners: ['Partner'], memo: '過去予定の初期表示確認用。' },
+            { id: uid(), date: localDateString(addDays(today, -18)), startDate: localDateString(addDays(today, -18)), startTime: '15:00', endDate: localDateString(addDays(today, -18)), endTime: '16:30', title: '先月の買い出し', owners: ['EVERYONE'], memo: 'Last Month範囲の表示テスト。' },
+            { id: uid(), date: localDateString(today), startDate: localDateString(today), startTime: '08:00', endDate: localDateString(today), endTime: '08:15', title: '燃えるごみ', owners: ['EVERYONE'], memo: '朝のうちに出す。' },
+            { id: uid(), date: localDateString(addDays(today, 3)), startDate: localDateString(addDays(today, 3)), startTime: '10:00', endDate: localDateString(addDays(today, 3)), endTime: '12:00', title: '買い出しと日用品の補充をする予定', owners: ['EVERYONE'], memo: '日用品とミルクを確認。' },
+            { id: uid(), date: localDateString(addDays(today, 12)), startDate: localDateString(addDays(today, 12)), startTime: '09:30', endDate: localDateString(addDays(today, 12)), endTime: '10:30', title: '通院', owners: ['Partner'], memo: '' },
+            { id: uid(), date: localDateString(addDays(today, 18)), startDate: localDateString(addDays(today, 18)), startTime: '13:00', endDate: localDateString(addDays(today, 18)), endTime: '15:00', title: '長いタイトルでも折り返して全体を確認できる予定のテスト', owners: ['Mamoru', 'Partner'], memo: 'タイトル折り返し確認用。' },
+            { id: uid(), date: localDateString(addDays(today, 32)), startDate: localDateString(addDays(today, 32)), startTime: '22:00', endDate: localDateString(addDays(today, 33)), endTime: '02:00', title: '来月の日付をまたぐ予定', owners: ['Mamoru'], memo: 'Moreで表示される確認用データ。' }
           ];
           save();
           return;
@@ -1292,7 +1473,20 @@
         const parsed = JSON.parse(raw);
         state.names = Array.isArray(parsed.names) ? parsed.names.filter(Boolean).map(String) : ['Mamoru', 'Partner'];
         state.schedules = Array.isArray(parsed.schedules)
-          ? parsed.schedules.map(item => ({ ...item, owners: normalizeOwners(item), owner: undefined }))
+          ? parsed.schedules.map(item => {
+              const startDate = normalizeDateInput(item.startDate || item.date || '');
+              const endDate = normalizeDateInput(item.endDate || startDate || item.date || '');
+              return {
+                ...item,
+                date: startDate,
+                startDate,
+                startTime: normalizeTimeInput(item.startTime || ''),
+                endDate,
+                endTime: normalizeTimeInput(item.endTime || ''),
+                owners: normalizeOwners(item),
+                owner: undefined
+              };
+            })
           : [];
       } catch (error) {
         state.names = ['Mamoru', 'Partner'];
@@ -1306,10 +1500,10 @@
     }
 
     function sortedUpcoming() {
-      const today = localDateString();
+      const nowKey = nowLocalDateTimeKey();
       return state.schedules
-        .filter(item => item.date >= today)
-        .sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title, 'ja'));
+        .filter(item => scheduleEndKey(item) >= nowKey)
+        .sort((a, b) => scheduleStartKey(a).localeCompare(scheduleStartKey(b)) || a.title.localeCompare(b.title, 'ja'));
     }
 
     function visibleSchedules() {
@@ -1317,25 +1511,25 @@
       const limit = localDateString(addDays(today, 30));
       const upcoming = sortedUpcoming();
       if (state.showAll) return upcoming;
-      return upcoming.filter(item => item.date <= limit);
+      return upcoming.filter(item => scheduleStartDate(item) <= limit);
     }
 
     function filteredPastSchedules() {
-      const today = localDateString();
+      const nowKey = nowLocalDateTimeKey();
       const start = normalizeDateInput(els.pastStart.value);
       const end = normalizeDateInput(els.pastEnd.value);
       const keyword = String(els.pastSearch.value || '').trim().toLowerCase();
       return state.schedules
-        .filter(item => item.date < today)
-        .filter(item => !start || item.date >= start)
-        .filter(item => !end || item.date <= end)
+        .filter(item => scheduleEndKey(item) < nowKey)
+        .filter(item => !start || scheduleEndDate(item) >= start)
+        .filter(item => !end || scheduleEndDate(item) <= end)
         .filter(item => {
           if (!keyword) return true;
           const owners = normalizeOwners(item).join(' ');
           const haystack = `${item.title || ''} ${item.memo || ''} ${owners}`.toLowerCase();
           return haystack.includes(keyword);
         })
-        .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title, 'ja'));
+        .sort((a, b) => scheduleEndKey(b).localeCompare(scheduleEndKey(a)) || a.title.localeCompare(b.title, 'ja'));
     }
 
     function ownerOptions() {
@@ -1431,19 +1625,25 @@
           row.className = 'schedule-row';
           row.type = 'button';
           row.dataset.id = item.id;
+          const label = daysLabel(scheduleStartDate(item));
           row.innerHTML = `
-            <span class="date-chip" aria-hidden="true">
-              <span class="schedule-monthday">${escapeHtml(formatCompactDate(item.date))}</span>
-              <span class="schedule-weekday">${escapeHtml(formatWeekday(item.date))}</span>
+            <span class="schedule-date-cell" aria-hidden="true">
+              <span class="schedule-monthday">${escapeHtml(formatCompactDate(scheduleStartDate(item)))}</span>
             </span>
-            <span class="schedule-main">
+            <span class="schedule-title-cell">
               <span class="schedule-title">${escapeHtml(item.title)}</span>
-              <span class="schedule-meta-line">
-                <span class="owner-line">
-                  ${ownerPillsHtml(owners)}
-                  ${item.memo && item.memo.trim() ? '<span class="memo-mark" title="Memoあり">✎</span>' : ''}
-                </span>
-                <span class="days-left ${daysLabel(item.date) === 'Today' ? 'is-today' : ''}">${escapeHtml(daysLabel(item.date))}</span>
+              ${item.memo && item.memo.trim() ? '<span class="memo-mark" title="Memoあり">✎</span>' : ''}
+            </span>
+            <span class="schedule-weekday-cell" aria-hidden="true">
+              <span class="schedule-weekday">${escapeHtml(formatWeekday(scheduleStartDate(item)))}</span>
+            </span>
+            <span class="schedule-meta-cell">
+              <span class="schedule-meta-left">
+                <span class="schedule-time">${escapeHtml(formatScheduleTime(item))}</span>
+              </span>
+              <span class="schedule-meta-right">
+                <span class="owner-line">${ownerPillsHtml(owners)}</span>
+                <span class="days-left ${label === 'Today' ? 'is-today' : ''}">${escapeHtml(label)}</span>
               </span>
             </span>
           `;
@@ -1456,7 +1656,7 @@
         const upcoming = sortedUpcoming();
         const today = dateOnly(localDateString());
         const limit = localDateString(addDays(today, 30));
-        const hiddenCount = upcoming.filter(item => item.date > limit).length;
+        const hiddenCount = upcoming.filter(item => scheduleStartDate(item) > limit).length;
         if (hiddenCount > 0 || state.showAll) {
           const moreWrap = document.createElement('div');
           moreWrap.className = 'more-wrap';
@@ -1490,7 +1690,11 @@
     function resetForm() {
       state.editingId = null;
       els.form.reset();
-      els.date.value = displayDateInput(localDateString());
+      const today = localDateString();
+      els.startDate.value = displayDateInput(today);
+      els.endDate.value = displayDateInput(today);
+      els.startTime.value = '';
+      els.endTime.value = '';
       setOwnersValue(['EVERYONE']);
       els.submit.textContent = 'Add Schedule';
       els.formMode.textContent = '新しい予定を追加します。';
@@ -1498,21 +1702,37 @@
 
     function submitForm(event) {
       event.preventDefault();
-      const date = normalizeDateInput(els.date.value);
+      const startDate = normalizeDateInput(els.startDate.value);
+      const endDate = normalizeDateInput(els.endDate.value);
+      const startTime = normalizeTimeInput(els.startTime.value);
+      const endTime = normalizeTimeInput(els.endTime.value);
       const title = els.title.value.trim();
       const memo = els.memo.value.trim();
       const owners = getOwnersValue();
-      if (!date || !title) {
+      if (!startDate || !endDate || !title) {
         showToast('Date and title required');
         return;
       }
+      if ((startTime && !endTime) || (!startTime && endTime)) {
+        showToast('Set both start and end time, or leave both blank');
+        return;
+      }
+      if (startTime && endTime && `${endDate}T${endTime}` < `${startDate}T${startTime}`) {
+        showToast('End must be after start');
+        return;
+      }
+      if (!startTime && !endTime && endDate < startDate) {
+        showToast('End date must be after start date');
+        return;
+      }
 
+      const payload = { date: startDate, startDate, startTime, endDate, endTime, title, owners, memo };
       if (state.editingId) {
         const target = state.schedules.find(item => item.id === state.editingId);
-        if (target) Object.assign(target, { date, title, owners, memo });
+        if (target) Object.assign(target, payload);
         showToast('Schedule updated');
       } else {
-        state.schedules.push({ id: uid(), date, title, owners, memo });
+        state.schedules.push({ id: uid(), ...payload });
         showToast('Schedule added');
       }
 
@@ -1526,7 +1746,7 @@
       if (!item) return;
       const owners = normalizeOwners(item);
       state.activeId = id;
-      els.detailDate.textContent = `${formatDetailDate(item.date)} / ${owners.join(', ')}`;
+      els.detailDate.textContent = `${formatScheduleDetailDate(item)} / ${owners.join(', ')}`;
       els.detailTitle.textContent = item.title;
       els.detailMemo.textContent = item.memo && item.memo.trim() ? item.memo : 'メモはありません。';
       els.panel.classList.add('is-open');
@@ -1545,7 +1765,10 @@
       state.editingId = item.id;
       state.currentPage = 'schedule';
       renderPages();
-      els.date.value = displayDateInput(item.date);
+      els.startDate.value = displayDateInput(scheduleStartDate(item));
+      els.startTime.value = scheduleStartTime(item);
+      els.endDate.value = displayDateInput(scheduleEndDate(item));
+      els.endTime.value = scheduleEndTime(item);
       els.title.value = item.title;
       setOwnersValue(normalizeOwners(item));
       els.memo.value = item.memo || '';
@@ -1646,7 +1869,7 @@
       const h = String(now.getHours()).padStart(2, '0');
       const min = String(now.getMinutes()).padStart(2, '0');
       const filename = `HMB-${y}${m}${d}-${h}${min}.json`;
-      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: 4, names: state.names, schedules: state.schedules }, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: 5, names: state.names, schedules: state.schedules }, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1665,9 +1888,17 @@
       state.toastTimer = window.setTimeout(() => els.toast.classList.remove('is-show'), 1700);
     }
 
-    els.date.addEventListener('blur', () => {
-      const normalized = normalizeDateInput(els.date.value);
-      if (normalized) els.date.value = displayDateInput(normalized);
+    [els.startDate, els.endDate, els.pastStart, els.pastEnd].forEach(input => {
+      input.addEventListener('blur', () => {
+        const normalized = normalizeDateInput(input.value);
+        if (normalized) input.value = displayDateInput(normalized);
+      });
+    });
+
+    els.startDate.addEventListener('change', () => {
+      if (!els.endDate.value || els.endDate.value < els.startDate.value) {
+        els.endDate.value = els.startDate.value;
+      }
     });
 
     els.form.addEventListener('submit', submitForm);
