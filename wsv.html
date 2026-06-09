@@ -1,18 +1,29 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.2.2</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.3.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
       --ink: #111714;
       --sub: #68736f;
       --muted: #9aa5a1;
-      --deep: #071c16;
+      --invert-bg: #111714;
+      --invert-ink: #f8f9f9;
       --danger: #9b3144;
       --font-main: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #101312;
+      --ink: #edf1ef;
+      --sub: #a4aeaa;
+      --muted: #707b77;
+      --invert-bg: #edf1ef;
+      --invert-ink: #101312;
+      --danger: #e28a9a;
     }
 
     * { box-sizing: border-box; }
@@ -28,7 +39,7 @@
       color: var(--ink);
       background: var(--bg);
       font-family: var(--font-main);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 300;
       line-height: 2;
       letter-spacing: 0.01em;
@@ -45,9 +56,10 @@
     }
 
     .app {
-      width: min(520px, calc(100% - 40px));
+      width: 100%;
+      max-width: 520px;
       margin: 0 auto;
-      padding: max(18px, env(safe-area-inset-top)) 0 max(36px, env(safe-area-inset-bottom));
+      padding: max(18px, env(safe-area-inset-top)) 20px max(36px, env(safe-area-inset-bottom));
     }
 
     .screen { display: none; }
@@ -63,12 +75,13 @@
 
     .site-title {
       margin: 0;
-      font-size: 11px;
-      font-weight: 400;
+      font-size: 12px;
+      font-weight: 300;
       letter-spacing: 0.11em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: left;
     }
 
     .version-mark {
@@ -83,33 +96,37 @@
       align-items: center;
       justify-content: flex-end;
       flex-wrap: wrap;
-      color: var(--sub);
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
+      text-align: right;
     }
 
     .text-button {
       appearance: none;
       border: 0;
       background: transparent;
-      padding: 0;
+      padding: 0 2px;
       color: var(--sub);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 300;
+      line-height: 2;
       letter-spacing: 0.09em;
       text-transform: uppercase;
       text-decoration: none;
     }
 
     .text-button:hover,
-    .text-button.active {
-      color: var(--ink);
+    .text-button.active,
+    .text-button.selected {
+      color: var(--invert-ink);
+      background: var(--invert-bg);
     }
 
     .text-button.danger {
       color: var(--danger);
+    }
+
+    .text-button.danger:hover {
+      color: var(--invert-ink);
+      background: var(--danger);
     }
 
     .filter-area {
@@ -118,30 +135,11 @@
       margin-bottom: 11px;
     }
 
-    .filter-line {
-      display: grid;
-      grid-template-columns: 76px minmax(0, 1fr);
-      gap: 11px;
-      align-items: baseline;
-    }
-
-    .filter-label {
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
     .link-list {
       display: flex;
       flex-wrap: wrap;
       gap: 0 11px;
       min-width: 0;
-    }
-
-    .link-list .text-button {
-      line-height: 2;
     }
 
     .collapsible {
@@ -156,7 +154,7 @@
 
     .search-line {
       display: grid;
-      grid-template-columns: 76px minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 11px;
       align-items: center;
       margin-bottom: 14px;
@@ -172,27 +170,24 @@
       color: var(--ink);
       padding: 2px 0;
       outline: none;
+      font-size: 12px;
       font-weight: 300;
+      line-height: 2;
     }
 
     textarea {
-      min-height: 58px;
+      min-height: 72px;
       resize: vertical;
-      line-height: 2;
     }
 
     select {
       appearance: none;
     }
 
-    input:focus, textarea:focus, select:focus {
-      outline: 0;
-    }
-
     .section-title {
       margin: 16px 0 5px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.13em;
       text-transform: uppercase;
@@ -203,56 +198,63 @@
       gap: 0;
     }
 
+    .list-head,
+    .work-summary {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 48px;
+      gap: 10px;
+      align-items: baseline;
+      border: 0;
+      background: transparent;
+      padding: 1px 0;
+      text-align: left;
+    }
+
+    .list-head {
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .list-head button {
+      text-align: left;
+    }
+
+    .list-head button:last-child {
+      text-align: right;
+    }
+
     .work {
       margin: 0;
     }
 
-    .work-summary {
-      width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 86px;
-      gap: 14px;
-      align-items: baseline;
-      border: 0;
-      background: transparent;
-      padding: 2px 0;
+    .work-no {
+      color: var(--sub);
       text-align: left;
-    }
-
-    .work-summary.has-category {
-      grid-template-columns: minmax(0, 1fr) 118px 86px;
+      font-variant-numeric: tabular-nums;
     }
 
     .work-title {
       min-width: 0;
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.01em;
+      color: var(--ink);
+      text-align: left;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .work-category,
-    .work-date {
+    .work-year {
       color: var(--sub);
-      font-size: 11px;
-      font-weight: 300;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-align: right;
       font-variant-numeric: tabular-nums;
-    }
-
-    .work-category {
-      display: none;
+      white-space: nowrap;
     }
 
     .work-detail {
       display: none;
       padding: 2px 0 9px 14px;
       color: var(--sub);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 300;
       line-height: 2;
     }
@@ -276,14 +278,14 @@
 
     .detail-key {
       color: var(--muted);
-      font-size: 10px;
-      font-weight: 300;
+      text-align: left;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .detail-value {
       color: var(--ink);
+      text-align: left;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
@@ -318,7 +320,7 @@
 
     label {
       color: var(--muted);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.09em;
       text-transform: uppercase;
@@ -332,7 +334,7 @@
 
     .two-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 15px;
     }
 
@@ -343,7 +345,7 @@
       min-height: 20px;
       margin-top: 1px;
       color: var(--sub);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -353,7 +355,7 @@
       width: 12px;
       min-height: 12px;
       padding: 0;
-      accent-color: var(--deep);
+      accent-color: var(--ink);
     }
 
     .button-row {
@@ -373,7 +375,7 @@
     .hint {
       margin: 0;
       color: var(--sub);
-      font-size: 11px;
+      font-size: 12px;
       line-height: 2;
     }
 
@@ -401,7 +403,7 @@
     .font-sampler-title {
       margin: 0 0 7px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.13em;
       text-transform: uppercase;
@@ -414,21 +416,16 @@
 
     .font-option {
       display: grid;
-      grid-template-columns: 145px minmax(0, 1fr);
-      gap: 12px;
-      align-items: baseline;
+      grid-template-columns: 1fr;
+      gap: 0;
       border: 0;
       background: transparent;
       padding: 1px 0;
       text-align: left;
       color: inherit;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 300;
       line-height: 2;
-    }
-
-    .font-option:hover {
-      color: var(--ink);
     }
 
     .font-name {
@@ -444,42 +441,7 @@
       text-overflow: ellipsis;
     }
 
-
-    .text-nav {
-      text-align: right;
-    }
-
-    .work-date {
-      text-align: right;
-    }
-
-    .search-line > .text-button {
-      text-align: right;
-    }
-
-    .option-item > .text-button {
-      text-align: right;
-    }
-
-    .topbar .text-nav {
-      justify-self: end;
-    }
-
-    .site-title,
-    .filter-label,
-    .work-title,
-    .detail-key,
-    .detail-value {
-      text-align: left;
-    }
-
-    @media (min-width: 720px) {
-      .app {
-        width: min(520px, calc(100% - 40px));
-      }
-    }
-
-    @media (max-width: 719px) {
+    @media (max-width: 420px) {
       .topbar {
         grid-template-columns: 1fr;
         gap: 7px;
@@ -487,35 +449,6 @@
 
       .text-nav {
         justify-content: flex-end;
-        text-align: right;
-      }
-
-      .filter-line,
-      .search-line {
-        grid-template-columns: 1fr;
-        gap: 3px;
-      }
-
-      .work-summary,
-      .work-summary.has-category {
-        grid-template-columns: minmax(0, 1fr) 78px;
-      }
-
-      .work-category {
-        display: none;
-      }
-
-      .detail-row {
-        grid-template-columns: 76px minmax(0, 1fr);
-      }
-
-      .two-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .font-option {
-        grid-template-columns: 1fr;
-        gap: 0;
       }
     }
   </style>
@@ -524,51 +457,43 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.2.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.0</span></h1>
         <nav class="text-nav">
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
         </nav>
       </div>
 
       <div class="filter-area">
-        <div class="filter-line">
-          <div class="filter-label">Category</div>
-          <div class="link-list" id="categoryLinks"></div>
-        </div>
-
-        <div class="filter-line">
-          <button class="text-button" type="button" onclick="toggleStatusPanel()">状態</button>
-          <div>
-            <button class="text-button" type="button" onclick="toggleStatusPanel()" id="statusPanelText">tap to open</button>
-            <div class="collapsible" id="statusPanel">
-              <div class="filter-line" style="border-bottom:0; padding-bottom:0;">
-                <div class="filter-label">Production</div>
-                <div class="link-list" id="productionLinks"></div>
-              </div>
-              <div class="filter-line" style="border-bottom:0; padding-bottom:0;">
-                <div class="filter-label">Management</div>
-                <div class="link-list" id="managementLinks"></div>
-              </div>
-            </div>
+        <div class="link-list" id="categoryLinks"></div>
+        <div>
+          <button class="text-button" type="button" onclick="toggleStatusPanel()" id="statusPanelText">＋</button>
+          <div class="collapsible" id="statusPanel">
+            <div class="link-list" id="productionLinks"></div>
+            <div class="link-list" id="managementLinks"></div>
           </div>
         </div>
       </div>
 
       <div class="search-line">
-        <div class="filter-label">Search</div>
         <input id="searchInput" type="search" placeholder="">
         <button class="text-button" type="button" onclick="clearFilters()">CLEAR</button>
       </div>
 
-      <div class="section-title">一覧</div>
+      <div class="list-head">
+        <button class="text-button" type="button" onclick="setSort('workNo')">#<span id="sortMarkWorkNo"></span></button>
+        <button class="text-button" type="button" onclick="setSort('title')">TITLE<span id="sortMarkTitle"></span></button>
+        <button class="text-button" type="button" onclick="setSort('year')">YEAR<span id="sortMarkYear"></span></button>
+      </div>
       <div id="workList" class="list"></div>
     </section>
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.2.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.0</span></h1>
         <nav class="text-nav">
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
         </nav>
@@ -576,7 +501,17 @@
 
       <form id="workForm" class="form">
         <div class="form-grid">
-          <div class="field wide">
+          <div class="field">
+            <label for="workNo"># / 作品番号</label>
+            <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="year">Year / 制作年</label>
+            <input id="year" type="number" inputmode="numeric" placeholder="">
+          </div>
+
+          <div class="field">
             <label for="title">Title / 作品名</label>
             <input id="title" type="text" required placeholder="">
           </div>
@@ -597,11 +532,6 @@
           </div>
 
           <div class="field">
-            <label for="year">Year / 制作年</label>
-            <input id="year" type="number" inputmode="numeric" placeholder="">
-          </div>
-
-          <div class="field">
             <label for="productionStatus">Production / 制作状態</label>
             <select id="productionStatus"></select>
           </div>
@@ -616,12 +546,12 @@
             <select id="technique"></select>
           </div>
 
-          <div class="field wide">
+          <div class="field">
             <label for="materials">Materials / 素材</label>
             <input id="materials" type="text" placeholder="">
           </div>
 
-          <div class="field wide">
+          <div class="field">
             <label>Dimensions / サイズ mm</label>
             <div class="three-grid">
               <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="">
@@ -630,7 +560,7 @@
             </div>
           </div>
 
-          <div class="field wide">
+          <div class="field">
             <label>Ledger / 価格記録</label>
             <div class="two-grid">
               <div>
@@ -651,12 +581,12 @@
             <input id="owner" type="text" placeholder="">
           </div>
 
-          <div class="field wide">
+          <div class="field">
             <label for="exhibitionHistory">Exhibition History / 展示履歴</label>
             <textarea id="exhibitionHistory" placeholder=""></textarea>
           </div>
 
-          <div class="field wide">
+          <div class="field">
             <label for="memo">Memo / メモ</label>
             <textarea id="memo" placeholder=""></textarea>
           </div>
@@ -671,29 +601,29 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.2.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.0</span></h1>
         <nav class="text-nav">
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
         </nav>
       </div>
 
       <div class="data-block">
-        <div class="section-title" style="margin:0;">Export</div>
+        <div class="section-title">Export</div>
         <p class="hint">現在の作品データをJSONで保存します。</p>
         <button class="text-button active" type="button" id="exportButton">EXPORT</button>
       </div>
 
       <div class="data-block">
-        <div class="section-title" style="margin:0;">Import</div>
+        <div class="section-title">Import</div>
         <p class="hint">JSONを読み込みます。現在のデータは上書きされます。</p>
         <input id="importFile" type="file" accept="application/json,.json">
       </div>
 
       <div class="data-block">
-        <div class="section-title" style="margin:0;">Category</div>
-        <div class="search-line" style="border-bottom:0; margin-bottom:0; padding-bottom:0;">
-          <div class="filter-label">Add</div>
+        <div class="section-title">Category</div>
+        <div class="search-line">
           <input id="categoryOptionInput" type="text" placeholder="">
           <button class="text-button" type="button" id="addCategoryButton">ADD</button>
         </div>
@@ -701,9 +631,8 @@
       </div>
 
       <div class="data-block">
-        <div class="section-title" style="margin:0;">Technique</div>
-        <div class="search-line" style="border-bottom:0; margin-bottom:0; padding-bottom:0;">
-          <div class="filter-label">Add</div>
+        <div class="section-title">Technique</div>
+        <div class="search-line">
           <input id="techniqueOptionInput" type="text" placeholder="">
           <button class="text-button" type="button" id="addTechniqueButton">ADD</button>
         </div>
@@ -711,9 +640,8 @@
       </div>
 
       <div class="data-block">
-        <div class="section-title" style="margin:0;">Location</div>
-        <div class="search-line" style="border-bottom:0; margin-bottom:0; padding-bottom:0;">
-          <div class="filter-label">Add</div>
+        <div class="section-title">Location</div>
+        <div class="search-line">
           <input id="locationOptionInput" type="text" placeholder="">
           <button class="text-button" type="button" id="addLocationButton">ADD</button>
         </div>
@@ -721,26 +649,27 @@
       </div>
 
       <div class="data-block">
-        <div class="section-title" style="margin:0;">Reset</div>
+        <div class="section-title">Reset</div>
         <p class="hint">ブラウザ内のWSVデータを削除します。必要な場合は先にEXPORTしてください。</p>
         <button class="text-button danger" type="button" id="resetButton">DELETE ALL</button>
       </div>
-    </section>
 
       <div class="font-sampler">
         <p class="font-sampler-title">Font sampler</p>
         <div class="font-list" id="fontList"></div>
       </div>
+    </section>
   </main>
 
   <script>
-    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v2";
-    const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v1";
-    const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v1";
-    const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v1";
+    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v3";
+    const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v3";
+    const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v3";
+    const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
+    const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
-    const DEFAULT_TECHNIQUES = ["Installation", "Mixed Media", "Drawing", "Photography", "Video", "Acrylic", "Woodwork", "Print"];
+    const DEFAULT_TECHNIQUES = ["Installation", "Mixed Media", "Drawing", "Photography", "Print", "Acrylic", "Woodwork", "Video"];
     const DEFAULT_LOCATIONS = ["Studio", "Storage", "Gallery", "Collector", "Archive"];
     const PRODUCTION_STATUSES = ["制作中", "完成", "制作終了"];
     const MANAGEMENT_STATUSES = ["展示中", "販売中", "売却済", "譲渡済", "非売品", "保管中", "貸出中", "処分済"];
@@ -766,68 +695,1327 @@
     };
 
     const SAMPLE_WORKS = [
-      ["WHO CURATED YOUR LUCK", "2023-01-01", "LED SIGN", "VLNS", "2023", "制作中", "保管中", "Installation", "LED, acrylic, cable", 100, 120, 20, "", true, "", "Studio", "", "WSV Sample Exhibition", "English title sample record."],
-      ["LUCK INDEX", "2024-02-04", "OBJECT", "VNBX", "2024", "完成", "販売中", "Mixed Media", "wood, acrylic, metal", 137, 173, 37, 25000, false, 3500, "Storage", "", "", "English title sample record."],
-      ["CURATED FIELD", "2025-03-07", "DRAWING", "SIGN", "2025", "完成", "展示中", "Drawing", "paper, pen", 174, 226, 1, 38000, false, 6200, "Gallery", "", "", "English title sample record."],
-      ["QUIET WARNING", "2026-04-10", "PHOTO", "DRAWING", "2026", "制作終了", "売却済", "Photography", "digital print", 211, 279, 1, 51000, false, 8900, "Collector", "Private collection", "", "English title sample record."],
-      ["DO NOT TOUCH LIGHT", "2023-05-13", "POSTER", "PHOTO", "2023", "制作中", "譲渡済", "Print", "paper, ink", 248, 332, 1, 64000, false, 11600, "Archive", "Private collection", "", "English title sample record."],
-      ["HOLD YOUR LUCK", "2024-06-16", "DEVICE", "PRINT", "2024", "完成", "非売品", "Acrylic", "display, cable, case", 285, 385, 105, "", true, 14300, "Studio", "", "", "English title sample record."],
-      ["NIGHT WINDOW", "2025-07-19", "OTHER", "OBJECT", "2025", "完成", "貸出中", "Woodwork", "mixed materials", 322, 438, 122, 90000, false, "", "Storage", "", "", "English title sample record."],
-      ["GREEN ROOM", "2026-08-22", "LED SIGN", "DEVICE", "2026", "制作終了", "処分済", "Video", "LED, acrylic, cable", 359, 491, 139, 103000, false, 19700, "Gallery", "", "WSV Sample Exhibition", "English title sample record."],
-      ["SIDE VENT", "2023-09-25", "OBJECT", "OTHER", "2023", "制作中", "保管中", "Installation", "wood, acrylic, metal", 396, 544, 156, 116000, false, 22400, "Collector", "", "", "English title sample record."],
-      ["BASE MODULE", "2024-10-01", "DRAWING", "VLNS", "2024", "完成", "販売中", "Mixed Media", "paper, pen", 433, 597, 1, 129000, false, 25100, "Archive", "", "", "English title sample record."],
-      ["SHORT PEDESTAL", "2025-11-04", "PHOTO", "VNBX", "2025", "完成", "展示中", "Drawing", "digital print", 470, 650, 1, "", true, 27800, "Studio", "", "", "English title sample record."],
-      ["CABLE RISER", "2026-12-07", "POSTER", "SIGN", "2026", "制作終了", "売却済", "Photography", "paper, ink", 507, 703, 1, 155000, false, 30500, "Storage", "Private collection", "", "English title sample record."],
-      ["ARCHIVE TRAY", "2023-01-10", "DEVICE", "DRAWING", "2023", "制作中", "譲渡済", "Print", "display, cable, case", 544, 756, 224, 168000, false, "", "Gallery", "Private collection", "", "English title sample record."],
-      ["CABLE SLEEPER", "2024-02-13", "OTHER", "PHOTO", "2024", "完成", "非売品", "Acrylic", "mixed materials", 581, 809, 241, 181000, false, 35900, "Collector", "", "", "English title sample record."],
-      ["CATALOG STUDY A", "2025-03-16", "LED SIGN", "PRINT", "2025", "完成", "貸出中", "Woodwork", "LED, acrylic, cable", 618, 862, 258, 194000, false, 38600, "Archive", "", "WSV Sample Exhibition", "English title sample record."],
-      ["CATALOG STUDY B", "2026-04-19", "OBJECT", "OBJECT", "2026", "制作終了", "処分済", "Video", "wood, acrylic, metal", 655, 915, 275, "", true, 41300, "Studio", "", "", "English title sample record."],
-      ["INDEX CARD", "2023-05-22", "DRAWING", "DEVICE", "2023", "制作中", "保管中", "Installation", "paper, pen", 692, 968, 1, 220000, false, 44000, "Storage", "", "", "English title sample record."],
-      ["LISTING TERMINAL", "2024-06-25", "PHOTO", "OTHER", "2024", "完成", "販売中", "Mixed Media", "digital print", 729, 1021, 1, 233000, false, 46700, "Gallery", "", "", "English title sample record."],
-      ["EMPTY FRAME", "2025-07-01", "POSTER", "VLNS", "2025", "完成", "展示中", "Drawing", "paper, ink", 766, 1074, 1, 246000, false, "", "Collector", "", "", "English title sample record."],
-      ["NEON QUIET", "2026-08-04", "DEVICE", "VNBX", "2026", "制作終了", "売却済", "Photography", "display, cable, case", 803, 1127, 343, 259000, false, 52100, "Archive", "Private collection", "", "English title sample record."],
-      ["Serendipity 光量記録", "2023-09-07", "OTHER", "SIGN", "2023", "制作中", "非売品", "Acrylic", "mixed materials", 840, 1180, 360, 272000, false, 54800, "Storage", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["VLNS 幸運の入口", "2024-10-10", "LED SIGN", "DRAWING", "2024", "完成", "貸出中", "Woodwork", "LED, acrylic, cable", 877, 1233, 377, 285000, false, 57500, "Gallery", "", "WSV Sample Exhibition", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Archive Tray 記憶の皿", "2025-11-13", "OBJECT", "PHOTO", "2025", "完成", "処分済", "Video", "wood, acrylic, metal", 914, 1286, 394, 298000, false, 60200, "Collector", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Luck Field 観測点", "2026-12-16", "DRAWING", "PRINT", "2026", "制作終了", "保管中", "Installation", "paper, pen", 951, 1339, 1, 311000, false, 62900, "Archive", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Cable Garden 配線庭園", "2023-01-19", "PHOTO", "OBJECT", "2023", "制作中", "販売中", "Mixed Media", "digital print", 988, 1392, 1, "", true, "", "Studio", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Quiet Sign 静かな警告", "2024-02-22", "POSTER", "DEVICE", "2024", "完成", "展示中", "Drawing", "paper, ink", 125, 1445, 1, 337000, false, 68300, "Storage", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Light Index 光の索引", "2025-03-25", "DEVICE", "OTHER", "2025", "完成", "売却済", "Photography", "display, cable, case", 162, 1498, 42, 350000, false, 1000, "Gallery", "Private collection", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Storage Moon 保管月", "2026-04-01", "OTHER", "VLNS", "2026", "制作終了", "譲渡済", "Print", "mixed materials", 199, 1551, 59, 363000, false, 3700, "Collector", "Private collection", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Green Room 緑の部屋", "2023-05-04", "LED SIGN", "VNBX", "2023", "制作中", "非売品", "Acrylic", "LED, acrylic, cable", 236, 1604, 76, 376000, false, 6400, "Archive", "", "WSV Sample Exhibition", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Signal Box 信号箱", "2024-06-07", "OBJECT", "SIGN", "2024", "完成", "貸出中", "Woodwork", "wood, acrylic, metal", 273, 157, 93, "", true, 9100, "Studio", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Paper Circuit 紙の回路", "2025-07-10", "DRAWING", "DRAWING", "2025", "完成", "処分済", "Video", "paper, pen", 310, 210, 1, 402000, false, "", "Storage", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Window Study 窓の習作", "2026-08-13", "PHOTO", "PHOTO", "2026", "制作終了", "保管中", "Installation", "digital print", 347, 263, 1, 415000, false, 14500, "Gallery", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Base Module 台座試作", "2023-09-16", "POSTER", "PRINT", "2023", "制作中", "販売中", "Mixed Media", "paper, ink", 384, 316, 1, 428000, false, 17200, "Collector", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Night Label 夜のラベル", "2024-10-19", "DEVICE", "OBJECT", "2024", "完成", "展示中", "Drawing", "display, cable, case", 421, 369, 161, 441000, false, 19900, "Archive", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Object Note 物体メモ", "2025-11-22", "OTHER", "DEVICE", "2025", "完成", "売却済", "Photography", "mixed materials", 458, 422, 178, "", true, 22600, "Studio", "Private collection", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Drawing Cloud 線の雲", "2026-12-25", "LED SIGN", "OTHER", "2026", "制作終了", "譲渡済", "Print", "LED, acrylic, cable", 495, 475, 195, 467000, false, 25300, "Storage", "Private collection", "WSV Sample Exhibition", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Neon Archive 光る記録", "2023-01-01", "OBJECT", "VLNS", "2023", "制作中", "非売品", "Acrylic", "wood, acrylic, metal", 532, 528, 212, 480000, false, "", "Gallery", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Poster Shell 紙の殻", "2024-02-04", "DRAWING", "VNBX", "2024", "完成", "貸出中", "Woodwork", "paper, pen", 569, 581, 1, 13000, false, 30700, "Collector", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Device Prayer 装置の祈り", "2025-03-07", "PHOTO", "SIGN", "2025", "完成", "処分済", "Video", "digital print", 606, 634, 1, 26000, false, 33400, "Archive", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["Temporary Light 仮設の光", "2026-04-10", "POSTER", "DRAWING", "2026", "制作終了", "保管中", "Installation", "paper, ink", 643, 687, 1, "", true, 36100, "Studio", "", "", "日本語と英語が混在する作品名のサンプルです。"],
-      ["幸運を編集する手", "2023-05-13", "DEVICE", "PHOTO", "2023", "制作中", "展示中", "Drawing", "display, cable, case", 680, 740, 280, 52000, false, 38800, "Gallery", "", "", "日本語作品名のサンプルです。"],
-      ["光の保管庫", "2024-06-16", "OTHER", "PRINT", "2024", "完成", "売却済", "Photography", "mixed materials", 717, 793, 297, 65000, false, 41500, "Collector", "Private collection", "", "日本語作品名のサンプルです。"],
-      ["静かな警告", "2025-07-19", "LED SIGN", "OBJECT", "2025", "完成", "譲渡済", "Print", "LED, acrylic, cable", 754, 846, 314, 78000, false, "", "Archive", "Private collection", "WSV Sample Exhibition", "日本語作品名のサンプルです。"],
-      ["未完の台座", "2026-08-22", "OBJECT", "DEVICE", "2026", "制作終了", "非売品", "Acrylic", "wood, acrylic, metal", 791, 899, 331, "", true, 46900, "Studio", "", "", "日本語作品名のサンプルです。"],
-      ["配線の庭", "2023-09-25", "DRAWING", "OTHER", "2023", "制作中", "貸出中", "Woodwork", "paper, pen", 828, 952, 1, 104000, false, 49600, "Storage", "", "", "日本語作品名のサンプルです。"],
-      ["夜の窓", "2024-10-01", "PHOTO", "VLNS", "2024", "完成", "処分済", "Video", "digital print", 865, 1005, 1, 117000, false, 52300, "Gallery", "", "", "日本語作品名のサンプルです。"],
-      ["緑の部屋", "2025-11-04", "POSTER", "VNBX", "2025", "完成", "保管中", "Installation", "paper, ink", 902, 1058, 1, 130000, false, 55000, "Collector", "", "", "日本語作品名のサンプルです。"],
-      ["記憶の箱", "2026-12-07", "DEVICE", "SIGN", "2026", "制作終了", "販売中", "Mixed Media", "display, cable, case", 939, 1111, 399, 143000, false, 57700, "Archive", "", "", "日本語作品名のサンプルです。"],
-      ["仮設の光", "2023-01-10", "OTHER", "DRAWING", "2023", "制作中", "展示中", "Drawing", "mixed materials", 976, 1164, 416, "", true, "", "Studio", "", "", "日本語作品名のサンプルです。"],
-      ["展示前夜", "2024-02-13", "LED SIGN", "PHOTO", "2024", "完成", "売却済", "Photography", "LED, acrylic, cable", 113, 1217, 433, 169000, false, 63100, "Storage", "Private collection", "WSV Sample Exhibition", "日本語作品名のサンプルです。"],
-      ["小さな標識", "2025-03-16", "OBJECT", "PRINT", "2025", "完成", "譲渡済", "Print", "wood, acrylic, metal", 150, 1270, 30, 182000, false, 65800, "Gallery", "Private collection", "", "日本語作品名のサンプルです。"],
-      ["余白の装置", "2026-04-19", "DRAWING", "OBJECT", "2026", "制作終了", "非売品", "Acrylic", "paper, pen", 187, 1323, 1, 195000, false, 68500, "Collector", "", "", "日本語作品名のサンプルです。"],
-      ["見えない棚", "2023-05-22", "PHOTO", "DEVICE", "2023", "制作中", "貸出中", "Woodwork", "digital print", 224, 1376, 1, 208000, false, 1200, "Archive", "", "", "日本語作品名のサンプルです。"],
-      ["紙の回路", "2024-06-25", "POSTER", "OTHER", "2024", "完成", "処分済", "Video", "paper, ink", 261, 1429, 1, "", true, 3900, "Studio", "", "", "日本語作品名のサンプルです。"],
-      ["沈黙する看板", "2025-07-01", "DEVICE", "VLNS", "2025", "完成", "保管中", "Installation", "display, cable, case", 298, 1482, 98, 234000, false, "", "Storage", "", "", "日本語作品名のサンプルです。"],
-      ["保管される月", "2026-08-04", "OTHER", "VNBX", "2026", "制作終了", "販売中", "Mixed Media", "mixed materials", 335, 1535, 115, 247000, false, 9300, "Gallery", "", "", "日本語作品名のサンプルです。"],
-      ["手前の風景", "2023-09-07", "LED SIGN", "SIGN", "2023", "制作中", "展示中", "Drawing", "LED, acrylic, cable", 372, 1588, 132, 260000, false, 12000, "Collector", "", "WSV Sample Exhibition", "日本語作品名のサンプルです。"],
-      ["索引のための線", "2024-10-10", "OBJECT", "DRAWING", "2024", "完成", "売却済", "Photography", "wood, acrylic, metal", 409, 141, 149, 273000, false, 14700, "Archive", "Private collection", "", "日本語作品名のサンプルです。"],
-      ["明滅する余白", "2025-11-13", "DRAWING", "PHOTO", "2025", "完成", "譲渡済", "Print", "paper, pen", 446, 194, 1, "", true, 17400, "Studio", "Private collection", "", "日本語作品名のサンプルです。"],
-      ["誰かの幸運", "2026-12-16", "PHOTO", "PRINT", "2026", "制作終了", "非売品", "Acrylic", "digital print", 483, 247, 1, 299000, false, 20100, "Storage", "", "", "日本語作品名のサンプルです。"]
-    ];
-
+      {
+            "workNo": "0427",
+            "title": "WHO CURATED YOUR LUCK",
+            "completedDate": "2023-01-01",
+            "category": "LED SIGN",
+            "series": "VLNS",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "100",
+            "sizeH": "120",
+            "sizeD": "20",
+            "price": "",
+            "priceAsk": true,
+            "cost": "",
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "9183",
+            "title": "LUCK INDEX",
+            "completedDate": "2024-02-04",
+            "category": "OBJECT",
+            "series": "VNBX",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "137",
+            "sizeH": "173",
+            "sizeD": "37",
+            "price": 25000,
+            "priceAsk": false,
+            "cost": 3500,
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "0064",
+            "title": "CURATED FIELD",
+            "completedDate": "2025-03-07",
+            "category": "DRAWING",
+            "series": "SIGN",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "paper, pen",
+            "sizeW": "174",
+            "sizeH": "226",
+            "sizeD": "1",
+            "price": 38000,
+            "priceAsk": false,
+            "cost": 6200,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "7301",
+            "title": "QUIET WARNING",
+            "completedDate": "2026-04-10",
+            "category": "PHOTO",
+            "series": "DRAWING",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "digital print",
+            "sizeW": "211",
+            "sizeH": "279",
+            "sizeD": "1",
+            "price": 51000,
+            "priceAsk": false,
+            "cost": 8900,
+            "location": "Collector",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "2849",
+            "title": "DO NOT TOUCH LIGHT",
+            "completedDate": "2023-05-13",
+            "category": "POSTER",
+            "series": "PHOTO",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "paper, ink",
+            "sizeW": "248",
+            "sizeH": "332",
+            "sizeD": "1",
+            "price": 64000,
+            "priceAsk": false,
+            "cost": 11600,
+            "location": "Archive",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "5176",
+            "title": "HOLD YOUR LUCK",
+            "completedDate": "2024-06-16",
+            "category": "DEVICE",
+            "series": "PRINT",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "display, cable, case",
+            "sizeW": "285",
+            "sizeH": "385",
+            "sizeD": "105",
+            "price": "",
+            "priceAsk": true,
+            "cost": 14300,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "3902",
+            "title": "NIGHT WINDOW",
+            "completedDate": "2025-07-19",
+            "category": "OTHER",
+            "series": "OBJECT",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "mixed materials",
+            "sizeW": "322",
+            "sizeH": "438",
+            "sizeD": "122",
+            "price": 90000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "8650",
+            "title": "GREEN ROOM",
+            "completedDate": "2026-08-22",
+            "category": "LED SIGN",
+            "series": "DEVICE",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "359",
+            "sizeH": "491",
+            "sizeD": "139",
+            "price": 103000,
+            "priceAsk": false,
+            "cost": 19700,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "1248",
+            "title": "SIDE VENT",
+            "completedDate": "2023-09-25",
+            "category": "OBJECT",
+            "series": "OTHER",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "396",
+            "sizeH": "544",
+            "sizeD": "156",
+            "price": 116000,
+            "priceAsk": false,
+            "cost": 22400,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "6795",
+            "title": "BASE MODULE",
+            "completedDate": "2024-10-01",
+            "category": "DRAWING",
+            "series": "VLNS",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "paper, pen",
+            "sizeW": "433",
+            "sizeH": "597",
+            "sizeD": "1",
+            "price": 129000,
+            "priceAsk": false,
+            "cost": 25100,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "2037",
+            "title": "SHORT PEDESTAL",
+            "completedDate": "2025-11-04",
+            "category": "PHOTO",
+            "series": "VNBX",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "digital print",
+            "sizeW": "470",
+            "sizeH": "650",
+            "sizeD": "1",
+            "price": "",
+            "priceAsk": true,
+            "cost": 27800,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "9541",
+            "title": "CABLE RISER",
+            "completedDate": "2026-12-07",
+            "category": "POSTER",
+            "series": "SIGN",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "paper, ink",
+            "sizeW": "507",
+            "sizeH": "703",
+            "sizeD": "1",
+            "price": 155000,
+            "priceAsk": false,
+            "cost": 30500,
+            "location": "Storage",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "4810",
+            "title": "ARCHIVE TRAY",
+            "completedDate": "2023-01-10",
+            "category": "DEVICE",
+            "series": "DRAWING",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "display, cable, case",
+            "sizeW": "544",
+            "sizeH": "756",
+            "sizeD": "224",
+            "price": 168000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Gallery",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "0369",
+            "title": "CABLE SLEEPER",
+            "completedDate": "2024-02-13",
+            "category": "OTHER",
+            "series": "PHOTO",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "mixed materials",
+            "sizeW": "581",
+            "sizeH": "809",
+            "sizeD": "241",
+            "price": 181000,
+            "priceAsk": false,
+            "cost": 35900,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "7422",
+            "title": "CATALOG STUDY A",
+            "completedDate": "2025-03-16",
+            "category": "LED SIGN",
+            "series": "PRINT",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "618",
+            "sizeH": "862",
+            "sizeD": "258",
+            "price": 194000,
+            "priceAsk": false,
+            "cost": 38600,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "1588",
+            "title": "CATALOG STUDY B",
+            "completedDate": "2026-04-19",
+            "category": "OBJECT",
+            "series": "OBJECT",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "655",
+            "sizeH": "915",
+            "sizeD": "275",
+            "price": "",
+            "priceAsk": true,
+            "cost": 41300,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "6093",
+            "title": "INDEX CARD",
+            "completedDate": "2023-05-22",
+            "category": "DRAWING",
+            "series": "DEVICE",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "paper, pen",
+            "sizeW": "692",
+            "sizeH": "968",
+            "sizeD": "1",
+            "price": 220000,
+            "priceAsk": false,
+            "cost": 44000,
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "8174",
+            "title": "LISTING TERMINAL",
+            "completedDate": "2024-06-25",
+            "category": "PHOTO",
+            "series": "OTHER",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "digital print",
+            "sizeW": "729",
+            "sizeH": "1021",
+            "sizeD": "1",
+            "price": 233000,
+            "priceAsk": false,
+            "cost": 46700,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "2950",
+            "title": "EMPTY FRAME",
+            "completedDate": "2025-07-01",
+            "category": "POSTER",
+            "series": "VLNS",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "paper, ink",
+            "sizeW": "766",
+            "sizeH": "1074",
+            "sizeD": "1",
+            "price": 246000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "5632",
+            "title": "NEON QUIET",
+            "completedDate": "2026-08-04",
+            "category": "DEVICE",
+            "series": "VNBX",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "display, cable, case",
+            "sizeW": "803",
+            "sizeH": "1127",
+            "sizeD": "343",
+            "price": 259000,
+            "priceAsk": false,
+            "cost": 52100,
+            "location": "Archive",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "English title sample record."
+      },
+      {
+            "workNo": "7106",
+            "title": "Serendipity 光量記録",
+            "completedDate": "2023-09-07",
+            "category": "OTHER",
+            "series": "SIGN",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "mixed materials",
+            "sizeW": "840",
+            "sizeH": "1180",
+            "sizeD": "360",
+            "price": 272000,
+            "priceAsk": false,
+            "cost": 54800,
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "0498",
+            "title": "VLNS 幸運の入口",
+            "completedDate": "2024-10-10",
+            "category": "LED SIGN",
+            "series": "DRAWING",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "877",
+            "sizeH": "1233",
+            "sizeD": "377",
+            "price": 285000,
+            "priceAsk": false,
+            "cost": 57500,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "3821",
+            "title": "Archive Tray 記憶の皿",
+            "completedDate": "2025-11-13",
+            "category": "OBJECT",
+            "series": "PHOTO",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "914",
+            "sizeH": "1286",
+            "sizeD": "394",
+            "price": 298000,
+            "priceAsk": false,
+            "cost": 60200,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "9270",
+            "title": "Luck Field 観測点",
+            "completedDate": "2026-12-16",
+            "category": "DRAWING",
+            "series": "PRINT",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "paper, pen",
+            "sizeW": "951",
+            "sizeH": "1339",
+            "sizeD": "1",
+            "price": 311000,
+            "priceAsk": false,
+            "cost": 62900,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "1364",
+            "title": "Cable Garden 配線庭園",
+            "completedDate": "2023-01-19",
+            "category": "PHOTO",
+            "series": "OBJECT",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "digital print",
+            "sizeW": "988",
+            "sizeH": "1392",
+            "sizeD": "1",
+            "price": "",
+            "priceAsk": true,
+            "cost": "",
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "8045",
+            "title": "Quiet Sign 静かな警告",
+            "completedDate": "2024-02-22",
+            "category": "POSTER",
+            "series": "DEVICE",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "paper, ink",
+            "sizeW": "125",
+            "sizeH": "1445",
+            "sizeD": "1",
+            "price": 337000,
+            "priceAsk": false,
+            "cost": 68300,
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "2509",
+            "title": "Light Index 光の索引",
+            "completedDate": "2025-03-25",
+            "category": "DEVICE",
+            "series": "OTHER",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "display, cable, case",
+            "sizeW": "162",
+            "sizeH": "1498",
+            "sizeD": "42",
+            "price": 350000,
+            "priceAsk": false,
+            "cost": 1000,
+            "location": "Gallery",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "6917",
+            "title": "Storage Moon 保管月",
+            "completedDate": "2026-04-01",
+            "category": "OTHER",
+            "series": "VLNS",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "mixed materials",
+            "sizeW": "199",
+            "sizeH": "1551",
+            "sizeD": "59",
+            "price": 363000,
+            "priceAsk": false,
+            "cost": 3700,
+            "location": "Collector",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "4753",
+            "title": "Green Room 緑の部屋",
+            "completedDate": "2023-05-04",
+            "category": "LED SIGN",
+            "series": "VNBX",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "236",
+            "sizeH": "1604",
+            "sizeD": "76",
+            "price": 376000,
+            "priceAsk": false,
+            "cost": 6400,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "0286",
+            "title": "Signal Box 信号箱",
+            "completedDate": "2024-06-07",
+            "category": "OBJECT",
+            "series": "SIGN",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "273",
+            "sizeH": "157",
+            "sizeD": "93",
+            "price": "",
+            "priceAsk": true,
+            "cost": 9100,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "8401",
+            "title": "Paper Circuit 紙の回路",
+            "completedDate": "2025-07-10",
+            "category": "DRAWING",
+            "series": "DRAWING",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "paper, pen",
+            "sizeW": "310",
+            "sizeH": "210",
+            "sizeD": "1",
+            "price": 402000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "3197",
+            "title": "Window Study 窓の習作",
+            "completedDate": "2026-08-13",
+            "category": "PHOTO",
+            "series": "PHOTO",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "digital print",
+            "sizeW": "347",
+            "sizeH": "263",
+            "sizeD": "1",
+            "price": 415000,
+            "priceAsk": false,
+            "cost": 14500,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "5628",
+            "title": "Base Module 台座試作",
+            "completedDate": "2023-09-16",
+            "category": "POSTER",
+            "series": "PRINT",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "paper, ink",
+            "sizeW": "384",
+            "sizeH": "316",
+            "sizeD": "1",
+            "price": 428000,
+            "priceAsk": false,
+            "cost": 17200,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "0963",
+            "title": "Night Label 夜のラベル",
+            "completedDate": "2024-10-19",
+            "category": "DEVICE",
+            "series": "OBJECT",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "display, cable, case",
+            "sizeW": "421",
+            "sizeH": "369",
+            "sizeD": "161",
+            "price": 441000,
+            "priceAsk": false,
+            "cost": 19900,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "7744",
+            "title": "Object Note 物体メモ",
+            "completedDate": "2025-11-22",
+            "category": "OTHER",
+            "series": "DEVICE",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "mixed materials",
+            "sizeW": "458",
+            "sizeH": "422",
+            "sizeD": "178",
+            "price": "",
+            "priceAsk": true,
+            "cost": 22600,
+            "location": "Studio",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "4512",
+            "title": "Drawing Cloud 線の雲",
+            "completedDate": "2026-12-25",
+            "category": "LED SIGN",
+            "series": "OTHER",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "495",
+            "sizeH": "475",
+            "sizeD": "195",
+            "price": 467000,
+            "priceAsk": false,
+            "cost": 25300,
+            "location": "Storage",
+            "owner": "Private collection",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "6088",
+            "title": "Neon Archive 光る記録",
+            "completedDate": "2023-01-01",
+            "category": "OBJECT",
+            "series": "VLNS",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "532",
+            "sizeH": "528",
+            "sizeD": "212",
+            "price": 480000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "1875",
+            "title": "Poster Shell 紙の殻",
+            "completedDate": "2024-02-04",
+            "category": "DRAWING",
+            "series": "VNBX",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "paper, pen",
+            "sizeW": "569",
+            "sizeH": "581",
+            "sizeD": "1",
+            "price": 13000,
+            "priceAsk": false,
+            "cost": 30700,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "9356",
+            "title": "Device Prayer 装置の祈り",
+            "completedDate": "2025-03-07",
+            "category": "PHOTO",
+            "series": "SIGN",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "digital print",
+            "sizeW": "606",
+            "sizeH": "634",
+            "sizeD": "1",
+            "price": 26000,
+            "priceAsk": false,
+            "cost": 33400,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "5204",
+            "title": "Temporary Light 仮設の光",
+            "completedDate": "2026-04-10",
+            "category": "POSTER",
+            "series": "DRAWING",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "paper, ink",
+            "sizeW": "643",
+            "sizeH": "687",
+            "sizeD": "1",
+            "price": "",
+            "priceAsk": true,
+            "cost": 36100,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語と英語が混在する作品名のサンプルです。"
+      },
+      {
+            "workNo": "2631",
+            "title": "幸運を編集する手",
+            "completedDate": "2023-05-13",
+            "category": "DEVICE",
+            "series": "PHOTO",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "display, cable, case",
+            "sizeW": "680",
+            "sizeH": "740",
+            "sizeD": "280",
+            "price": 52000,
+            "priceAsk": false,
+            "cost": 38800,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "8999",
+            "title": "光の保管庫",
+            "completedDate": "2024-06-16",
+            "category": "OTHER",
+            "series": "PRINT",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "mixed materials",
+            "sizeW": "717",
+            "sizeH": "793",
+            "sizeD": "297",
+            "price": 65000,
+            "priceAsk": false,
+            "cost": 41500,
+            "location": "Collector",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "1140",
+            "title": "静かな警告",
+            "completedDate": "2025-07-19",
+            "category": "LED SIGN",
+            "series": "OBJECT",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "754",
+            "sizeH": "846",
+            "sizeD": "314",
+            "price": 78000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Archive",
+            "owner": "Private collection",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "6762",
+            "title": "未完の台座",
+            "completedDate": "2026-08-22",
+            "category": "OBJECT",
+            "series": "DEVICE",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "791",
+            "sizeH": "899",
+            "sizeD": "331",
+            "price": "",
+            "priceAsk": true,
+            "cost": 46900,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "3408",
+            "title": "配線の庭",
+            "completedDate": "2023-09-25",
+            "category": "DRAWING",
+            "series": "OTHER",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "paper, pen",
+            "sizeW": "828",
+            "sizeH": "952",
+            "sizeD": "1",
+            "price": 104000,
+            "priceAsk": false,
+            "cost": 49600,
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "7591",
+            "title": "夜の窓",
+            "completedDate": "2024-10-01",
+            "category": "PHOTO",
+            "series": "VLNS",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "digital print",
+            "sizeW": "865",
+            "sizeH": "1005",
+            "sizeD": "1",
+            "price": 117000,
+            "priceAsk": false,
+            "cost": 52300,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "0215",
+            "title": "緑の部屋",
+            "completedDate": "2025-11-04",
+            "category": "POSTER",
+            "series": "VNBX",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "paper, ink",
+            "sizeW": "902",
+            "sizeH": "1058",
+            "sizeD": "1",
+            "price": 130000,
+            "priceAsk": false,
+            "cost": 55000,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "4886",
+            "title": "記憶の箱",
+            "completedDate": "2026-12-07",
+            "category": "DEVICE",
+            "series": "SIGN",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "display, cable, case",
+            "sizeW": "939",
+            "sizeH": "1111",
+            "sizeD": "399",
+            "price": 143000,
+            "priceAsk": false,
+            "cost": 57700,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "9027",
+            "title": "仮設の光",
+            "completedDate": "2023-01-10",
+            "category": "OTHER",
+            "series": "DRAWING",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "mixed materials",
+            "sizeW": "976",
+            "sizeH": "1164",
+            "sizeD": "416",
+            "price": "",
+            "priceAsk": true,
+            "cost": "",
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "1533",
+            "title": "展示前夜",
+            "completedDate": "2024-02-13",
+            "category": "LED SIGN",
+            "series": "PHOTO",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "113",
+            "sizeH": "1217",
+            "sizeD": "433",
+            "price": 169000,
+            "priceAsk": false,
+            "cost": 63100,
+            "location": "Storage",
+            "owner": "Private collection",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "6340",
+            "title": "小さな標識",
+            "completedDate": "2025-03-16",
+            "category": "OBJECT",
+            "series": "PRINT",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "150",
+            "sizeH": "1270",
+            "sizeD": "30",
+            "price": 182000,
+            "priceAsk": false,
+            "cost": 65800,
+            "location": "Gallery",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "2796",
+            "title": "余白の装置",
+            "completedDate": "2026-04-19",
+            "category": "DRAWING",
+            "series": "OBJECT",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "paper, pen",
+            "sizeW": "187",
+            "sizeH": "1323",
+            "sizeD": "1",
+            "price": 195000,
+            "priceAsk": false,
+            "cost": 68500,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "8125",
+            "title": "見えない棚",
+            "completedDate": "2023-05-22",
+            "category": "PHOTO",
+            "series": "DEVICE",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "貸出中",
+            "technique": "Woodwork",
+            "materials": "digital print",
+            "sizeW": "224",
+            "sizeH": "1376",
+            "sizeD": "1",
+            "price": 208000,
+            "priceAsk": false,
+            "cost": 1200,
+            "location": "Archive",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "0579",
+            "title": "紙の回路",
+            "completedDate": "2024-06-25",
+            "category": "POSTER",
+            "series": "OTHER",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "処分済",
+            "technique": "Video",
+            "materials": "paper, ink",
+            "sizeW": "261",
+            "sizeH": "1429",
+            "sizeD": "1",
+            "price": "",
+            "priceAsk": true,
+            "cost": 3900,
+            "location": "Studio",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "3984",
+            "title": "沈黙する看板",
+            "completedDate": "2025-07-01",
+            "category": "DEVICE",
+            "series": "VLNS",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "保管中",
+            "technique": "Installation",
+            "materials": "display, cable, case",
+            "sizeW": "298",
+            "sizeH": "1482",
+            "sizeD": "98",
+            "price": 234000,
+            "priceAsk": false,
+            "cost": "",
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "7210",
+            "title": "保管される月",
+            "completedDate": "2026-08-04",
+            "category": "OTHER",
+            "series": "VNBX",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "販売中",
+            "technique": "Mixed Media",
+            "materials": "mixed materials",
+            "sizeW": "335",
+            "sizeH": "1535",
+            "sizeD": "115",
+            "price": 247000,
+            "priceAsk": false,
+            "cost": 9300,
+            "location": "Gallery",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "5407",
+            "title": "手前の風景",
+            "completedDate": "2023-09-07",
+            "category": "LED SIGN",
+            "series": "SIGN",
+            "year": "2023",
+            "productionStatus": "制作中",
+            "managementStatus": "展示中",
+            "technique": "Drawing",
+            "materials": "LED, acrylic, cable",
+            "sizeW": "372",
+            "sizeH": "1588",
+            "sizeD": "132",
+            "price": 260000,
+            "priceAsk": false,
+            "cost": 12000,
+            "location": "Collector",
+            "owner": "",
+            "exhibitionHistory": "WSV Sample Exhibition",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "1892",
+            "title": "索引のための線",
+            "completedDate": "2024-10-10",
+            "category": "OBJECT",
+            "series": "DRAWING",
+            "year": "2024",
+            "productionStatus": "完成",
+            "managementStatus": "売却済",
+            "technique": "Photography",
+            "materials": "wood, acrylic, metal",
+            "sizeW": "409",
+            "sizeH": "141",
+            "sizeD": "149",
+            "price": 273000,
+            "priceAsk": false,
+            "cost": 14700,
+            "location": "Archive",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "9635",
+            "title": "明滅する余白",
+            "completedDate": "2025-11-13",
+            "category": "DRAWING",
+            "series": "PHOTO",
+            "year": "2025",
+            "productionStatus": "完成",
+            "managementStatus": "譲渡済",
+            "technique": "Print",
+            "materials": "paper, pen",
+            "sizeW": "446",
+            "sizeH": "194",
+            "sizeD": "1",
+            "price": "",
+            "priceAsk": true,
+            "cost": 17400,
+            "location": "Studio",
+            "owner": "Private collection",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      },
+      {
+            "workNo": "4066",
+            "title": "誰かの幸運",
+            "completedDate": "2026-12-16",
+            "category": "PHOTO",
+            "series": "PRINT",
+            "year": "2026",
+            "productionStatus": "制作終了",
+            "managementStatus": "非売品",
+            "technique": "Acrylic",
+            "materials": "digital print",
+            "sizeW": "483",
+            "sizeH": "247",
+            "sizeD": "1",
+            "price": 299000,
+            "priceAsk": false,
+            "cost": 20100,
+            "location": "Storage",
+            "owner": "",
+            "exhibitionHistory": "",
+            "memo": "日本語作品名のサンプルです。"
+      }
+];
 
     const FONT_OPTIONS = [
       { name: "System Sans", value: '-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif' },
@@ -847,23 +2035,6 @@
       { name: "Monaco", value: 'Monaco, Menlo, Consolas, monospace' }
     ];
 
-    function setFont(fontValue) {
-      document.documentElement.style.setProperty("--font-main", fontValue);
-      localStorage.setItem("vamrss-wsv-font-main", fontValue);
-    }
-
-    function renderFontSampler() {
-      const target = document.getElementById("fontList");
-      if (!target) return;
-      target.innerHTML = FONT_OPTIONS.map(font => `
-        <button class="font-option" type="button" style="font-family:${escapeAttr(font.value)}" onclick="setFont('${escapeAttr(font.value)}')">
-          <span class="font-name">${escapeHtml(font.name)}</span>
-          <span class="font-preview">＊ (VAMRSS) WSV / WHO CURATED YOUR LUCK? / 光の保管庫 / Serendipity 光量記録</span>
-        </button>
-      `).join("");
-      setFont(FONT_OPTIONS[0].value);
-    }
-
     const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
 
     let works = [];
@@ -874,12 +2045,15 @@
     let activeCategory = "ALL";
     let activeProduction = "ALL";
     let activeManagement = "ALL";
+    let sortKey = "workNo";
+    let sortDirection = "asc";
 
     const form = document.getElementById("workForm");
     const workList = document.getElementById("workList");
     const searchInput = document.getElementById("searchInput");
 
     const fields = {
+      workNo: document.getElementById("workNo"),
       title: document.getElementById("title"),
       completedDate: document.getElementById("completedDate"),
       category: document.getElementById("category"),
@@ -925,31 +2099,24 @@
       return [...new Set(source.map(item => String(item || "").trim()).filter(Boolean))];
     }
 
-    function sampleToWork(row, index) {
-      return {
-        id: "sample-" + String(index + 1).padStart(3, "0"),
-        title: row[0],
-        completedDate: row[1],
-        category: row[2],
-        series: row[3],
-        year: row[4],
-        productionStatus: row[5],
-        managementStatus: row[6],
-        technique: row[7],
-        materials: row[8],
-        sizeW: row[9] ? String(row[9]) : "",
-        sizeH: row[10] ? String(row[10]) : "",
-        sizeD: row[11] ? String(row[11]) : "",
-        price: row[12] === "" ? "" : row[12],
-        priceAsk: Boolean(row[13]),
-        cost: row[14] === "" ? "" : row[14],
-        location: row[15],
-        owner: row[16],
-        exhibitionHistory: row[17],
-        memo: row[18],
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      };
+    function normalizeWorkNo(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+      return digits ? digits.padStart(4, "0").slice(-4) : "";
+    }
+
+    function usedWorkNos(excludeId = null) {
+      return new Set(works.filter(w => w.id !== excludeId).map(w => normalizeWorkNo(w.workNo)).filter(Boolean));
+    }
+
+    function generateRandomWorkNo(excludeId = null) {
+      const used = usedWorkNos(excludeId);
+      const available = [];
+      for (let i = 0; i <= 9999; i++) {
+        const no = String(i).padStart(4, "0");
+        if (!used.has(no)) available.push(no);
+      }
+      if (!available.length) throw new Error("No available work number");
+      return available[Math.floor(Math.random() * available.length)];
     }
 
     function load() {
@@ -984,7 +2151,12 @@
 
     function seedIfEmpty() {
       if (works.length) return;
-      works = SAMPLE_WORKS.map(sampleToWork);
+      works = SAMPLE_WORKS.map((w, index) => ({
+        ...w,
+        id: "sample-" + String(index + 1).padStart(3, "0"),
+        createdAt: nowIso(),
+        updatedAt: nowIso()
+      }));
       categories = cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES);
       techniques = cleanOptions([...techniques, ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
       locations = cleanOptions([...locations, ...works.map(w => w.location)], DEFAULT_LOCATIONS);
@@ -1009,18 +2181,46 @@
       renderFilters();
     }
 
+    function categoryCounts() {
+      const map = new Map();
+      works.forEach(w => {
+        const category = String(w.category || "OTHER");
+        map.set(category, (map.get(category) || 0) + 1);
+      });
+      categories.forEach(category => {
+        if (!map.has(category)) map.set(category, 0);
+      });
+      return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ja"));
+    }
+
     function renderFilters() {
-      document.getElementById("categoryLinks").innerHTML = ["ALL", ...categories].map(item => {
-        return `<button class="text-button ${item === activeCategory ? "active" : ""}" type="button" onclick="setCategory('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+      const categoryItems = ["ALL", ...categoryCounts().map(([category]) => category)];
+      document.getElementById("categoryLinks").innerHTML = categoryItems.map(item => {
+        return `<button class="text-button ${item === activeCategory ? "selected" : ""}" type="button" onclick="setCategory('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
       }).join("");
 
       document.getElementById("productionLinks").innerHTML = ["ALL", ...PRODUCTION_STATUSES].map(item => {
-        return `<button class="text-button ${item === activeProduction ? "active" : ""}" type="button" onclick="setProduction('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+        return `<button class="text-button ${item === activeProduction ? "selected" : ""}" type="button" onclick="setProduction('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
       }).join("");
 
       document.getElementById("managementLinks").innerHTML = ["ALL", ...MANAGEMENT_STATUSES].map(item => {
-        return `<button class="text-button ${item === activeManagement ? "active" : ""}" type="button" onclick="setManagement('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+        return `<button class="text-button ${item === activeManagement ? "selected" : ""}" type="button" onclick="setManagement('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
       }).join("");
+
+      updateSortMarks();
+    }
+
+    function updateSortMarks() {
+      const marks = {
+        workNo: document.getElementById("sortMarkWorkNo"),
+        title: document.getElementById("sortMarkTitle"),
+        year: document.getElementById("sortMarkYear")
+      };
+      Object.keys(marks).forEach(key => {
+        if (!marks[key]) return;
+        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? " ↑" : " ↓") : "";
+        marks[key].parentElement.classList.toggle("selected", sortKey === key);
+      });
     }
 
     function renderOptionLists() {
@@ -1080,6 +2280,16 @@
       render();
     };
 
+    window.setSort = function(key) {
+      if (sortKey === key) {
+        sortDirection = sortDirection === "asc" ? "desc" : "asc";
+      } else {
+        sortKey = key;
+        sortDirection = "asc";
+      }
+      render();
+    };
+
     window.clearFilters = function() {
       activeCategory = "ALL";
       activeProduction = "ALL";
@@ -1092,7 +2302,7 @@
       const panel = document.getElementById("statusPanel");
       const text = document.getElementById("statusPanelText");
       panel.classList.toggle("open");
-      text.textContent = panel.classList.contains("open") ? "tap to close" : "tap to open";
+      text.textContent = panel.classList.contains("open") ? "－" : "＋";
     };
 
     window.showScreen = function(name) {
@@ -1100,6 +2310,22 @@
         document.getElementById(id + "Screen").classList.toggle("active", id === name);
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    function applyTheme(theme) {
+      const next = theme === "dark" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+      const label = next === "dark" ? "LIGHT" : "DARK";
+      ["themeButton", "themeButtonEntry", "themeButtonData"].forEach(id => {
+        const button = document.getElementById(id);
+        if (button) button.textContent = label;
+      });
+    }
+
+    window.toggleTheme = function() {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      applyTheme(current === "dark" ? "light" : "dark");
     };
 
     function normalizeStatuses(w = {}) {
@@ -1158,12 +2384,25 @@
     }
 
     function formToWork(existing = {}) {
+      let workNo = normalizeWorkNo(fields.workNo.value);
+      if (!workNo) workNo = generateRandomWorkNo(existing.id || null);
+
+      if (!/^\d{4}$/.test(workNo)) {
+        throw new Error("INVALID_WORK_NO");
+      }
+
+      const used = usedWorkNos(existing.id || null);
+      if (used.has(workNo)) {
+        throw new Error("DUPLICATE_WORK_NO");
+      }
+
       const price = fields.price.value === "" ? "" : Math.max(0, Math.round(Number(fields.price.value) || 0));
       const cost = fields.cost.value === "" ? "" : Math.max(0, Math.round(Number(fields.cost.value) || 0));
 
       return {
         ...existing,
         id: existing.id || createId(),
+        workNo,
         title: fields.title.value.trim(),
         completedDate: fields.completedDate.value,
         category: fields.category.value,
@@ -1188,6 +2427,25 @@
       };
     }
 
+    function compareWorks(a, b) {
+      let av = "";
+      let bv = "";
+
+      if (sortKey === "workNo") {
+        av = normalizeWorkNo(a.workNo);
+        bv = normalizeWorkNo(b.workNo);
+      } else if (sortKey === "title") {
+        av = String(a.title || "");
+        bv = String(b.title || "");
+      } else if (sortKey === "year") {
+        av = String(a.year || "");
+        bv = String(b.year || "");
+      }
+
+      const result = av.localeCompare(bv, "ja", { numeric: true });
+      return sortDirection === "asc" ? result : -result;
+    }
+
     function render() {
       renderFilters();
 
@@ -1207,6 +2465,7 @@
           if (!query) return true;
           const statuses = normalizeStatuses(w);
           return [
+            w.workNo,
             w.title,
             w.completedDate,
             w.category,
@@ -1226,11 +2485,7 @@
             w.memo
           ].some(value => String(value || "").toLowerCase().includes(query));
         })
-        .sort((a, b) => {
-          const dateCompare = String(b.completedDate || "").localeCompare(String(a.completedDate || ""));
-          if (dateCompare) return dateCompare;
-          return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
-        });
+        .sort(compareWorks);
 
       if (!filtered.length) {
         workList.innerHTML = '<div class="empty">該当する作品がありません。</div>';
@@ -1241,18 +2496,22 @@
         const statuses = normalizeStatuses(w);
         const priceText = w.priceAsk ? "ASK" : formatMoney(w.price);
         const costText = formatMoney(w.cost);
+        const workNo = normalizeWorkNo(w.workNo);
         return `
           <article class="work" id="work-${escapeAttr(w.id)}">
-            <button class="work-summary has-category" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
+            <button class="work-summary" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
+              <div class="work-no">${escapeHtml(workNo)}</div>
               <div class="work-title">${escapeHtml(w.title || "Untitled")}</div>
-              <div class="work-category">${escapeHtml(w.category || "")}</div>
-              <div class="work-date">${escapeHtml(w.completedDate || "")}</div>
+              <div class="work-year">${escapeHtml(w.year || "")}</div>
             </button>
             <div class="work-detail">
               <div class="detail-grid">
+                <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(workNo)}</div></div>
+                <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Year</div><div class="detail-value">${escapeHtml(w.year || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Category</div><div class="detail-value">${escapeHtml(w.category || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${escapeHtml(w.series || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Year</div><div class="detail-value">${escapeHtml(w.year || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Production</div><div class="detail-value">${escapeHtml(statuses.productionStatus)}</div></div>
                 <div class="detail-row"><div class="detail-key">Management</div><div class="detail-value">${escapeHtml(statuses.managementStatus)}</div></div>
                 <div class="detail-row"><div class="detail-key">Technique</div><div class="detail-value">${escapeHtml(w.technique || "")}</div></div>
@@ -1285,6 +2544,7 @@
       if (!w) return;
 
       editingId = id;
+      fields.workNo.value = normalizeWorkNo(w.workNo);
       fields.title.value = w.title || "";
       fields.completedDate.value = w.completedDate || "";
       renderCatalogSelect(fields.category, categories, w.category || "");
@@ -1331,6 +2591,10 @@
       if (fields.priceAsk.checked) fields.price.value = "";
     });
 
+    fields.workNo.addEventListener("input", () => {
+      fields.workNo.value = fields.workNo.value.replace(/\D/g, "").slice(0, 4);
+    });
+
     form.addEventListener("submit", event => {
       event.preventDefault();
       if (!fields.title.value.trim()) {
@@ -1338,10 +2602,23 @@
         return;
       }
 
-      if (editingId) {
-        works = works.map(w => w.id === editingId ? formToWork(w) : w);
-      } else {
-        works.push(formToWork());
+      try {
+        if (editingId) {
+          works = works.map(w => w.id === editingId ? formToWork(w) : w);
+        } else {
+          works.push(formToWork());
+        }
+      } catch (error) {
+        if (error.message === "DUPLICATE_WORK_NO") {
+          alert("この作品番号は既に使用されています。");
+          return;
+        }
+        if (error.message === "INVALID_WORK_NO") {
+          alert("作品番号は0000〜9999の4桁で入力してください。");
+          return;
+        }
+        alert("保存できませんでした。");
+        return;
       }
 
       save();
@@ -1373,7 +2650,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.2.2",
+        version: "minimal-text-v0.3.0",
         exportedAt: nowIso(),
         works,
         categories,
@@ -1409,11 +2686,23 @@
 
           if (!confirm(`${importedWorks.length}件の作品データで現在のWSVを上書きしますか？`)) return;
 
-          works = importedWorks.map(w => {
+          const seenNos = new Set();
+          works = importedWorks.map((w, index) => {
             const statuses = normalizeStatuses(w);
             const dims = normalizeDimensions(w);
+            let workNo = normalizeWorkNo(w.workNo || w.no || w.number);
+            if (!workNo || seenNos.has(workNo)) {
+              let candidate;
+              do {
+                candidate = String(index + seenNos.size).padStart(4, "0").slice(-4);
+              } while (seenNos.has(candidate));
+              workNo = candidate;
+            }
+            seenNos.add(workNo);
+
             return {
               id: w.id || createId(),
+              workNo,
               title: String(w.title || "Untitled"),
               completedDate: String(w.completedDate || ""),
               category: String(w.category || w.workCategory || "OTHER"),
@@ -1468,11 +2757,28 @@
       showScreen("works");
     });
 
+    function setFont(fontValue) {
+      document.documentElement.style.setProperty("--font-main", fontValue);
+    }
+
+    function renderFontSampler() {
+      const target = document.getElementById("fontList");
+      if (!target) return;
+      target.innerHTML = FONT_OPTIONS.map(font => `
+        <button class="font-option" type="button" style="font-family:${escapeAttr(font.value)}" onclick="setFont('${escapeAttr(font.value)}')">
+          <span class="font-name">${escapeHtml(font.name)}</span>
+          <span class="font-preview">＊ (VAMRSS) WSV / WHO CURATED YOUR LUCK / 光の保管庫 / Serendipity 光量記録</span>
+        </button>
+      `).join("");
+      setFont(FONT_OPTIONS[0].value);
+    }
+
     load();
     loadSettings();
     seedIfEmpty();
     setupOptions();
     resetForm();
+    applyTheme(localStorage.getItem(THEME_STORAGE_KEY) || "light");
     render();
     renderFontSampler();
   </script>
