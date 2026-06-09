@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.2.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -30,7 +30,7 @@
       font-family: var(--font-main);
       font-size: 11px;
       font-weight: 300;
-      line-height: 1.45;
+      line-height: 1.58;
       letter-spacing: 0.01em;
     }
 
@@ -69,6 +69,12 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .version-mark {
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.08em;
     }
 
     .text-nav {
@@ -135,7 +141,7 @@
     }
 
     .link-list .text-button {
-      line-height: 1.45;
+      line-height: 1.58;
     }
 
     .collapsible {
@@ -172,7 +178,7 @@
     textarea {
       min-height: 58px;
       resize: vertical;
-      line-height: 1.45;
+      line-height: 1.58;
     }
 
     select {
@@ -244,7 +250,7 @@
       color: var(--sub);
       font-size: 11px;
       font-weight: 300;
-      line-height: 1.45;
+      line-height: 1.58;
     }
 
     .work.open .work-detail {
@@ -364,7 +370,7 @@
       margin: 0;
       color: var(--sub);
       font-size: 11px;
-      line-height: 1.45;
+      line-height: 1.58;
     }
 
     .option-list {
@@ -414,7 +420,7 @@
       color: inherit;
       font-size: 11px;
       font-weight: 300;
-      line-height: 1.45;
+      line-height: 1.58;
     }
 
     .font-option:hover {
@@ -488,7 +494,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV</h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.2.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -531,7 +537,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY</h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.2.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -635,7 +641,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA</h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.2.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
@@ -698,7 +704,7 @@
   </main>
 
   <script>
-    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v1";
+    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v2";
     const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v1";
     const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v1";
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v1";
@@ -730,36 +736,66 @@
     };
 
     const SAMPLE_WORKS = [
-      ["VLNS-001 / WHO CURATED YOUR LUCK?", "2026-04-28", "LED SIGN", "VLNS", "2026", "制作中", "保管中", "Installation", "LED, acrylic, cable", 896, 1530, 531, "", true, "", "Studio", "", "Serendipity / Daikanyama", "大型LEDサインのサンプル。"],
-      ["VLNS-002 / LUCK INDEX", "2026-05-02", "LED SIGN", "VLNS", "2026", "制作中", "保管中", "Installation", "LED, acrylic", 420, 920, 80, 280000, false, 48000, "Studio", "", "", ""],
-      ["VLNS-003 / CURATED FIELD", "2026-05-11", "LED SIGN", "VLNS", "2026", "完成", "販売中", "Installation", "LED, cable, steel", 600, 1200, 120, 360000, false, 62000, "Gallery", "", "", ""],
-      ["VNBX-001 / BASE MODULE", "2025-11-20", "DEVICE", "VNBX", "2025", "完成", "保管中", "Woodwork", "plywood, magnet, cable", 300, 300, 1000, "", true, 21000, "Storage", "", "", ""],
-      ["VNBX-002 / SHORT PEDESTAL", "2025-12-04", "DEVICE", "VNBX", "2025", "完成", "保管中", "Woodwork", "wood, steel plate", 300, 300, 520, 85000, false, 18000, "Storage", "", "", ""],
-      ["VNBX-003 / CABLE RISER", "2026-01-16", "DEVICE", "VNBX", "2026", "制作中", "保管中", "Mixed Media", "cable, acrylic, magnet", 180, 640, 120, "", true, "", "Studio", "", "", ""],
-      ["SIGN-001 / QUIET WARNING", "2025-08-09", "POSTER", "SIGN", "2025", "完成", "売却済", "Print", "inkjet print", 420, 594, 1, 38000, false, 6000, "Collector", "Private collection", "", ""],
-      ["SIGN-002 / DO NOT TOUCH LIGHT", "2025-08-22", "POSTER", "SIGN", "2025", "完成", "保管中", "Print", "paper, ink", 420, 594, 1, 32000, false, 5000, "Archive", "", "", ""],
-      ["SIGN-003 / HOLD YOUR LUCK", "2025-09-13", "POSTER", "SIGN", "2025", "完成", "販売中", "Print", "paper, ink", 297, 420, 1, 24000, false, 3500, "Gallery", "", "", ""],
-      ["OBJ-001 / SMALL STAND FOR FUTURE", "2024-12-18", "OBJECT", "OBJECT", "2024", "完成", "非売品", "Mixed Media", "wood, LED, screw", 180, 260, 160, "", true, 9000, "Studio", "", "", ""],
-      ["OBJ-002 / ARCHIVE TRAY", "2025-01-26", "OBJECT", "OBJECT", "2025", "完成", "保管中", "Acrylic", "acrylic, label", 320, 42, 220, 18000, false, 2800, "Archive", "", "", ""],
-      ["OBJ-003 / CABLE SLEEPER", "2025-02-14", "OBJECT", "OBJECT", "2025", "制作終了", "処分済", "Mixed Media", "rubber, cable", 120, 60, 80, "", false, 1200, "Archive", "", "", "試作終了。"],
-      ["DRW-001 / LINE FOR UNKNOWN HOUSE", "2024-09-10", "DRAWING", "DRAWING", "2024", "完成", "保管中", "Drawing", "paper, pen", 210, 297, 1, 15000, false, 900, "Archive", "", "", ""],
-      ["DRW-002 / PLAN OF LUCK", "2024-10-02", "DRAWING", "DRAWING", "2024", "完成", "譲渡済", "Drawing", "paper, pencil", 210, 297, 1, "", true, 700, "Collector", "Gift", "", ""],
-      ["DRW-003 / FOUR LAMPS", "2025-03-08", "DRAWING", "DRAWING", "2025", "制作中", "保管中", "Drawing", "paper, marker", 297, 420, 1, "", true, "", "Studio", "", "", ""],
-      ["PHO-001 / NIGHT WINDOW", "2023-11-03", "PHOTO", "PHOTO", "2023", "完成", "保管中", "Photography", "digital print", 297, 420, 1, 22000, false, 4000, "Archive", "", "", ""],
-      ["PHO-002 / GREEN ROOM", "2024-02-19", "PHOTO", "PHOTO", "2024", "完成", "販売中", "Photography", "digital print", 420, 594, 1, 42000, false, 7000, "Gallery", "", "", ""],
-      ["PHO-003 / SIDE VENT", "2024-04-06", "PHOTO", "PHOTO", "2024", "完成", "保管中", "Photography", "digital file", 0, 0, 0, "", true, "", "Archive", "", "", ""],
-      ["MIX-001 / SPLASHED COUPLE", "2024-06-14", "LED SIGN", "MIX", "2024", "完成", "譲渡済", "Installation", "LED, acrylic", 480, 680, 70, "", true, 30000, "Collector", "Private collection", "", "インクモチーフ。"],
-      ["MIX-002 / SOCKS CIRCUIT", "2024-07-21", "OBJECT", "MIX", "2024", "完成", "非売品", "Mixed Media", "fabric, LED", 260, 310, 90, "", true, 11000, "Studio", "", "", ""],
-      ["MIX-003 / WEATHER BOX", "2024-08-30", "OBJECT", "MIX", "2024", "完成", "保管中", "Mixed Media", "box, LED, paper", 240, 240, 240, 70000, false, 16000, "Storage", "", "", ""],
-      ["PRT-001 / CATALOG STUDY A", "2026-02-01", "POSTER", "PRINT", "2026", "制作中", "保管中", "Print", "paper", 297, 420, 1, "", true, "", "Studio", "", "", ""],
-      ["PRT-002 / CATALOG STUDY B", "2026-02-09", "POSTER", "PRINT", "2026", "制作中", "保管中", "Print", "paper", 297, 420, 1, "", true, "", "Studio", "", "", ""],
-      ["PRT-003 / INDEX CARD", "2026-02-22", "POSTER", "PRINT", "2026", "完成", "保管中", "Print", "paper", 148, 210, 1, 12000, false, 1200, "Archive", "", "", ""],
-      ["DEV-001 / UCONSOLE LOG MOCK", "2025-06-03", "DEVICE", "DEVICE", "2025", "制作中", "保管中", "Mixed Media", "screen, keyboard, case", 220, 90, 160, "", true, "", "Studio", "", "", ""],
-      ["DEV-002 / LISTING TERMINAL", "2025-06-10", "DEVICE", "DEVICE", "2025", "制作中", "保管中", "Mixed Media", "case, display", 200, 120, 60, "", true, "", "Studio", "", "", ""],
-      ["OTH-001 / EMPTY FRAME", "2023-05-27", "OTHER", "OTHER", "2023", "完成", "処分済", "Woodwork", "wood", 500, 700, 30, "", false, 3500, "Archive", "", "", "廃材整理済み。"],
-      ["OTH-002 / TEMPORARY RULE", "2023-09-18", "OTHER", "OTHER", "2023", "完成", "保管中", "Mixed Media", "paper, tape", 210, 297, 1, "", true, 300, "Archive", "", "", ""],
-      ["OTH-003 / SMALL LUCK SAMPLE", "2026-03-12", "OTHER", "OTHER", "2026", "制作中", "保管中", "Acrylic", "acrylic sample", 100, 100, 20, "", true, "", "Studio", "", "", ""],
-      ["VLNS-004 / NEON QUIET", "2026-06-01", "LED SIGN", "VLNS", "2026", "制作中", "展示中", "Installation", "LED, acrylic, aluminum", 760, 1120, 95, "", true, 52000, "Gallery", "", "Preview", ""]
+      ["WHO CURATED YOUR LUCK", "2023-01-01", "LED SIGN", "VLNS", "2023", "制作中", "保管中", "Installation", "LED, acrylic, cable", 100, 120, 20, "", true, "", "Studio", "", "WSV Sample Exhibition", "English title sample record."],
+      ["LUCK INDEX", "2024-02-04", "OBJECT", "VNBX", "2024", "完成", "販売中", "Mixed Media", "wood, acrylic, metal", 137, 173, 37, 25000, false, 3500, "Storage", "", "", "English title sample record."],
+      ["CURATED FIELD", "2025-03-07", "DRAWING", "SIGN", "2025", "完成", "展示中", "Drawing", "paper, pen", 174, 226, 1, 38000, false, 6200, "Gallery", "", "", "English title sample record."],
+      ["QUIET WARNING", "2026-04-10", "PHOTO", "DRAWING", "2026", "制作終了", "売却済", "Photography", "digital print", 211, 279, 1, 51000, false, 8900, "Collector", "Private collection", "", "English title sample record."],
+      ["DO NOT TOUCH LIGHT", "2023-05-13", "POSTER", "PHOTO", "2023", "制作中", "譲渡済", "Print", "paper, ink", 248, 332, 1, 64000, false, 11600, "Archive", "Private collection", "", "English title sample record."],
+      ["HOLD YOUR LUCK", "2024-06-16", "DEVICE", "PRINT", "2024", "完成", "非売品", "Acrylic", "display, cable, case", 285, 385, 105, "", true, 14300, "Studio", "", "", "English title sample record."],
+      ["NIGHT WINDOW", "2025-07-19", "OTHER", "OBJECT", "2025", "完成", "貸出中", "Woodwork", "mixed materials", 322, 438, 122, 90000, false, "", "Storage", "", "", "English title sample record."],
+      ["GREEN ROOM", "2026-08-22", "LED SIGN", "DEVICE", "2026", "制作終了", "処分済", "Video", "LED, acrylic, cable", 359, 491, 139, 103000, false, 19700, "Gallery", "", "WSV Sample Exhibition", "English title sample record."],
+      ["SIDE VENT", "2023-09-25", "OBJECT", "OTHER", "2023", "制作中", "保管中", "Installation", "wood, acrylic, metal", 396, 544, 156, 116000, false, 22400, "Collector", "", "", "English title sample record."],
+      ["BASE MODULE", "2024-10-01", "DRAWING", "VLNS", "2024", "完成", "販売中", "Mixed Media", "paper, pen", 433, 597, 1, 129000, false, 25100, "Archive", "", "", "English title sample record."],
+      ["SHORT PEDESTAL", "2025-11-04", "PHOTO", "VNBX", "2025", "完成", "展示中", "Drawing", "digital print", 470, 650, 1, "", true, 27800, "Studio", "", "", "English title sample record."],
+      ["CABLE RISER", "2026-12-07", "POSTER", "SIGN", "2026", "制作終了", "売却済", "Photography", "paper, ink", 507, 703, 1, 155000, false, 30500, "Storage", "Private collection", "", "English title sample record."],
+      ["ARCHIVE TRAY", "2023-01-10", "DEVICE", "DRAWING", "2023", "制作中", "譲渡済", "Print", "display, cable, case", 544, 756, 224, 168000, false, "", "Gallery", "Private collection", "", "English title sample record."],
+      ["CABLE SLEEPER", "2024-02-13", "OTHER", "PHOTO", "2024", "完成", "非売品", "Acrylic", "mixed materials", 581, 809, 241, 181000, false, 35900, "Collector", "", "", "English title sample record."],
+      ["CATALOG STUDY A", "2025-03-16", "LED SIGN", "PRINT", "2025", "完成", "貸出中", "Woodwork", "LED, acrylic, cable", 618, 862, 258, 194000, false, 38600, "Archive", "", "WSV Sample Exhibition", "English title sample record."],
+      ["CATALOG STUDY B", "2026-04-19", "OBJECT", "OBJECT", "2026", "制作終了", "処分済", "Video", "wood, acrylic, metal", 655, 915, 275, "", true, 41300, "Studio", "", "", "English title sample record."],
+      ["INDEX CARD", "2023-05-22", "DRAWING", "DEVICE", "2023", "制作中", "保管中", "Installation", "paper, pen", 692, 968, 1, 220000, false, 44000, "Storage", "", "", "English title sample record."],
+      ["LISTING TERMINAL", "2024-06-25", "PHOTO", "OTHER", "2024", "完成", "販売中", "Mixed Media", "digital print", 729, 1021, 1, 233000, false, 46700, "Gallery", "", "", "English title sample record."],
+      ["EMPTY FRAME", "2025-07-01", "POSTER", "VLNS", "2025", "完成", "展示中", "Drawing", "paper, ink", 766, 1074, 1, 246000, false, "", "Collector", "", "", "English title sample record."],
+      ["NEON QUIET", "2026-08-04", "DEVICE", "VNBX", "2026", "制作終了", "売却済", "Photography", "display, cable, case", 803, 1127, 343, 259000, false, 52100, "Archive", "Private collection", "", "English title sample record."],
+      ["Serendipity 光量記録", "2023-09-07", "OTHER", "SIGN", "2023", "制作中", "非売品", "Acrylic", "mixed materials", 840, 1180, 360, 272000, false, 54800, "Storage", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["VLNS 幸運の入口", "2024-10-10", "LED SIGN", "DRAWING", "2024", "完成", "貸出中", "Woodwork", "LED, acrylic, cable", 877, 1233, 377, 285000, false, 57500, "Gallery", "", "WSV Sample Exhibition", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Archive Tray 記憶の皿", "2025-11-13", "OBJECT", "PHOTO", "2025", "完成", "処分済", "Video", "wood, acrylic, metal", 914, 1286, 394, 298000, false, 60200, "Collector", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Luck Field 観測点", "2026-12-16", "DRAWING", "PRINT", "2026", "制作終了", "保管中", "Installation", "paper, pen", 951, 1339, 1, 311000, false, 62900, "Archive", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Cable Garden 配線庭園", "2023-01-19", "PHOTO", "OBJECT", "2023", "制作中", "販売中", "Mixed Media", "digital print", 988, 1392, 1, "", true, "", "Studio", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Quiet Sign 静かな警告", "2024-02-22", "POSTER", "DEVICE", "2024", "完成", "展示中", "Drawing", "paper, ink", 125, 1445, 1, 337000, false, 68300, "Storage", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Light Index 光の索引", "2025-03-25", "DEVICE", "OTHER", "2025", "完成", "売却済", "Photography", "display, cable, case", 162, 1498, 42, 350000, false, 1000, "Gallery", "Private collection", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Storage Moon 保管月", "2026-04-01", "OTHER", "VLNS", "2026", "制作終了", "譲渡済", "Print", "mixed materials", 199, 1551, 59, 363000, false, 3700, "Collector", "Private collection", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Green Room 緑の部屋", "2023-05-04", "LED SIGN", "VNBX", "2023", "制作中", "非売品", "Acrylic", "LED, acrylic, cable", 236, 1604, 76, 376000, false, 6400, "Archive", "", "WSV Sample Exhibition", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Signal Box 信号箱", "2024-06-07", "OBJECT", "SIGN", "2024", "完成", "貸出中", "Woodwork", "wood, acrylic, metal", 273, 157, 93, "", true, 9100, "Studio", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Paper Circuit 紙の回路", "2025-07-10", "DRAWING", "DRAWING", "2025", "完成", "処分済", "Video", "paper, pen", 310, 210, 1, 402000, false, "", "Storage", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Window Study 窓の習作", "2026-08-13", "PHOTO", "PHOTO", "2026", "制作終了", "保管中", "Installation", "digital print", 347, 263, 1, 415000, false, 14500, "Gallery", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Base Module 台座試作", "2023-09-16", "POSTER", "PRINT", "2023", "制作中", "販売中", "Mixed Media", "paper, ink", 384, 316, 1, 428000, false, 17200, "Collector", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Night Label 夜のラベル", "2024-10-19", "DEVICE", "OBJECT", "2024", "完成", "展示中", "Drawing", "display, cable, case", 421, 369, 161, 441000, false, 19900, "Archive", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Object Note 物体メモ", "2025-11-22", "OTHER", "DEVICE", "2025", "完成", "売却済", "Photography", "mixed materials", 458, 422, 178, "", true, 22600, "Studio", "Private collection", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Drawing Cloud 線の雲", "2026-12-25", "LED SIGN", "OTHER", "2026", "制作終了", "譲渡済", "Print", "LED, acrylic, cable", 495, 475, 195, 467000, false, 25300, "Storage", "Private collection", "WSV Sample Exhibition", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Neon Archive 光る記録", "2023-01-01", "OBJECT", "VLNS", "2023", "制作中", "非売品", "Acrylic", "wood, acrylic, metal", 532, 528, 212, 480000, false, "", "Gallery", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Poster Shell 紙の殻", "2024-02-04", "DRAWING", "VNBX", "2024", "完成", "貸出中", "Woodwork", "paper, pen", 569, 581, 1, 13000, false, 30700, "Collector", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Device Prayer 装置の祈り", "2025-03-07", "PHOTO", "SIGN", "2025", "完成", "処分済", "Video", "digital print", 606, 634, 1, 26000, false, 33400, "Archive", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["Temporary Light 仮設の光", "2026-04-10", "POSTER", "DRAWING", "2026", "制作終了", "保管中", "Installation", "paper, ink", 643, 687, 1, "", true, 36100, "Studio", "", "", "日本語と英語が混在する作品名のサンプルです。"],
+      ["幸運を編集する手", "2023-05-13", "DEVICE", "PHOTO", "2023", "制作中", "展示中", "Drawing", "display, cable, case", 680, 740, 280, 52000, false, 38800, "Gallery", "", "", "日本語作品名のサンプルです。"],
+      ["光の保管庫", "2024-06-16", "OTHER", "PRINT", "2024", "完成", "売却済", "Photography", "mixed materials", 717, 793, 297, 65000, false, 41500, "Collector", "Private collection", "", "日本語作品名のサンプルです。"],
+      ["静かな警告", "2025-07-19", "LED SIGN", "OBJECT", "2025", "完成", "譲渡済", "Print", "LED, acrylic, cable", 754, 846, 314, 78000, false, "", "Archive", "Private collection", "WSV Sample Exhibition", "日本語作品名のサンプルです。"],
+      ["未完の台座", "2026-08-22", "OBJECT", "DEVICE", "2026", "制作終了", "非売品", "Acrylic", "wood, acrylic, metal", 791, 899, 331, "", true, 46900, "Studio", "", "", "日本語作品名のサンプルです。"],
+      ["配線の庭", "2023-09-25", "DRAWING", "OTHER", "2023", "制作中", "貸出中", "Woodwork", "paper, pen", 828, 952, 1, 104000, false, 49600, "Storage", "", "", "日本語作品名のサンプルです。"],
+      ["夜の窓", "2024-10-01", "PHOTO", "VLNS", "2024", "完成", "処分済", "Video", "digital print", 865, 1005, 1, 117000, false, 52300, "Gallery", "", "", "日本語作品名のサンプルです。"],
+      ["緑の部屋", "2025-11-04", "POSTER", "VNBX", "2025", "完成", "保管中", "Installation", "paper, ink", 902, 1058, 1, 130000, false, 55000, "Collector", "", "", "日本語作品名のサンプルです。"],
+      ["記憶の箱", "2026-12-07", "DEVICE", "SIGN", "2026", "制作終了", "販売中", "Mixed Media", "display, cable, case", 939, 1111, 399, 143000, false, 57700, "Archive", "", "", "日本語作品名のサンプルです。"],
+      ["仮設の光", "2023-01-10", "OTHER", "DRAWING", "2023", "制作中", "展示中", "Drawing", "mixed materials", 976, 1164, 416, "", true, "", "Studio", "", "", "日本語作品名のサンプルです。"],
+      ["展示前夜", "2024-02-13", "LED SIGN", "PHOTO", "2024", "完成", "売却済", "Photography", "LED, acrylic, cable", 113, 1217, 433, 169000, false, 63100, "Storage", "Private collection", "WSV Sample Exhibition", "日本語作品名のサンプルです。"],
+      ["小さな標識", "2025-03-16", "OBJECT", "PRINT", "2025", "完成", "譲渡済", "Print", "wood, acrylic, metal", 150, 1270, 30, 182000, false, 65800, "Gallery", "Private collection", "", "日本語作品名のサンプルです。"],
+      ["余白の装置", "2026-04-19", "DRAWING", "OBJECT", "2026", "制作終了", "非売品", "Acrylic", "paper, pen", 187, 1323, 1, 195000, false, 68500, "Collector", "", "", "日本語作品名のサンプルです。"],
+      ["見えない棚", "2023-05-22", "PHOTO", "DEVICE", "2023", "制作中", "貸出中", "Woodwork", "digital print", 224, 1376, 1, 208000, false, 1200, "Archive", "", "", "日本語作品名のサンプルです。"],
+      ["紙の回路", "2024-06-25", "POSTER", "OTHER", "2024", "完成", "処分済", "Video", "paper, ink", 261, 1429, 1, "", true, 3900, "Studio", "", "", "日本語作品名のサンプルです。"],
+      ["沈黙する看板", "2025-07-01", "DEVICE", "VLNS", "2025", "完成", "保管中", "Installation", "display, cable, case", 298, 1482, 98, 234000, false, "", "Storage", "", "", "日本語作品名のサンプルです。"],
+      ["保管される月", "2026-08-04", "OTHER", "VNBX", "2026", "制作終了", "販売中", "Mixed Media", "mixed materials", 335, 1535, 115, 247000, false, 9300, "Gallery", "", "", "日本語作品名のサンプルです。"],
+      ["手前の風景", "2023-09-07", "LED SIGN", "SIGN", "2023", "制作中", "展示中", "Drawing", "LED, acrylic, cable", 372, 1588, 132, 260000, false, 12000, "Collector", "", "WSV Sample Exhibition", "日本語作品名のサンプルです。"],
+      ["索引のための線", "2024-10-10", "OBJECT", "DRAWING", "2024", "完成", "売却済", "Photography", "wood, acrylic, metal", 409, 141, 149, 273000, false, 14700, "Archive", "Private collection", "", "日本語作品名のサンプルです。"],
+      ["明滅する余白", "2025-11-13", "DRAWING", "PHOTO", "2025", "完成", "譲渡済", "Print", "paper, pen", 446, 194, 1, "", true, 17400, "Studio", "Private collection", "", "日本語作品名のサンプルです。"],
+      ["誰かの幸運", "2026-12-16", "PHOTO", "PRINT", "2026", "制作終了", "非売品", "Acrylic", "digital print", 483, 247, 1, 299000, false, 20100, "Storage", "", "", "日本語作品名のサンプルです。"]
     ];
 
 
@@ -792,7 +828,7 @@
       target.innerHTML = FONT_OPTIONS.map(font => `
         <button class="font-option" type="button" style="font-family:${escapeAttr(font.value)}" onclick="setFont('${escapeAttr(font.value)}')">
           <span class="font-name">${escapeHtml(font.name)}</span>
-          <span class="font-preview">＊ (VAMRSS) WSV / VLNS-001 / WHO CURATED YOUR LUCK?</span>
+          <span class="font-preview">＊ (VAMRSS) WSV / WHO CURATED YOUR LUCK? / 光の保管庫 / Serendipity 光量記録</span>
         </button>
       `).join("");
       const savedFont = localStorage.getItem("vamrss-wsv-font-main");
@@ -1308,7 +1344,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-1.0",
+        version: "minimal-text-v0.2.0",
         exportedAt: nowIso(),
         works,
         categories,
