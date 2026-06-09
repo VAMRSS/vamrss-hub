@@ -10,11 +10,9 @@
       --ink: #111714;
       --sub: #68736f;
       --muted: #9aa5a1;
-      --line: #d8dfdc;
-      --line-soft: #e8edeb;
       --deep: #071c16;
       --danger: #9b3144;
-      --surface: #ffffff;
+      --font-main: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -29,9 +27,11 @@
       min-height: 100vh;
       color: var(--ink);
       background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      font-size: 14px;
-      line-height: 1.55;
+      font-family: var(--font-main);
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.32;
+      letter-spacing: 0.01em;
     }
 
     button, input, textarea, select {
@@ -47,7 +47,7 @@
     .app {
       width: min(960px, calc(100% - 28px));
       margin: 0 auto;
-      padding: max(18px, env(safe-area-inset-top)) 0 max(32px, env(safe-area-inset-bottom));
+      padding: max(18px, env(safe-area-inset-top)) 0 max(36px, env(safe-area-inset-bottom));
     }
 
     .screen { display: none; }
@@ -58,16 +58,14 @@
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: baseline;
       gap: 18px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
     .site-title {
       margin: 0;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.11em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -75,14 +73,14 @@
 
     .text-nav {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
       justify-content: flex-end;
       flex-wrap: wrap;
       color: var(--sub);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
     }
 
@@ -92,9 +90,9 @@
       background: transparent;
       padding: 0;
       color: var(--sub);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
       text-decoration: none;
     }
@@ -102,8 +100,6 @@
     .text-button:hover,
     .text-button.active {
       color: var(--ink);
-      text-decoration: underline;
-      text-underline-offset: 4px;
     }
 
     .text-button.danger {
@@ -112,75 +108,71 @@
 
     .filter-area {
       display: grid;
-      gap: 13px;
-      margin-bottom: 18px;
+      gap: 8px;
+      margin-bottom: 11px;
     }
 
     .filter-line {
       display: grid;
-      grid-template-columns: 92px minmax(0, 1fr);
-      gap: 14px;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 11px;
       align-items: baseline;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line-soft);
     }
 
     .filter-label {
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.09em;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
     .link-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0 14px;
+      gap: 0 11px;
       min-width: 0;
     }
 
     .link-list .text-button {
-      line-height: 1.8;
+      line-height: 1.45;
     }
 
     .collapsible {
       display: none;
-      margin-top: 9px;
+      margin-top: 7px;
     }
 
     .collapsible.open {
       display: grid;
-      gap: 10px;
+      gap: 7px;
     }
 
     .search-line {
       display: grid;
-      grid-template-columns: 92px minmax(0, 1fr) auto;
-      gap: 14px;
+      grid-template-columns: 76px minmax(0, 1fr) auto;
+      gap: 11px;
       align-items: center;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     input, textarea, select {
       width: 100%;
       min-width: 0;
-      min-height: 38px;
+      min-height: 24px;
       border: 0;
-      border-bottom: 1px solid var(--line);
       border-radius: 0;
       background: transparent;
       color: var(--ink);
-      padding: 7px 0;
+      padding: 2px 0;
       outline: none;
+      font-weight: 300;
     }
 
     textarea {
-      min-height: 84px;
+      min-height: 58px;
       resize: vertical;
-      line-height: 1.65;
+      line-height: 1.35;
     }
 
     select {
@@ -188,47 +180,48 @@
     }
 
     input:focus, textarea:focus, select:focus {
-      border-bottom-color: var(--deep);
+      outline: 0;
     }
 
     .section-title {
-      margin: 22px 0 8px;
+      margin: 16px 0 5px;
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.11em;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
     }
 
     .list {
-      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 0;
     }
 
     .work {
-      border-bottom: 1px solid var(--line);
+      margin: 0;
     }
 
     .work-summary {
       width: 100%;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 126px;
-      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) 86px;
+      gap: 14px;
       align-items: baseline;
       border: 0;
       background: transparent;
-      padding: 10px 0;
+      padding: 2px 0;
       text-align: left;
     }
 
     .work-summary.has-category {
-      grid-template-columns: minmax(0, 1fr) 150px 126px;
+      grid-template-columns: minmax(0, 1fr) 118px 86px;
     }
 
     .work-title {
       min-width: 0;
-      font-size: 14px;
-      font-weight: 650;
-      letter-spacing: -0.01em;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.01em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -237,7 +230,8 @@
     .work-category,
     .work-date {
       color: var(--sub);
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 300;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -246,9 +240,11 @@
 
     .work-detail {
       display: none;
-      padding: 0 0 16px;
+      padding: 2px 0 9px 14px;
       color: var(--sub);
-      font-size: 13px;
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.34;
     }
 
     .work.open .work-detail {
@@ -257,22 +253,22 @@
 
     .detail-grid {
       display: grid;
-      gap: 5px;
-      padding: 5px 0 12px;
+      gap: 1px;
+      padding: 3px 0 6px;
     }
 
     .detail-row {
       display: grid;
-      grid-template-columns: 112px minmax(0, 1fr);
-      gap: 14px;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 10px;
       align-items: baseline;
     }
 
     .detail-key {
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
@@ -284,110 +280,158 @@
 
     .detail-actions {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 5px;
     }
 
     .empty {
-      padding: 24px 0;
+      padding: 14px 0;
       color: var(--sub);
-      text-align: center;
-      border-bottom: 1px solid var(--line);
+      text-align: left;
     }
 
     .form {
       display: grid;
-      gap: 14px;
+      gap: 10px;
     }
 
     .form-grid {
       display: grid;
-      gap: 14px 22px;
+      gap: 10px 20px;
     }
 
     .field {
       display: grid;
-      gap: 3px;
+      gap: 1px;
     }
 
     label {
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.07em;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
     }
 
     .three-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+      gap: 11px;
     }
 
     .two-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 15px;
     }
 
     .ask-line {
       display: flex;
       align-items: center;
-      gap: 7px;
-      min-height: 28px;
-      margin-top: 4px;
+      gap: 6px;
+      min-height: 20px;
+      margin-top: 1px;
       color: var(--sub);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
     .ask-line input {
-      width: 14px;
-      min-height: 14px;
+      width: 12px;
+      min-height: 12px;
       padding: 0;
       accent-color: var(--deep);
     }
 
     .button-row {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      padding-top: 12px;
-      border-top: 1px solid var(--line);
-      margin-top: 8px;
+      padding-top: 5px;
+      margin-top: 3px;
     }
 
     .data-block {
       display: grid;
-      gap: 10px;
-      padding: 16px 0;
-      border-top: 1px solid var(--line);
+      gap: 7px;
+      padding: 8px 0;
     }
 
     .hint {
       margin: 0;
       color: var(--sub);
-      font-size: 13px;
+      font-size: 11px;
+      line-height: 1.34;
     }
 
     .option-list {
       display: grid;
-      gap: 0;
-      border-top: 1px solid var(--line-soft);
-      margin-top: 4px;
+      gap: 1px;
+      margin-top: 2px;
     }
 
     .option-item {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
-      padding: 7px 0;
-      border-bottom: 1px solid var(--line-soft);
+      padding: 1px 0;
       color: var(--ink);
+    }
+
+    .font-sampler {
+      margin-top: 28px;
+      padding-top: 10px;
+      color: var(--sub);
+    }
+
+    .font-sampler-title {
+      margin: 0 0 7px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .font-list {
+      display: grid;
+      gap: 2px;
+    }
+
+    .font-option {
+      display: grid;
+      grid-template-columns: 145px minmax(0, 1fr);
+      gap: 12px;
+      align-items: baseline;
+      border: 0;
+      background: transparent;
+      padding: 1px 0;
+      text-align: left;
+      color: inherit;
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.28;
+    }
+
+    .font-option:hover {
+      color: var(--ink);
+    }
+
+    .font-name {
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .font-preview {
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     @media (min-width: 720px) {
@@ -403,7 +447,7 @@
     @media (max-width: 719px) {
       .topbar {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 7px;
       }
 
       .text-nav {
@@ -413,12 +457,12 @@
       .filter-line,
       .search-line {
         grid-template-columns: 1fr;
-        gap: 6px;
+        gap: 3px;
       }
 
       .work-summary,
       .work-summary.has-category {
-        grid-template-columns: minmax(0, 1fr) 98px;
+        grid-template-columns: minmax(0, 1fr) 78px;
       }
 
       .work-category {
@@ -426,11 +470,16 @@
       }
 
       .detail-row {
-        grid-template-columns: 92px minmax(0, 1fr);
+        grid-template-columns: 76px minmax(0, 1fr);
       }
 
       .two-grid {
         grid-template-columns: 1fr;
+      }
+
+      .font-option {
+        grid-template-columns: 1fr;
+        gap: 0;
       }
     }
   </style>
@@ -641,6 +690,11 @@
         <button class="text-button danger" type="button" id="resetButton">DELETE ALL</button>
       </div>
     </section>
+
+      <div class="font-sampler">
+        <p class="font-sampler-title">Font sampler</p>
+        <div class="font-list" id="fontList"></div>
+      </div>
   </main>
 
   <script>
@@ -707,6 +761,43 @@
       ["OTH-003 / SMALL LUCK SAMPLE", "2026-03-12", "OTHER", "OTHER", "2026", "制作中", "保管中", "Acrylic", "acrylic sample", 100, 100, 20, "", true, "", "Studio", "", "", ""],
       ["VLNS-004 / NEON QUIET", "2026-06-01", "LED SIGN", "VLNS", "2026", "制作中", "展示中", "Installation", "LED, acrylic, aluminum", 760, 1120, 95, "", true, 52000, "Gallery", "", "Preview", ""]
     ];
+
+
+    const FONT_OPTIONS = [
+      { name: "System Sans", value: '-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif' },
+      { name: "Helvetica Neue", value: '"Helvetica Neue", Arial, sans-serif' },
+      { name: "Arial", value: 'Arial, sans-serif' },
+      { name: "Avenir", value: 'Avenir, "Avenir Next", sans-serif' },
+      { name: "Futura", value: 'Futura, "Trebuchet MS", sans-serif' },
+      { name: "Gill Sans", value: '"Gill Sans", "Gill Sans MT", sans-serif' },
+      { name: "Verdana", value: 'Verdana, sans-serif' },
+      { name: "Trebuchet", value: '"Trebuchet MS", sans-serif' },
+      { name: "Hiragino Sans", value: '"Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif' },
+      { name: "Yu Gothic", value: '"Yu Gothic", "YuGothic", sans-serif' },
+      { name: "Meiryo", value: 'Meiryo, sans-serif' },
+      { name: "Georgia", value: 'Georgia, "Times New Roman", serif' },
+      { name: "Times", value: '"Times New Roman", Times, serif' },
+      { name: "Courier", value: '"Courier New", Courier, monospace' },
+      { name: "Monaco", value: 'Monaco, Menlo, Consolas, monospace' }
+    ];
+
+    function setFont(fontValue) {
+      document.documentElement.style.setProperty("--font-main", fontValue);
+      localStorage.setItem("vamrss-wsv-font-main", fontValue);
+    }
+
+    function renderFontSampler() {
+      const target = document.getElementById("fontList");
+      if (!target) return;
+      target.innerHTML = FONT_OPTIONS.map(font => `
+        <button class="font-option" type="button" style="font-family:${escapeAttr(font.value)}" onclick="setFont('${escapeAttr(font.value)}')">
+          <span class="font-name">${escapeHtml(font.name)}</span>
+          <span class="font-preview">＊ (VAMRSS) WSV / VLNS-001 / WHO CURATED YOUR LUCK?</span>
+        </button>
+      `).join("");
+      const savedFont = localStorage.getItem("vamrss-wsv-font-main");
+      if (savedFont) setFont(savedFont);
+    }
 
     const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
 
@@ -1318,6 +1409,7 @@
     setupOptions();
     resetForm();
     render();
+    renderFontSampler();
   </script>
 </body>
 </html>
