@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.2.1</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.2.2</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -45,7 +45,7 @@
     }
 
     .app {
-      width: min(520px, calc(100% - 28px));
+      width: min(520px, calc(100% - 40px));
       margin: 0 auto;
       padding: max(18px, env(safe-area-inset-top)) 0 max(36px, env(safe-area-inset-bottom));
     }
@@ -444,9 +444,38 @@
       text-overflow: ellipsis;
     }
 
+
+    .text-nav {
+      text-align: right;
+    }
+
+    .work-date {
+      text-align: right;
+    }
+
+    .search-line > .text-button {
+      text-align: right;
+    }
+
+    .option-item > .text-button {
+      text-align: right;
+    }
+
+    .topbar .text-nav {
+      justify-self: end;
+    }
+
+    .site-title,
+    .filter-label,
+    .work-title,
+    .detail-key,
+    .detail-value {
+      text-align: left;
+    }
+
     @media (min-width: 720px) {
       .app {
-        width: min(520px, calc(100% - 28px));
+        width: min(520px, calc(100% - 40px));
       }
     }
 
@@ -457,7 +486,8 @@
       }
 
       .text-nav {
-        justify-content: flex-start;
+        justify-content: flex-end;
+        text-align: right;
       }
 
       .filter-line,
@@ -494,7 +524,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.2.1</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.2.2</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -537,7 +567,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.2.1</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.2.2</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -641,7 +671,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.2.1</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.2.2</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
@@ -1343,7 +1373,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.2.1",
+        version: "minimal-text-v0.2.2",
         exportedAt: nowIso(),
         works,
         categories,
