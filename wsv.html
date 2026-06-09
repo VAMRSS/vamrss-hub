@@ -3,1055 +3,658 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS)WORKSHEET VAULT SYSTEM / WSV v1.0</title>
+  <title>(VAMRSS) WSV Minimal Text</title>
   <style>
     :root {
-      /* Surface / 面・構造 */
-      --bg: #fafbfc;
-      --surface: #ffffff;
-      --line: #dfe7ef;
+      --bg: #f8f9f9;
+      --ink: #111714;
+      --sub: #68736f;
+      --muted: #9aa5a1;
+      --line: #d8dfdc;
+      --line-soft: #e8edeb;
       --deep: #071c16;
       --danger: #9b3144;
-
-      /* Text / 文字 */
-      --ink: #101722;
-      --sub: #607084;
-
-      /* Shared */
-      --radius: 28px;
-      --radius-small: 18px;
-      --shadow: 0 18px 50px rgba(15, 30, 48, 0.055);
-      --nav-height: 72px;
-      --motion-fast: 120ms;
-      --motion-base: 180ms;
-      --motion-ease: cubic-bezier(.2, .8, .2, 1);
+      --surface: #ffffff;
     }
 
     * { box-sizing: border-box; }
 
-    html { -webkit-text-size-adjust: 100%; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      background: var(--bg);
+    }
 
     body {
       margin: 0;
+      min-height: 100vh;
       color: var(--ink);
       background: var(--bg);
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.55;
     }
 
-    button, input, textarea, select { font: inherit; }
+    button, input, textarea, select {
+      font: inherit;
+    }
 
     button {
-      -webkit-tap-highlight-color: transparent;
+      color: inherit;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    button:disabled { opacity: .48; cursor: not-allowed; }
-
-    .container {
-      width: min(760px, calc(100% - 24px));
+    .app {
+      width: min(960px, calc(100% - 28px));
       margin: 0 auto;
-      padding: max(18px, env(safe-area-inset-top)) 0 calc(var(--nav-height) + max(24px, env(safe-area-inset-bottom)));
+      padding: max(18px, env(safe-area-inset-top)) 0 max(32px, env(safe-area-inset-bottom));
     }
 
     .screen { display: none; }
     .screen.active { display: block; }
 
-    .page {
-      display: grid;
-      gap: 16px;
-    }
-
     .topbar {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 8px;
-      height: 44px;
-      min-height: 44px;
+      align-items: baseline;
+      gap: 18px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
     }
 
-    .brand,
-    .top-action,
-    .section-number,
-    .label,
-    .nav-button,
-    .chip,
-    .status-pill,
-    label,
-    .mini-label,
-    .processing-pill,
-    .site-footer,
-    .data-role,
-    .dialog-kicker {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-    }
-
-    .brand {
-      grid-column: 1;
-      justify-self: start;
-      align-self: center;
-      height: 36px;
-      display: inline-flex;
-      align-items: center;
-      line-height: 1;
-      color: var(--sub);
-      opacity: .78;
+    .site-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-
-    .top-action {
-      grid-column: 2;
-      justify-self: end;
-      align-self: center;
-      height: 36px;
-      min-height: 36px;
-      display: inline-flex;
+    .text-nav {
+      display: flex;
+      gap: 14px;
       align-items: center;
-      justify-content: center;
-      line-height: 1;
-      padding: 0 12px;
-      border: none;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.36);
-      backdrop-filter: blur(18px) saturate(1.08);
-      -webkit-backdrop-filter: blur(18px) saturate(1.08);
-      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
-      color: var(--ink);
-      font-weight: 800;
-    }
-
-    .hero {
-      display: grid;
-      gap: 18px;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .kicker {
-      margin-bottom: 12px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
       color: var(--sub);
       font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-    }
-
-    h1,
-    h2,
-    .dialog-title {
-      margin: 0;
-      font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
-      font-weight: 500;
-    }
-
-    h1 {
-      font-size: clamp(38px, 13vw, 78px);
-      line-height: 0.92;
-      letter-spacing: -0.08em;
-    }
-
-    h2 {
-      font-size: clamp(25px, 7vw, 38px);
-      line-height: 0.98;
-      letter-spacing: -0.06em;
-    }
-
-    .jp-note {
-      display: inline-block;
-      margin-left: 8px;
-      color: var(--sub);
-      opacity: .62;
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      vertical-align: middle;
-    }
-
-    .lead {
-      margin: 0;
-      color: var(--sub);
-      font-size: 13px;
-      line-height: 1.85;
-      font-weight: 400;
-    }
-
-    .solid-rule {
-      height: 1px;
-      background: var(--line);
-    }
-
-    .section {
-      padding: 18px;
-      border: 0.5px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      box-shadow: 0 8px 22px rgba(15,30,48,0.03);
-    }
-
-    .section-soft {
-      background: transparent;
-      border-style: dashed;
-      box-shadow: none;
-    }
-
-    .section-list {
-      background: transparent;
-      box-shadow: none;
-      border: 1px solid var(--line);
-    }
-
-    .section-head {
-      display: grid;
-      gap: 5px;
-      margin-bottom: 18px;
-    }
-
-    .section-number {
-      color: var(--sub);
-      opacity: .62;
-    }
-
-    .emphasis-section {
-      padding: 22px 26px 16px;
-      border-color: rgba(7, 28, 22, 0.22);
-      background: var(--deep);
-      color: var(--surface);
-      box-shadow: 0 18px 46px rgba(7, 28, 22, 0.16);
-    }
-
-    .emphasis-section .section-number,
-    .emphasis-section .jp-note {
-      color: rgba(255,255,255,0.58);
-      opacity: 1;
-    }
-
-    .overview-grid {
-      display: grid;
-      gap: 0;
-      color: inherit;
-    }
-
-    .stat {
-      display: grid;
-      gap: 10px;
-      padding: 16px 0;
-      border-top: 1px solid rgba(255,255,255,0.16);
-      text-align: left;
-    }
-
-    .stat span,
-    .stat-row span {
-      color: rgba(255,255,255,0.62);
-      font-size: 11px;
-      font-weight: 500;
+      font-weight: 800;
       letter-spacing: 0.08em;
-      line-height: 1.35;
       text-transform: uppercase;
     }
 
-    .stat strong,
-    .stat-row strong {
-      font-family: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", serif;
-      line-height: 0.72;
-      font-weight: 500;
-      letter-spacing: -0.08em;
-    }
-
-    .stat strong {
-      width: 100%;
-      text-align: left;
-      font-size: clamp(112px, 31vw, 166px);
-    }
-
-    .stat-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 16px;
-      padding: 13px 0;
-      border-top: 1px solid rgba(255,255,255,0.16);
-    }
-
-    .stat-row strong {
-      min-width: 72px;
-      text-align: right;
-      font-size: clamp(38px, 11vw, 64px);
-      line-height: 0.82;
-    }
-
-    form { display: grid; gap: 12px; }
-
-    .form-grid,
-    .field,
-    .toolbar,
-    .setting-list,
-    .data-grid,
-    .notice-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .field { gap: 7px; }
-
-    label {
+    .text-button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
       color: var(--sub);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
     }
 
-    input,
-    textarea,
-    select {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-small);
-      background: var(--surface);
+    .text-button:hover,
+    .text-button.active {
       color: var(--ink);
-      min-height: 48px;
-      padding: 13px 14px;
-      outline: none;
-      min-width: 0;
-      text-align: left;
+      text-decoration: underline;
+      text-underline-offset: 4px;
     }
 
-    textarea {
-      min-height: 88px;
-      resize: vertical;
-      line-height: 1.65;
+    .text-button.danger {
+      color: var(--danger);
     }
 
-    input:focus,
-    textarea:focus,
-    select:focus,
-    button:focus-visible,
-    .chip:focus-visible,
-    .nav-button:focus-visible {
-      outline: 2px solid rgba(7,28,22,0.42);
-      outline-offset: 3px;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--sub);
-      background: var(--surface);
-    }
-
-    input::placeholder,
-    textarea::placeholder { color: transparent; }
-
-    .toolbar-row {
+    .filter-area {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 13px;
+      margin-bottom: 18px;
     }
 
-    .price-grid {
+    .filter-line {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 14px;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line-soft);
     }
 
-    .dimension-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .dimension-grid input {
-      text-align: center;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .mini-label {
-      margin-bottom: 6px;
-      color: var(--sub);
-      opacity: .62;
-      text-align: center;
-    }
-
-    .ask-check {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 34px;
-      margin-top: 6px;
-      color: var(--sub);
-      font-size: 10px;
+    .filter-label {
+      color: var(--muted);
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.09em;
       text-transform: uppercase;
     }
 
-    .ask-check input {
-      width: 18px;
-      min-height: 18px;
-      padding: 0;
-      accent-color: var(--deep);
-    }
-
-    .button-row,
-    .item-actions,
-    .dialog-actions {
-      display: grid;
-      gap: 8px;
-    }
-
-    .item-actions,
-    .dialog-actions {
-      grid-template-columns: 1fr 1fr;
-      margin-top: 12px;
-    }
-
-    button.primary,
-    button.secondary,
-    button.danger {
-      min-height: 48px;
-      border-radius: 999px;
-      padding: 0 16px;
-      border: 1px solid var(--line);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-    }
-
-    button.primary {
-      background: var(--deep);
-      color: var(--surface);
-      border-color: var(--deep);
-    }
-
-    button.secondary {
-      background: var(--surface);
-      color: var(--ink);
-    }
-
-    button.danger {
-      background: rgba(155,49,68,0.07);
-      color: var(--danger);
-      border-color: rgba(155,49,68,0.16);
-    }
-
-    .chips {
+    .link-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 0 14px;
+      min-width: 0;
     }
 
-    #workList {
-      margin-top: 18px;
+    .link-list .text-button {
+      line-height: 1.8;
     }
 
-    .chip,
-    .status-pill {
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      min-height: 34px;
-      padding: 0 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
+    .collapsible {
+      display: none;
+      margin-top: 9px;
     }
 
-    .chip {
-      background: var(--surface);
-      color: var(--sub);
-      border-color: var(--line);
-      font-weight: 800;
-    }
-
-    .chip.active {
-      background: var(--deep);
-      color: var(--surface);
-      border-color: var(--deep);
-    }
-
-    .status-pill {
-      background: transparent;
-      color: var(--sub);
-      border-color: rgba(96,112,132,0.18);
-      opacity: .68;
-      font-weight: 500;
-    }
-
-    .work-list,
-    .sample-list {
+    .collapsible.open {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .work-item,
-    .setting-group,
-    .data-card,
-    .notice-card {
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: var(--surface);
-      padding: 14px;
+    .search-line {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
     }
 
-    .work-date {
-      color: var(--sub);
-      opacity: .62;
+    input, textarea, select {
+      width: 100%;
+      min-width: 0;
+      min-height: 38px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      padding: 7px 0;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+      line-height: 1.65;
+    }
+
+    select {
+      appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-bottom-color: var(--deep);
+    }
+
+    .section-title {
+      margin: 22px 0 8px;
+      color: var(--muted);
       font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      font-weight: 800;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
+    }
+
+    .list {
+      border-top: 1px solid var(--line);
+    }
+
+    .work {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .work-summary {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 126px;
+      gap: 18px;
+      align-items: baseline;
+      border: 0;
+      background: transparent;
+      padding: 10px 0;
+      text-align: left;
+    }
+
+    .work-summary.has-category {
+      grid-template-columns: minmax(0, 1fr) 150px 126px;
     }
 
     .work-title {
-      margin-top: 4px;
-      font-size: 20px;
-      font-weight: 500;
-      letter-spacing: -0.04em;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .work-meta,
-    .hint,
-    .data-text,
-    .notice-text,
-    .dialog-text,
-    .empty {
+    .work-category,
+    .work-date {
       color: var(--sub);
       font-size: 12px;
-      line-height: 1.75;
-      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-variant-numeric: tabular-nums;
     }
 
-    .work-meta { margin-top: 8px; }
-    .hint { margin: 0 0 14px; }
-
-    .empty {
-      border: 1px dashed var(--line);
-      border-radius: 22px;
-      padding: 22px;
-      text-align: center;
-      background: transparent;
-    }
-
-    .setting-title,
-    .data-title,
-    .notice-title {
-      margin: 0 0 12px;
-      color: var(--ink);
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.35;
-    }
-
-    .setting-form {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .setting-form button { min-width: 78px; }
-
-    .setting-item {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 0;
-      border-top: 1px solid var(--line);
+    .work-detail {
+      display: none;
+      padding: 0 0 16px;
       color: var(--sub);
       font-size: 13px;
     }
 
-    .setting-item:first-child { border-top: 0; }
+    .work.open .work-detail {
+      display: block;
+    }
 
-    .setting-item button {
-      min-height: 32px;
-      padding: 0 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(155,49,68,0.16);
-      background: rgba(155,49,68,0.07);
-      color: var(--danger);
-      font-size: 10px;
+    .detail-grid {
+      display: grid;
+      gap: 5px;
+      padding: 5px 0 12px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 14px;
+      align-items: baseline;
+    }
+
+    .detail-key {
+      color: var(--muted);
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
-    .file-input-wrap input[type="file"] { min-height: 44px; padding: 10px; }
-
-    .data-card.caution,
-    .notice-card.warning {
-      background: transparent;
-      border-style: dashed;
-    }
-
-    .data-role,
-    .notice-label {
-      color: var(--sub);
-      opacity: .72;
-      margin-bottom: 8px;
-    }
-
-    .notice-card.danger {
-      border-color: rgba(155,49,68,.18);
-      background: rgba(155,49,68,.035);
-    }
-
-    .notice-card.danger .notice-label,
-    .notice-card.danger .notice-title { color: var(--danger); }
-
-    .data-meta {
-      margin-top: 10px;
-      border-top: 1px solid var(--line);
-      padding-top: 10px;
-      color: var(--sub);
-      font-size: 11px;
-      line-height: 1.65;
-    }
-
-    .processing-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 34px;
-      padding: 0 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: transparent;
-      color: var(--sub);
-      line-height: 1;
-      margin-top: 12px;
-    }
-
-    .processing-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--deep);
-      opacity: .62;
-      animation: vamrss-processing-dot 1.1s ease-in-out infinite;
-    }
-
-    @keyframes vamrss-processing-dot {
-      0%, 100% { opacity: .24; transform: scale(.86); }
-      50% { opacity: .84; transform: scale(1); }
-    }
-
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: max(10px, env(safe-area-inset-bottom));
-      transform: translateX(-50%);
-      width: min(430px, calc(100% - 24px));
-      height: 58px;
-      border: none;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.36);
-      backdrop-filter: blur(18px) saturate(1.08);
-      -webkit-backdrop-filter: blur(18px) saturate(1.08);
-      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 5px;
-      padding: 6px;
-      z-index: 10;
-    }
-
-    .nav-button {
-      border: 0;
-      background: transparent;
-      color: rgba(16,23,34,0.58);
-      min-height: 46px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      font-weight: 800;
-    }
-
-    .nav-button.active {
-      background: rgba(235,240,244,0.88);
+    .detail-value {
       color: var(--ink);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
-    .dialog-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background: rgba(16,23,34,0.18);
-      display: none;
-      place-items: center;
-      padding: 18px;
-    }
-
-    .dialog-backdrop.active { display: grid; }
-
-    .dialog-card {
-      width: min(360px, 100%);
-      border-radius: 24px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      box-shadow: 0 24px 60px rgba(15,30,48,0.14);
-      padding: 18px;
-    }
-
-    .dialog-kicker {
-      margin: 0 0 8px;
-      color: var(--sub);
-      opacity: .72;
-    }
-
-    .dialog-title {
-      font-size: 28px;
-      line-height: .98;
-      letter-spacing: -0.06em;
-    }
-
-    .dialog-text { margin: 12px 0 0; }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: calc(var(--nav-height) + max(20px, env(safe-area-inset-bottom)));
-      transform: translateX(-50%) translateY(10px);
-      max-width: min(430px, calc(100% - 24px));
-      width: max-content;
-      opacity: 0;
-      pointer-events: none;
-      border: none;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.36);
-      backdrop-filter: blur(18px) saturate(1.08);
-      -webkit-backdrop-filter: blur(18px) saturate(1.08);
-      box-shadow: 0 14px 30px rgba(15,30,48,0.10);
-      color: var(--ink);
-      padding: 12px 16px;
-      font-size: 12px;
-      line-height: 1;
-      z-index: 60;
-      transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
-    }
-
-    .toast.active {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .site-footer {
+    .detail-actions {
       display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 4px 2px 0;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .empty {
+      padding: 24px 0;
       color: var(--sub);
-      opacity: .58;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
     }
 
-    button,
-    .chip,
-    .nav-button {
-      transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease), opacity var(--motion-fast) var(--motion-ease);
+    .form {
+      display: grid;
+      gap: 14px;
     }
 
-    @media (max-width: 420px) {
-      .dialog-actions { grid-template-columns: 1fr; }
-      .price-grid { grid-template-columns: 1fr; }
+    .form-grid {
+      display: grid;
+      gap: 14px 22px;
     }
 
+    .field {
+      display: grid;
+      gap: 3px;
+    }
 
-    @media (max-width: 520px) {
+    label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .three-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .two-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .ask-line {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      margin-top: 4px;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .ask-line input {
+      width: 14px;
+      min-height: 14px;
+      padding: 0;
+      accent-color: var(--deep);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      margin-top: 8px;
+    }
+
+    .data-block {
+      display: grid;
+      gap: 10px;
+      padding: 16px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line-soft);
+      margin-top: 4px;
+    }
+
+    .option-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--ink);
+    }
+
+    @media (min-width: 720px) {
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .field.wide {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 719px) {
       .topbar {
-        grid-template-columns: minmax(0, 1fr) auto;
-        height: 44px;
-        min-height: 44px;
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
 
-      .brand {
-        min-width: 0;
-        width: 100%;
+      .text-nav {
+        justify-content: flex-start;
       }
 
-      .top-action {
-        justify-self: end;
+      .filter-line,
+      .search-line {
+        grid-template-columns: 1fr;
+        gap: 6px;
       }
-    }
 
-    @media (min-width: 640px) {
-      .container { padding-top: 28px; }
-      .hero {
-        grid-template-columns: 1.1fr 0.9fr;
-        min-height: 245px;
-        align-items: end;
+      .work-summary,
+      .work-summary.has-category {
+        grid-template-columns: minmax(0, 1fr) 98px;
       }
-      .form-grid { grid-template-columns: repeat(2, 1fr); }
-      .form-grid .wide { grid-column: 1 / -1; }
-      .button-row { grid-template-columns: 1fr auto; }
-      .toolbar-row { grid-template-columns: 1fr auto; }
-      .data-grid, .notice-grid { grid-template-columns: repeat(2, 1fr); }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 1ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 1ms !important;
-        scroll-behavior: auto !important;
+      .work-category {
+        display: none;
+      }
+
+      .detail-row {
+        grid-template-columns: 92px minmax(0, 1fr);
+      }
+
+      .two-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <main class="container">
-    <section id="vaultScreen" class="screen active">
-      <div class="page">
-        <div class="topbar">
-          <div class="brand">＊(VAMRSS) WORKSHEET VAULT</div>
-          <button class="top-action" type="button" onclick="showScreen('data')">DATA</button>
+  <main class="app">
+    <section id="worksScreen" class="screen active">
+      <div class="topbar">
+        <h1 class="site-title">＊ (VAMRSS) WSV</h1>
+        <nav class="text-nav">
+          <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
+          <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
+        </nav>
+      </div>
+
+      <div class="filter-area">
+        <div class="filter-line">
+          <div class="filter-label">Category</div>
+          <div class="link-list" id="categoryLinks"></div>
         </div>
 
-        <header class="hero">
-          <div class="hero-main">
-            <div class="kicker">Private artwork worksheet archive</div>
-            <h1>Worksheet<br>Vault<span class="jp-note">作品台帳</span></h1>
-          </div>
-          <p class="lead">Record, organize, and preserve artwork data in a quiet private archive.<br>作品情報・寸法・技法・保管場所・展示履歴を記録し、JSONで保管できます。</p>
-        </header>
-
-        <div class="solid-rule"></div>
-
-        <section class="section emphasis-section">
-          <div class="section-head">
-            <div class="section-number">Overview</div>
-            <h2>Works Summary<span class="jp-note">作品数</span></h2>
-          </div>
-          <div class="overview-grid">
-            <div class="stat"><span>Registered / 登録作品数</span><strong id="totalWorks">0</strong></div>
-            <div class="stat-row"><span>In Progress / 制作中</span><strong id="productionWorks">0</strong></div>
-            <div class="stat-row"><span>Stored / 保管中</span><strong id="storedWorks">0</strong></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <div class="section-number">Index</div>
-            <h2>Search Vault<span class="jp-note">検索</span></h2>
-          </div>
-          <div class="toolbar">
-            <div class="toolbar-row">
-              <input id="searchInput" type="search" placeholder="" aria-label="作品レコードを検索">
-              <button class="secondary" type="button" onclick="showScreen('entry')">+ Add Work</button>
+        <div class="filter-line">
+          <button class="text-button" type="button" onclick="toggleStatusPanel()">状態</button>
+          <div>
+            <button class="text-button" type="button" onclick="toggleStatusPanel()" id="statusPanelText">tap to open</button>
+            <div class="collapsible" id="statusPanel">
+              <div class="filter-line" style="border-bottom:0; padding-bottom:0;">
+                <div class="filter-label">Production</div>
+                <div class="link-list" id="productionLinks"></div>
+              </div>
+              <div class="filter-line" style="border-bottom:0; padding-bottom:0;">
+                <div class="filter-label">Management</div>
+                <div class="link-list" id="managementLinks"></div>
+              </div>
             </div>
-            <div class="chips" id="statusChips" aria-label="管理状態で絞り込み"></div>
           </div>
-          <div id="workList"></div>
-        </section>
-
-        <footer class="site-footer">＊(VAMRSS) WORKSHEET VAULT / © 2026 VAMRSS</footer>
+        </div>
       </div>
+
+      <div class="search-line">
+        <div class="filter-label">Search</div>
+        <input id="searchInput" type="search" placeholder="">
+        <button class="text-button" type="button" onclick="clearFilters()">CLEAR</button>
+      </div>
+
+      <div class="section-title">一覧</div>
+      <div id="workList" class="list"></div>
     </section>
 
     <section id="entryScreen" class="screen">
-      <div class="page">
-        <div class="topbar">
-          <div class="brand">＊(VAMRSS) WORKSHEET VAULT</div>
-          <button class="top-action" type="button" onclick="showScreen('vault')">BACK</button>
+      <div class="topbar">
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY</h1>
+        <nav class="text-nav">
+          <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
+          <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
+        </nav>
+      </div>
+
+      <form id="workForm" class="form">
+        <div class="form-grid">
+          <div class="field wide">
+            <label for="title">Title / 作品名</label>
+            <input id="title" type="text" required placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="completedDate">Completed / 完成日</label>
+            <input id="completedDate" type="date" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="category">Category / 作品カテゴリ</label>
+            <select id="category"></select>
+          </div>
+
+          <div class="field">
+            <label for="series">Series / シリーズ</label>
+            <input id="series" type="text" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="year">Year / 制作年</label>
+            <input id="year" type="number" inputmode="numeric" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="productionStatus">Production / 制作状態</label>
+            <select id="productionStatus"></select>
+          </div>
+
+          <div class="field">
+            <label for="managementStatus">Management / 管理状態</label>
+            <select id="managementStatus"></select>
+          </div>
+
+          <div class="field">
+            <label for="technique">Technique / 技法</label>
+            <select id="technique"></select>
+          </div>
+
+          <div class="field wide">
+            <label for="materials">Materials / 素材</label>
+            <input id="materials" type="text" placeholder="">
+          </div>
+
+          <div class="field wide">
+            <label>Dimensions / サイズ mm</label>
+            <div class="three-grid">
+              <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="">
+              <input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="">
+              <input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="">
+            </div>
+          </div>
+
+          <div class="field wide">
+            <label>Ledger / 価格記録</label>
+            <div class="two-grid">
+              <div>
+                <input id="price" type="number" inputmode="numeric" min="0" placeholder="">
+                <label class="ask-line" for="priceAsk"><input id="priceAsk" type="checkbox"> ASK</label>
+              </div>
+              <input id="cost" type="number" inputmode="numeric" min="0" placeholder="">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="location">Location / 保管場所</label>
+            <select id="location"></select>
+          </div>
+
+          <div class="field">
+            <label for="owner">Owner / 所蔵先</label>
+            <input id="owner" type="text" placeholder="">
+          </div>
+
+          <div class="field wide">
+            <label for="exhibitionHistory">Exhibition History / 展示履歴</label>
+            <textarea id="exhibitionHistory" placeholder=""></textarea>
+          </div>
+
+          <div class="field wide">
+            <label for="memo">Memo / メモ</label>
+            <textarea id="memo" placeholder=""></textarea>
+          </div>
         </div>
 
-        <header class="hero">
-          <div class="hero-main">
-            <div class="kicker">Create or edit one worksheet record</div>
-            <h1 id="entryHeroTitle">New<br>Work<span class="jp-note">作品登録</span></h1>
-          </div>
-          <p class="lead">This prototype stores records in this browser. Export the vault regularly as a JSON backup.<br>このプロトタイプはブラウザ内に保存します。定期的にJSONを書き出してください。</p>
-        </header>
-
-        <div class="solid-rule"></div>
-
-        <section class="section">
-          <div class="section-head">
-            <div class="section-number">Entry</div>
-            <h2 id="formTitle">Work Record<span class="jp-note">作品情報</span></h2>
-          </div>
-          <form id="workForm">
-            <div class="form-grid">
-              <div class="field wide"><label for="title">Title / 作品名</label><input id="title" type="text" placeholder="" required></div>
-              <div class="field"><label for="year">Year / 制作年</label><input id="year" type="number" inputmode="numeric" placeholder=""></div>
-              <div class="field"><label for="technique">Technique / 技法</label><select id="technique"></select></div>
-              <div class="field wide"><label for="series">Series / シリーズ</label><input id="series" type="text" placeholder=""></div>
-              <div class="field wide"><label for="materials">Materials / 素材</label><input id="materials" type="text" placeholder=""></div>
-              <div class="field wide">
-                <label>Dimensions / サイズ mm</label>
-                <div class="dimension-grid">
-                  <div><div class="mini-label">W</div><input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="" aria-label="幅 mm"></div>
-                  <div><div class="mini-label">H</div><input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="" aria-label="高さ mm"></div>
-                  <div><div class="mini-label">D</div><input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="" aria-label="奥行 mm"></div>
-                </div>
-              </div>
-              <div class="field wide">
-                <label>Ledger / 価格記録</label>
-                <div class="price-grid">
-                  <div>
-                    <div class="mini-label">販売価格</div>
-                    <input id="price" type="number" inputmode="numeric" min="0" placeholder="" aria-label="販売価格">
-                    <label class="ask-check" for="priceAsk"><input id="priceAsk" type="checkbox"> ASK</label>
-                  </div>
-                  <div><div class="mini-label">原価</div><input id="cost" type="number" inputmode="numeric" min="0" placeholder="" aria-label="原価"></div>
-                </div>
-              </div>
-              <div class="field"><label for="productionStatus">Production / 制作状態</label><select id="productionStatus"></select></div>
-              <div class="field"><label for="managementStatus">Management / 管理状態</label><select id="managementStatus"></select></div>
-              <div class="field"><label for="location">Location / 保管場所</label><select id="location"></select></div>
-              <div class="field"><label for="owner">Owner / 所蔵先</label><input id="owner" type="text" placeholder=""></div>
-              <div class="field wide"><label for="exhibitionHistory">Exhibition History / 展示履歴</label><textarea id="exhibitionHistory" placeholder=""></textarea></div>
-              <div class="field wide"><label for="memo">Memo / メモ</label><textarea id="memo" placeholder=""></textarea></div>
-            </div>
-            <div class="button-row">
-              <button class="primary" type="submit" id="submitButton">Save Record</button>
-              <button class="secondary" type="button" id="cancelButton" style="display:none;">Cancel Edit</button>
-            </div>
-          </form>
-        </section>
-
-        <footer class="site-footer">＊(VAMRSS) WORKSHEET VAULT / © 2026 VAMRSS</footer>
-      </div>
+        <div class="button-row">
+          <button class="text-button active" type="submit" id="submitButton">SAVE</button>
+          <button class="text-button" type="button" id="cancelButton" style="display:none;">CANCEL</button>
+        </div>
+      </form>
     </section>
 
     <section id="dataScreen" class="screen">
-      <div class="page">
-        <div class="topbar">
-          <div class="brand">＊(VAMRSS) WORKSHEET VAULT</div>
-          <button class="top-action" type="button" onclick="showScreen('vault')">BACK</button>
+      <div class="topbar">
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA</h1>
+        <nav class="text-nav">
+          <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
+          <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
+        </nav>
+      </div>
+
+      <div class="data-block">
+        <div class="section-title" style="margin:0;">Export</div>
+        <p class="hint">現在の作品データをJSONで保存します。</p>
+        <button class="text-button active" type="button" id="exportButton">EXPORT</button>
+      </div>
+
+      <div class="data-block">
+        <div class="section-title" style="margin:0;">Import</div>
+        <p class="hint">JSONを読み込みます。現在のデータは上書きされます。</p>
+        <input id="importFile" type="file" accept="application/json,.json">
+      </div>
+
+      <div class="data-block">
+        <div class="section-title" style="margin:0;">Category</div>
+        <div class="search-line" style="border-bottom:0; margin-bottom:0; padding-bottom:0;">
+          <div class="filter-label">Add</div>
+          <input id="categoryOptionInput" type="text" placeholder="">
+          <button class="text-button" type="button" id="addCategoryButton">ADD</button>
         </div>
+        <div id="categoryOptionList" class="option-list"></div>
+      </div>
 
-        <header class="hero">
-          <div class="hero-main">
-            <div class="kicker">JSON backup and restore</div>
-            <h1>Data<br>Room<span class="jp-note">保管庫管理</span></h1>
-          </div>
-          <p class="lead">Export all records as a JSON file. Import will replace the current vault after confirmation.<br>全作品データをJSONで保存できます。インポートは確認後、現在のデータを置き換えます。</p>
-        </header>
+      <div class="data-block">
+        <div class="section-title" style="margin:0;">Technique</div>
+        <div class="search-line" style="border-bottom:0; margin-bottom:0; padding-bottom:0;">
+          <div class="filter-label">Add</div>
+          <input id="techniqueOptionInput" type="text" placeholder="">
+          <button class="text-button" type="button" id="addTechniqueButton">ADD</button>
+        </div>
+        <div id="techniqueOptionList" class="option-list"></div>
+      </div>
 
-        <div class="solid-rule"></div>
+      <div class="data-block">
+        <div class="section-title" style="margin:0;">Location</div>
+        <div class="search-line" style="border-bottom:0; margin-bottom:0; padding-bottom:0;">
+          <div class="filter-label">Add</div>
+          <input id="locationOptionInput" type="text" placeholder="">
+          <button class="text-button" type="button" id="addLocationButton">ADD</button>
+        </div>
+        <div id="locationOptionList" class="option-list"></div>
+      </div>
 
-        <section class="section">
-          <div class="section-head">
-            <div class="section-number">Backup</div>
-            <h2>Data Control<span class="jp-note">保存と復元</span></h2>
-          </div>
-          <div class="data-grid">
-            <article class="data-card">
-              <div class="data-role">Export</div>
-              <p class="data-title">Export Vault</p>
-              <p class="data-text">現在の作品データをJSONとして保存します。ファイル名は <strong>WSV-YYYYMMDD-HHMM.json</strong> 形式です。</p>
-              <div class="data-meta" id="exportMeta">Last export / 未実行</div>
-              <div class="data-actions"><button class="primary" type="button" id="exportButton">Export Vault</button></div>
-            </article>
-            <article class="data-card caution">
-              <div class="data-role">Import</div>
-              <p class="data-title">Import Vault</p>
-              <p class="data-text">エクスポートしたJSONを読み込みます。現在のデータは確認後に上書きされます。</p>
-              <div class="field file-input-wrap"><label for="importFile">JSON File / バックアップファイル</label><input id="importFile" type="file" accept="application/json,.json"></div>
-            </article>
-          </div>
-        </section>
-
-        <section class="section section-soft">
-          <div class="section-head">
-            <div class="section-number">Options</div>
-            <h2>Vault Options<span class="jp-note">選択項目</span></h2>
-          </div>
-          <div class="setting-list">
-            <div class="setting-group">
-              <p class="setting-title">Technique / 技法</p>
-              <div class="setting-form">
-                <input id="techniqueOptionInput" type="text" placeholder="" aria-label="技法を追加">
-                <button class="secondary" type="button" id="addTechniqueButton">Add</button>
-              </div>
-              <div id="techniqueOptionList"></div>
-            </div>
-            <div class="setting-group">
-              <p class="setting-title">Location / 保管場所</p>
-              <div class="setting-form">
-                <input id="locationOptionInput" type="text" placeholder="" aria-label="保管場所を追加">
-                <button class="secondary" type="button" id="addLocationButton">Add</button>
-              </div>
-              <div id="locationOptionList"></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <div class="section-number">Danger</div>
-            <h2>Reset Prototype<span class="jp-note">初期化</span></h2>
-          </div>
-          <div class="notice-grid">
-            <article class="notice-card warning">
-              <div class="notice-label">Caution</div>
-              <p class="notice-title">削除前にExportしてください</p>
-              <p class="notice-text">ブラウザ内のWSVプロトタイプデータを削除します。必要な場合は先にJSONを書き出してください。</p>
-            </article>
-            <article class="notice-card danger">
-              <div class="notice-label">Danger</div>
-              <p class="notice-title">Delete All Records</p>
-              <p class="notice-text">この操作は元に戻せません。確認ダイアログの後、すべてのレコードを削除します。</p>
-              <div class="data-actions"><button class="danger" type="button" id="resetButton">Delete All Records</button></div>
-            </article>
-          </div>
-        </section>
-
-        <footer class="site-footer">＊(VAMRSS) WORKSHEET VAULT / © 2026 VAMRSS</footer>
+      <div class="data-block">
+        <div class="section-title" style="margin:0;">Reset</div>
+        <p class="hint">ブラウザ内のWSVデータを削除します。必要な場合は先にEXPORTしてください。</p>
+        <button class="text-button danger" type="button" id="resetButton">DELETE ALL</button>
       </div>
     </section>
   </main>
 
-  <nav class="bottom-nav" aria-label="主要画面">
-    <button class="nav-button active" type="button" id="vaultNavButton" onclick="showScreen('vault')">VAULT</button>
-    <button class="nav-button" type="button" id="entryNavButton" onclick="showScreen('entry')">ENTRY</button>
-    <button class="nav-button" type="button" id="dataNavButton" onclick="showScreen('data')">DATA</button>
-  </nav>
-
-  <div class="dialog-backdrop" id="dialogBackdrop" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
-    <div class="dialog-card">
-      <p class="dialog-kicker" id="dialogKicker">Confirm</p>
-      <h2 class="dialog-title" id="dialogTitle">Confirm</h2>
-      <p class="dialog-text" id="dialogText"></p>
-      <div class="dialog-actions">
-        <button class="secondary" type="button" id="dialogCancel">Cancel</button>
-        <button class="danger" type="button" id="dialogConfirm">Confirm</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
   <script>
-    const STORAGE_KEY = "vamrss-wsv-works-v1";
-    const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-techniques-v1";
-    const LOCATION_STORAGE_KEY = "vamrss-wsv-locations-v1";
-    const EXPORT_META_KEY = "vamrss-wsv-last-export-v1";
-    const APP_TITLE = "(VAMRSS)WORKSHEET VAULT SYSTEM";
-    const APP_ABBREVIATION = "WSV";
-    const APP_STORAGE_SCOPE = "local-browser";
+    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v1";
+    const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v1";
+    const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v1";
+    const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v1";
 
-    const DEFAULT_TECHNIQUES = ["Painting", "Sculpture", "Installation", "Drawing", "Photography", "Video", "Mixed Media"];
+    const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
+    const DEFAULT_TECHNIQUES = ["Installation", "Mixed Media", "Drawing", "Photography", "Video", "Acrylic", "Woodwork", "Print"];
     const DEFAULT_LOCATIONS = ["Studio", "Storage", "Gallery", "Collector", "Archive"];
     const PRODUCTION_STATUSES = ["制作中", "完成", "制作終了"];
     const MANAGEMENT_STATUSES = ["展示中", "販売中", "売却済", "譲渡済", "非売品", "保管中", "貸出中", "処分済"];
+
     const LEGACY_STATUS_MAP = {
       "制作中": { productionStatus: "制作中", managementStatus: "保管中" },
       "完成": { productionStatus: "完成", managementStatus: "保管中" },
@@ -1061,51 +664,81 @@
       "売却済": { productionStatus: "完成", managementStatus: "売却済" },
       "売却済み": { productionStatus: "完成", managementStatus: "売却済" },
       "譲渡済": { productionStatus: "完成", managementStatus: "譲渡済" },
-      "手放し済み": { productionStatus: "完成", managementStatus: "譲渡済" },
       "非売": { productionStatus: "完成", managementStatus: "非売品" },
       "非売品": { productionStatus: "完成", managementStatus: "非売品" },
       "保管中": { productionStatus: "完成", managementStatus: "保管中" },
       "貸出中": { productionStatus: "完成", managementStatus: "貸出中" },
-      "処分済": { productionStatus: "完成", managementStatus: "処分済" },
+      "手放し済み": { productionStatus: "完成", managementStatus: "譲渡済" },
       "処分済み": { productionStatus: "完成", managementStatus: "処分済" },
       "廃棄済み": { productionStatus: "完成", managementStatus: "処分済" },
       "打ち切り": { productionStatus: "制作終了", managementStatus: "保管中" },
       "制作終了": { productionStatus: "制作終了", managementStatus: "保管中" }
     };
 
+    const SAMPLE_WORKS = [
+      ["VLNS-001 / WHO CURATED YOUR LUCK?", "2026-04-28", "LED SIGN", "VLNS", "2026", "制作中", "保管中", "Installation", "LED, acrylic, cable", 896, 1530, 531, "", true, "", "Studio", "", "Serendipity / Daikanyama", "大型LEDサインのサンプル。"],
+      ["VLNS-002 / LUCK INDEX", "2026-05-02", "LED SIGN", "VLNS", "2026", "制作中", "保管中", "Installation", "LED, acrylic", 420, 920, 80, 280000, false, 48000, "Studio", "", "", ""],
+      ["VLNS-003 / CURATED FIELD", "2026-05-11", "LED SIGN", "VLNS", "2026", "完成", "販売中", "Installation", "LED, cable, steel", 600, 1200, 120, 360000, false, 62000, "Gallery", "", "", ""],
+      ["VNBX-001 / BASE MODULE", "2025-11-20", "DEVICE", "VNBX", "2025", "完成", "保管中", "Woodwork", "plywood, magnet, cable", 300, 300, 1000, "", true, 21000, "Storage", "", "", ""],
+      ["VNBX-002 / SHORT PEDESTAL", "2025-12-04", "DEVICE", "VNBX", "2025", "完成", "保管中", "Woodwork", "wood, steel plate", 300, 300, 520, 85000, false, 18000, "Storage", "", "", ""],
+      ["VNBX-003 / CABLE RISER", "2026-01-16", "DEVICE", "VNBX", "2026", "制作中", "保管中", "Mixed Media", "cable, acrylic, magnet", 180, 640, 120, "", true, "", "Studio", "", "", ""],
+      ["SIGN-001 / QUIET WARNING", "2025-08-09", "POSTER", "SIGN", "2025", "完成", "売却済", "Print", "inkjet print", 420, 594, 1, 38000, false, 6000, "Collector", "Private collection", "", ""],
+      ["SIGN-002 / DO NOT TOUCH LIGHT", "2025-08-22", "POSTER", "SIGN", "2025", "完成", "保管中", "Print", "paper, ink", 420, 594, 1, 32000, false, 5000, "Archive", "", "", ""],
+      ["SIGN-003 / HOLD YOUR LUCK", "2025-09-13", "POSTER", "SIGN", "2025", "完成", "販売中", "Print", "paper, ink", 297, 420, 1, 24000, false, 3500, "Gallery", "", "", ""],
+      ["OBJ-001 / SMALL STAND FOR FUTURE", "2024-12-18", "OBJECT", "OBJECT", "2024", "完成", "非売品", "Mixed Media", "wood, LED, screw", 180, 260, 160, "", true, 9000, "Studio", "", "", ""],
+      ["OBJ-002 / ARCHIVE TRAY", "2025-01-26", "OBJECT", "OBJECT", "2025", "完成", "保管中", "Acrylic", "acrylic, label", 320, 42, 220, 18000, false, 2800, "Archive", "", "", ""],
+      ["OBJ-003 / CABLE SLEEPER", "2025-02-14", "OBJECT", "OBJECT", "2025", "制作終了", "処分済", "Mixed Media", "rubber, cable", 120, 60, 80, "", false, 1200, "Archive", "", "", "試作終了。"],
+      ["DRW-001 / LINE FOR UNKNOWN HOUSE", "2024-09-10", "DRAWING", "DRAWING", "2024", "完成", "保管中", "Drawing", "paper, pen", 210, 297, 1, 15000, false, 900, "Archive", "", "", ""],
+      ["DRW-002 / PLAN OF LUCK", "2024-10-02", "DRAWING", "DRAWING", "2024", "完成", "譲渡済", "Drawing", "paper, pencil", 210, 297, 1, "", true, 700, "Collector", "Gift", "", ""],
+      ["DRW-003 / FOUR LAMPS", "2025-03-08", "DRAWING", "DRAWING", "2025", "制作中", "保管中", "Drawing", "paper, marker", 297, 420, 1, "", true, "", "Studio", "", "", ""],
+      ["PHO-001 / NIGHT WINDOW", "2023-11-03", "PHOTO", "PHOTO", "2023", "完成", "保管中", "Photography", "digital print", 297, 420, 1, 22000, false, 4000, "Archive", "", "", ""],
+      ["PHO-002 / GREEN ROOM", "2024-02-19", "PHOTO", "PHOTO", "2024", "完成", "販売中", "Photography", "digital print", 420, 594, 1, 42000, false, 7000, "Gallery", "", "", ""],
+      ["PHO-003 / SIDE VENT", "2024-04-06", "PHOTO", "PHOTO", "2024", "完成", "保管中", "Photography", "digital file", 0, 0, 0, "", true, "", "Archive", "", "", ""],
+      ["MIX-001 / SPLASHED COUPLE", "2024-06-14", "LED SIGN", "MIX", "2024", "完成", "譲渡済", "Installation", "LED, acrylic", 480, 680, 70, "", true, 30000, "Collector", "Private collection", "", "インクモチーフ。"],
+      ["MIX-002 / SOCKS CIRCUIT", "2024-07-21", "OBJECT", "MIX", "2024", "完成", "非売品", "Mixed Media", "fabric, LED", 260, 310, 90, "", true, 11000, "Studio", "", "", ""],
+      ["MIX-003 / WEATHER BOX", "2024-08-30", "OBJECT", "MIX", "2024", "完成", "保管中", "Mixed Media", "box, LED, paper", 240, 240, 240, 70000, false, 16000, "Storage", "", "", ""],
+      ["PRT-001 / CATALOG STUDY A", "2026-02-01", "POSTER", "PRINT", "2026", "制作中", "保管中", "Print", "paper", 297, 420, 1, "", true, "", "Studio", "", "", ""],
+      ["PRT-002 / CATALOG STUDY B", "2026-02-09", "POSTER", "PRINT", "2026", "制作中", "保管中", "Print", "paper", 297, 420, 1, "", true, "", "Studio", "", "", ""],
+      ["PRT-003 / INDEX CARD", "2026-02-22", "POSTER", "PRINT", "2026", "完成", "保管中", "Print", "paper", 148, 210, 1, 12000, false, 1200, "Archive", "", "", ""],
+      ["DEV-001 / UCONSOLE LOG MOCK", "2025-06-03", "DEVICE", "DEVICE", "2025", "制作中", "保管中", "Mixed Media", "screen, keyboard, case", 220, 90, 160, "", true, "", "Studio", "", "", ""],
+      ["DEV-002 / LISTING TERMINAL", "2025-06-10", "DEVICE", "DEVICE", "2025", "制作中", "保管中", "Mixed Media", "case, display", 200, 120, 60, "", true, "", "Studio", "", "", ""],
+      ["OTH-001 / EMPTY FRAME", "2023-05-27", "OTHER", "OTHER", "2023", "完成", "処分済", "Woodwork", "wood", 500, 700, 30, "", false, 3500, "Archive", "", "", "廃材整理済み。"],
+      ["OTH-002 / TEMPORARY RULE", "2023-09-18", "OTHER", "OTHER", "2023", "完成", "保管中", "Mixed Media", "paper, tape", 210, 297, 1, "", true, 300, "Archive", "", "", ""],
+      ["OTH-003 / SMALL LUCK SAMPLE", "2026-03-12", "OTHER", "OTHER", "2026", "制作中", "保管中", "Acrylic", "acrylic sample", 100, 100, 20, "", true, "", "Studio", "", "", ""],
+      ["VLNS-004 / NEON QUIET", "2026-06-01", "LED SIGN", "VLNS", "2026", "制作中", "展示中", "Installation", "LED, acrylic, aluminum", 760, 1120, 95, "", true, 52000, "Gallery", "", "Preview", ""]
+    ];
+
     const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
 
     let works = [];
+    let categories = [];
     let techniques = [];
     let locations = [];
     let editingId = null;
-    let activeStatus = "ALL";
-    let pendingDialogAction = null;
+    let activeCategory = "ALL";
+    let activeProduction = "ALL";
+    let activeManagement = "ALL";
 
     const form = document.getElementById("workForm");
     const workList = document.getElementById("workList");
-    const productionStatusSelect = document.getElementById("productionStatus");
-    const managementStatusSelect = document.getElementById("managementStatus");
-    const techniqueSelect = document.getElementById("technique");
-    const locationSelect = document.getElementById("location");
-    const statusChips = document.getElementById("statusChips");
     const searchInput = document.getElementById("searchInput");
-    const toast = document.getElementById("toast");
 
     const fields = {
       title: document.getElementById("title"),
-      year: document.getElementById("year"),
+      completedDate: document.getElementById("completedDate"),
+      category: document.getElementById("category"),
       series: document.getElementById("series"),
-      materials: document.getElementById("materials"),
+      year: document.getElementById("year"),
+      productionStatus: document.getElementById("productionStatus"),
+      managementStatus: document.getElementById("managementStatus"),
       technique: document.getElementById("technique"),
+      materials: document.getElementById("materials"),
       sizeW: document.getElementById("sizeW"),
       sizeH: document.getElementById("sizeH"),
       sizeD: document.getElementById("sizeD"),
       price: document.getElementById("price"),
       priceAsk: document.getElementById("priceAsk"),
       cost: document.getElementById("cost"),
-      productionStatus: document.getElementById("productionStatus"),
-      managementStatus: document.getElementById("managementStatus"),
       location: document.getElementById("location"),
       owner: document.getElementById("owner"),
       exhibitionHistory: document.getElementById("exhibitionHistory"),
@@ -1118,497 +751,6 @@
 
     function nowIso() { return new Date().toISOString(); }
 
-    function pad(value) { return String(value).padStart(2, "0"); }
-
-    function getBackupFileName() {
-      const d = new Date();
-      const yyyymmdd = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
-      const hhmm = `${pad(d.getHours())}${pad(d.getMinutes())}`;
-      return `${APP_ABBREVIATION}-${yyyymmdd}-${hhmm}.json`;
-    }
-
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("active");
-      window.setTimeout(() => toast.classList.remove("active"), 1900);
-    }
-
-    function showDialog({ kicker = "Confirm", title = "Confirm", text = "", confirmLabel = "Confirm", confirmClass = "danger", onConfirm }) {
-      pendingDialogAction = onConfirm;
-      document.getElementById("dialogKicker").textContent = kicker;
-      document.getElementById("dialogTitle").textContent = title;
-      document.getElementById("dialogText").textContent = text;
-      const confirmButton = document.getElementById("dialogConfirm");
-      confirmButton.textContent = confirmLabel;
-      confirmButton.className = confirmClass;
-      document.getElementById("dialogBackdrop").classList.add("active");
-      document.getElementById("dialogCancel").focus();
-    }
-
-    function closeDialog() {
-      document.getElementById("dialogBackdrop").classList.remove("active");
-      pendingDialogAction = null;
-    }
-
-    document.getElementById("dialogCancel").addEventListener("click", closeDialog);
-    document.getElementById("dialogConfirm").addEventListener("click", () => {
-      const action = pendingDialogAction;
-      closeDialog();
-      if (typeof action === "function") action();
-    });
-    document.getElementById("dialogBackdrop").addEventListener("click", event => {
-      if (event.target.id === "dialogBackdrop") closeDialog();
-    });
-
-    function load() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        works = Array.isArray(saved) ? saved : [];
-      } catch { works = []; }
-    }
-
-    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(works)); }
-
-    function cleanOptions(items, fallback) {
-      const source = Array.isArray(items) && items.length ? items : fallback;
-      return [...new Set(source.map(item => String(item || "").trim()).filter(Boolean))];
-    }
-
-    function loadSettings() {
-      try { techniques = cleanOptions(JSON.parse(localStorage.getItem(TECHNIQUE_STORAGE_KEY)), DEFAULT_TECHNIQUES); }
-      catch { techniques = [...DEFAULT_TECHNIQUES]; }
-
-      try { locations = cleanOptions(JSON.parse(localStorage.getItem(LOCATION_STORAGE_KEY)), DEFAULT_LOCATIONS); }
-      catch { locations = [...DEFAULT_LOCATIONS]; }
-    }
-
-    function saveSettings() {
-      localStorage.setItem(TECHNIQUE_STORAGE_KEY, JSON.stringify(techniques));
-      localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(locations));
-    }
-
-    function seedIfEmpty() {
-      // Production mode:
-      // 初回起動時にサンプル作品は自動登録しません。
-      // 必要な場合はENTRYから手動登録、またはDATAからJSONをImportしてください。
-      return;
-    }
-
-    function setupStatusOptions() {
-      productionStatusSelect.innerHTML = PRODUCTION_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-      managementStatusSelect.innerHTML = MANAGEMENT_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-      renderCatalogSelect(techniqueSelect, techniques);
-      renderCatalogSelect(locationSelect, locations);
-      renderOptionLists();
-      renderChips();
-      renderExportMeta();
-    }
-
-    function renderCatalogSelect(select, items, selected = "") {
-      const options = [...items];
-      if (selected && !options.includes(selected)) options.unshift(selected);
-      select.innerHTML = options.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-      if (selected) select.value = selected;
-    }
-
-    function renderOptionLists() {
-      renderOptionList("technique", techniques);
-      renderOptionList("location", locations);
-    }
-
-    function renderOptionList(kind, items) {
-      const target = document.getElementById(kind + "OptionList");
-      target.innerHTML = items.map(item => `
-        <div class="setting-item">
-          <span>${escapeHtml(item)}</span>
-          <button type="button" onclick="deleteOption('${kind}', '${escapeAttr(item)}')">Delete</button>
-        </div>
-      `).join("");
-    }
-
-    function addOption(kind) {
-      const input = document.getElementById(kind + "OptionInput");
-      const value = input.value.trim();
-      if (!value) return;
-      const list = kind === "technique" ? techniques : locations;
-      if (!list.includes(value)) list.push(value);
-      input.value = "";
-      saveSettings();
-      setupStatusOptions();
-      resetForm({ keepScreen: true });
-      showToast("項目を追加しました。");
-    }
-
-    window.deleteOption = function(kind, value) {
-      showDialog({
-        kicker: "Delete option",
-        title: "Delete Option",
-        text: `「${value}」を選択項目から削除します。既存レコードの文字列は残ります。`,
-        confirmLabel: "Delete",
-        onConfirm: () => {
-          if (kind === "technique") techniques = techniques.filter(item => item !== value);
-          if (kind === "location") locations = locations.filter(item => item !== value);
-          saveSettings();
-          setupStatusOptions();
-          showToast("項目を削除しました。");
-        }
-      });
-    };
-
-    function renderChips() {
-      const items = ["ALL", ...MANAGEMENT_STATUSES];
-      statusChips.innerHTML = items.map(s => `<button class="chip ${s === activeStatus ? "active" : ""}" type="button" onclick="setStatusFilter('${escapeAttr(s)}')">${escapeHtml(s)}</button>`).join("");
-    }
-
-    window.setStatusFilter = function(status) {
-      activeStatus = status;
-      render();
-    };
-
-    window.showScreen = function(name) {
-      const ids = ["vault", "entry", "data"];
-      ids.forEach(id => {
-        document.getElementById(id + "Screen").classList.toggle("active", id === name);
-        const button = document.getElementById(id + "NavButton");
-        button.classList.toggle("active", id === name);
-      });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    function resetForm(options = {}) {
-      editingId = null;
-      form.reset();
-      renderCatalogSelect(techniqueSelect, techniques);
-      renderCatalogSelect(locationSelect, locations);
-      fields.technique.value = techniques[0] || "";
-      fields.productionStatus.value = "制作中";
-      fields.managementStatus.value = "保管中";
-      fields.location.value = locations[0] || "";
-      fields.priceAsk.checked = false;
-      fields.price.disabled = false;
-      document.getElementById("entryHeroTitle").innerHTML = 'New<br>Work<span class="jp-note">作品登録</span>';
-      document.getElementById("formTitle").innerHTML = 'Work Record<span class="jp-note">作品情報</span>';
-      document.getElementById("submitButton").textContent = "Save Record";
-      document.getElementById("cancelButton").style.display = "none";
-      if (!options.keepScreen) render();
-    }
-
-    function formToWork(existing = {}) {
-      const price = fields.price.value === "" ? "" : Math.max(0, Math.round(Number(fields.price.value) || 0));
-      const cost = fields.cost.value === "" ? "" : Math.max(0, Math.round(Number(fields.cost.value) || 0));
-      return {
-        ...existing,
-        id: existing.id || createId(),
-        title: fields.title.value.trim(),
-        year: fields.year.value.trim(),
-        series: fields.series.value.trim(),
-        technique: fields.technique.value,
-        materials: fields.materials.value.trim(),
-        sizeW: fields.sizeW.value.trim(),
-        sizeH: fields.sizeH.value.trim(),
-        sizeD: fields.sizeD.value.trim(),
-        price,
-        priceAsk: fields.priceAsk.checked,
-        cost,
-        productionStatus: fields.productionStatus.value,
-        managementStatus: fields.managementStatus.value,
-        location: fields.location.value,
-        owner: fields.owner.value.trim(),
-        exhibitionHistory: fields.exhibitionHistory.value.trim(),
-        memo: fields.memo.value.trim(),
-        createdAt: existing.createdAt || nowIso(),
-        updatedAt: nowIso()
-      };
-    }
-
-    form.addEventListener("submit", event => {
-      event.preventDefault();
-      if (!fields.title.value.trim()) {
-        showToast("作品名を入力してください。");
-        fields.title.focus();
-        return;
-      }
-      const wasEditing = Boolean(editingId);
-      if (editingId) works = works.map(w => w.id === editingId ? formToWork(w) : w);
-      else works.push(formToWork());
-      save();
-      resetForm();
-      render();
-      showScreen("vault");
-      showToast(wasEditing ? "更新しました。" : "保存しました。");
-    });
-
-    document.getElementById("cancelButton").addEventListener("click", () => {
-      resetForm();
-      showScreen("vault");
-    });
-
-    window.startEdit = function(id) {
-      const w = works.find(item => item.id === id);
-      if (!w) return;
-      editingId = id;
-      fields.title.value = w.title || "";
-      fields.year.value = w.year || "";
-      fields.series.value = w.series || "";
-      renderCatalogSelect(techniqueSelect, techniques, w.technique || "");
-      fields.materials.value = w.materials || "";
-      const dims = normalizeDimensions(w);
-      fields.sizeW.value = dims.w;
-      fields.sizeH.value = dims.h;
-      fields.sizeD.value = dims.d;
-      fields.priceAsk.checked = Boolean(w.priceAsk) || String(w.price || "").toUpperCase() === "ASK";
-      fields.price.value = fields.priceAsk.checked ? "" : (w.price || "");
-      fields.price.disabled = fields.priceAsk.checked;
-      fields.cost.value = w.cost || "";
-      const statuses = normalizeStatuses(w);
-      fields.productionStatus.value = statuses.productionStatus;
-      fields.managementStatus.value = statuses.managementStatus;
-      renderCatalogSelect(locationSelect, locations, w.location || "");
-      fields.owner.value = w.owner || "";
-      fields.exhibitionHistory.value = w.exhibitionHistory || "";
-      fields.memo.value = w.memo || "";
-      document.getElementById("entryHeroTitle").innerHTML = 'Edit<br>Work<span class="jp-note">作品編集</span>';
-      document.getElementById("formTitle").innerHTML = 'Edit Record<span class="jp-note">作品情報を編集</span>';
-      document.getElementById("submitButton").textContent = "Update Record";
-      document.getElementById("cancelButton").style.display = "block";
-      showScreen("entry");
-    };
-
-    window.deleteWork = function(id) {
-      const w = works.find(item => item.id === id);
-      if (!w) return;
-      showDialog({
-        kicker: "Delete record",
-        title: "Delete Work",
-        text: `「${w.title || "Untitled"}」の作品レコードを削除します。この操作は元に戻せません。`,
-        confirmLabel: "Delete",
-        onConfirm: () => {
-          works = works.filter(item => item.id !== id);
-          save();
-          if (editingId === id) resetForm();
-          render();
-          showToast("削除しました。");
-        }
-      });
-    };
-
-    function normalizeDimensions(w = {}) {
-      if (w.sizeW || w.sizeH || w.sizeD) return { w: String(w.sizeW || ""), h: String(w.sizeH || ""), d: String(w.sizeD || "") };
-      const size = String(w.size || "");
-      const match = size.match(/W?\s*(\d+)\D+H?\s*(\d+)\D+D?\s*(\d+)/i);
-      return { w: match ? match[1] : "", h: match ? match[2] : "", d: match ? match[3] : "" };
-    }
-
-    function normalizeStatuses(w = {}) {
-      const legacy = LEGACY_STATUS_MAP[w.status] || {};
-      return {
-        productionStatus: PRODUCTION_STATUSES.includes(w.productionStatus) ? w.productionStatus : legacy.productionStatus || "完成",
-        managementStatus: MANAGEMENT_STATUSES.includes(w.managementStatus) ? w.managementStatus : legacy.managementStatus || "保管中"
-      };
-    }
-
-    function formatDimensions(w = {}) {
-      const d = normalizeDimensions(w);
-      const parts = [];
-      if (d.w) parts.push(`W${d.w}`);
-      if (d.h) parts.push(`H${d.h}`);
-      if (d.d) parts.push(`D${d.d}`);
-      return parts.length ? `${parts.join(" × ")} mm` : String(w.size || "");
-    }
-
-    function formatMoney(value) {
-      if (value === "" || value == null) return "";
-      const text = String(value).trim();
-      if (!text) return "";
-      const numeric = Number(text);
-      return Number.isFinite(numeric) ? yen.format(numeric) : text;
-    }
-
-    function render() {
-      renderChips();
-      const query = searchInput.value.trim().toLowerCase();
-      const filtered = works
-        .filter(w => {
-          const statuses = normalizeStatuses(w);
-          return activeStatus === "ALL" || statuses.managementStatus === activeStatus;
-        })
-        .filter(w => {
-          if (!query) return true;
-          const statuses = normalizeStatuses(w);
-          return [w.title, w.year, w.series, w.technique, w.materials, formatDimensions(w), w.price, w.priceAsk ? "ASK" : "", w.cost, statuses.productionStatus, statuses.managementStatus, w.location, w.owner, w.exhibitionHistory, w.memo]
-            .some(v => String(v || "").toLowerCase().includes(query));
-        })
-        .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
-
-      document.getElementById("totalWorks").textContent = works.length;
-      document.getElementById("productionWorks").textContent = works.filter(w => normalizeStatuses(w).productionStatus === "制作中").length;
-      document.getElementById("storedWorks").textContent = works.filter(w => normalizeStatuses(w).managementStatus === "保管中").length;
-
-      if (!filtered.length) {
-        workList.innerHTML = '<div class="empty"><p>No records found.<br>該当する作品レコードがありません。</p></div>';
-        return;
-      }
-
-      workList.innerHTML = '<div class="work-list">' + filtered.map(w => {
-        const statuses = normalizeStatuses(w);
-        const priceParts = [];
-        if (w.priceAsk) priceParts.push("Sales ASK");
-        else if (w.price !== "" && w.price != null) priceParts.push(`Sales ${formatMoney(w.price)}`);
-        if (w.cost !== "" && w.cost != null) priceParts.push(`Cost ${formatMoney(w.cost)}`);
-        return `
-        <article class="work-item">
-          <div class="work-date">${escapeHtml(w.year || "YEAR UNKNOWN")} / ${escapeHtml(w.series || "NO SERIES")}</div>
-          <div class="work-title">${escapeHtml(w.title)}</div>
-          <div class="chips" style="margin-top:8px;">
-            <div class="status-pill">${escapeHtml(statuses.productionStatus)}</div>
-            <div class="status-pill">${escapeHtml(statuses.managementStatus)}</div>
-          </div>
-          <div class="work-meta">
-            ${escapeHtml(w.technique || "No technique")} / ${escapeHtml(w.materials || "No materials")}<br>
-            ${escapeHtml(formatDimensions(w) || "No size")} / ${escapeHtml(w.location || "No location")}${priceParts.length ? `<br>${escapeHtml(priceParts.join(" / "))}` : ""}
-          </div>
-          ${w.exhibitionHistory ? `<div class="work-meta"><strong>Exhibition:</strong> ${escapeHtml(w.exhibitionHistory)}</div>` : ""}
-          ${w.memo ? `<div class="work-meta">${escapeHtml(w.memo)}</div>` : ""}
-          <div class="item-actions">
-            <button class="secondary" type="button" onclick="startEdit('${escapeAttr(w.id)}')">Edit</button>
-            <button class="danger" type="button" onclick="deleteWork('${escapeAttr(w.id)}')">Delete</button>
-          </div>
-        </article>`;
-      }).join("") + '</div>';
-    }
-
-    fields.priceAsk.addEventListener("change", () => {
-      fields.price.disabled = fields.priceAsk.checked;
-      if (fields.priceAsk.checked) fields.price.value = "";
-    });
-
-    searchInput.addEventListener("input", render);
-    document.getElementById("addTechniqueButton").addEventListener("click", () => addOption("technique"));
-    document.getElementById("addLocationButton").addEventListener("click", () => addOption("location"));
-    document.getElementById("techniqueOptionInput").addEventListener("keydown", event => {
-      if (event.key !== "Enter") return;
-      event.preventDefault();
-      addOption("technique");
-    });
-    document.getElementById("locationOptionInput").addEventListener("keydown", event => {
-      if (event.key !== "Enter") return;
-      event.preventDefault();
-      addOption("location");
-    });
-
-    function renderExportMeta() {
-      const last = localStorage.getItem(EXPORT_META_KEY);
-      document.getElementById("exportMeta").textContent = last ? `Last export / ${last}` : "Last export / 未実行";
-    }
-
-    document.getElementById("exportButton").addEventListener("click", () => {
-      const button = document.getElementById("exportButton");
-      button.disabled = true;
-      button.textContent = "Exporting";
-      window.setTimeout(() => {
-        const backup = {
-          app: APP_TITLE,
-          abbreviation: APP_ABBREVIATION,
-          version: "wsv-1.0",
-          storageScope: APP_STORAGE_SCOPE,
-          exportedAt: nowIso(),
-          works,
-          techniques,
-          locations
-        };
-        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = getBackupFileName();
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        const exportTime = new Date().toLocaleString("ja-JP", { hour12: false });
-        localStorage.setItem(EXPORT_META_KEY, exportTime);
-        renderExportMeta();
-        button.disabled = false;
-        button.textContent = "Export Vault";
-        showToast("エクスポートしました。");
-      }, 140);
-    });
-
-    document.getElementById("importFile").addEventListener("change", event => {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const data = JSON.parse(reader.result);
-          const importedWorks = Array.isArray(data) ? data : data.works;
-          if (!Array.isArray(importedWorks)) throw new Error("Invalid backup format");
-          showDialog({
-            kicker: "Import vault",
-            title: "Replace Vault",
-            text: `${importedWorks.length}件の作品データで現在のVaultを上書きします。現在のデータが必要な場合は、先にExportしてください。`,
-            confirmLabel: "Import",
-            confirmClass: "primary",
-            onConfirm: () => {
-              works = importedWorks.map(w => ({
-                id: w.id || createId(),
-                title: String(w.title || "Untitled"),
-                year: String(w.year || ""),
-                series: String(w.series || ""),
-                technique: String(w.technique || ""),
-                materials: String(w.materials || ""),
-                sizeW: normalizeDimensions(w).w,
-                sizeH: normalizeDimensions(w).h,
-                sizeD: normalizeDimensions(w).d,
-                price: String(w.price || "").toUpperCase() === "ASK" ? "" : (w.price === "" || w.price == null ? "" : Math.max(0, Math.round(Number(w.price) || 0))),
-                priceAsk: Boolean(w.priceAsk) || String(w.price || "").toUpperCase() === "ASK",
-                cost: w.cost === "" || w.cost == null ? "" : Math.max(0, Math.round(Number(w.cost) || 0)),
-                productionStatus: normalizeStatuses(w).productionStatus,
-                managementStatus: normalizeStatuses(w).managementStatus,
-                location: String(w.location || ""),
-                owner: String(w.owner || ""),
-                exhibitionHistory: String(w.exhibitionHistory || ""),
-                memo: String(w.memo || ""),
-                createdAt: w.createdAt || nowIso(),
-                updatedAt: w.updatedAt || nowIso()
-              }));
-              techniques = cleanOptions([...(Array.isArray(data.techniques) ? data.techniques : techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
-              locations = cleanOptions([...(Array.isArray(data.locations) ? data.locations : locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
-              saveSettings();
-              save();
-              setupStatusOptions();
-              resetForm();
-              render();
-              showScreen("vault");
-              showToast("インポートが完了しました。");
-            }
-          });
-        } catch (error) {
-          showToast("JSONファイルを読み込めませんでした。");
-        } finally {
-          event.target.value = "";
-        }
-      };
-      reader.readAsText(file);
-    });
-
-    document.getElementById("resetButton").addEventListener("click", () => {
-      showDialog({
-        kicker: "Reset prototype",
-        title: "Delete All",
-        text: "すべての作品レコードを削除します。この操作は元に戻せません。必要な場合は先にExportしてください。",
-        confirmLabel: "Delete All",
-        onConfirm: () => {
-          works = [];
-          save();
-          resetForm();
-          render();
-          showScreen("vault");
-          showToast("すべて削除しました。");
-        }
-      });
-    });
-
     function escapeHtml(text) {
       return String(text)
         .replaceAll("&", "&amp;")
@@ -1618,12 +760,562 @@
         .replaceAll("'", "&#039;");
     }
 
-    function escapeAttr(text) { return escapeHtml(text).replaceAll("`", "&#096;"); }
+    function escapeAttr(text) {
+      return escapeHtml(text).replaceAll("`", "&#096;");
+    }
+
+    function cleanOptions(items, fallback) {
+      const source = Array.isArray(items) && items.length ? items : fallback;
+      return [...new Set(source.map(item => String(item || "").trim()).filter(Boolean))];
+    }
+
+    function sampleToWork(row, index) {
+      return {
+        id: "sample-" + String(index + 1).padStart(3, "0"),
+        title: row[0],
+        completedDate: row[1],
+        category: row[2],
+        series: row[3],
+        year: row[4],
+        productionStatus: row[5],
+        managementStatus: row[6],
+        technique: row[7],
+        materials: row[8],
+        sizeW: row[9] ? String(row[9]) : "",
+        sizeH: row[10] ? String(row[10]) : "",
+        sizeD: row[11] ? String(row[11]) : "",
+        price: row[12] === "" ? "" : row[12],
+        priceAsk: Boolean(row[13]),
+        cost: row[14] === "" ? "" : row[14],
+        location: row[15],
+        owner: row[16],
+        exhibitionHistory: row[17],
+        memo: row[18],
+        createdAt: nowIso(),
+        updatedAt: nowIso()
+      };
+    }
+
+    function load() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        works = Array.isArray(saved) ? saved : [];
+      } catch {
+        works = [];
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(works));
+    }
+
+    function loadSettings() {
+      try { categories = cleanOptions(JSON.parse(localStorage.getItem(CATEGORY_STORAGE_KEY)), DEFAULT_CATEGORIES); }
+      catch { categories = [...DEFAULT_CATEGORIES]; }
+
+      try { techniques = cleanOptions(JSON.parse(localStorage.getItem(TECHNIQUE_STORAGE_KEY)), DEFAULT_TECHNIQUES); }
+      catch { techniques = [...DEFAULT_TECHNIQUES]; }
+
+      try { locations = cleanOptions(JSON.parse(localStorage.getItem(LOCATION_STORAGE_KEY)), DEFAULT_LOCATIONS); }
+      catch { locations = [...DEFAULT_LOCATIONS]; }
+    }
+
+    function saveSettings() {
+      localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(categories));
+      localStorage.setItem(TECHNIQUE_STORAGE_KEY, JSON.stringify(techniques));
+      localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(locations));
+    }
+
+    function seedIfEmpty() {
+      if (works.length) return;
+      works = SAMPLE_WORKS.map(sampleToWork);
+      categories = cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES);
+      techniques = cleanOptions([...techniques, ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
+      locations = cleanOptions([...locations, ...works.map(w => w.location)], DEFAULT_LOCATIONS);
+      saveSettings();
+      save();
+    }
+
+    function renderCatalogSelect(select, items, selected = "") {
+      const options = [...items];
+      if (selected && !options.includes(selected)) options.unshift(selected);
+      select.innerHTML = options.map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("");
+      if (selected) select.value = selected;
+    }
+
+    function setupOptions() {
+      fields.productionStatus.innerHTML = PRODUCTION_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
+      fields.managementStatus.innerHTML = MANAGEMENT_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
+      renderCatalogSelect(fields.category, categories);
+      renderCatalogSelect(fields.technique, techniques);
+      renderCatalogSelect(fields.location, locations);
+      renderOptionLists();
+      renderFilters();
+    }
+
+    function renderFilters() {
+      document.getElementById("categoryLinks").innerHTML = ["ALL", ...categories].map(item => {
+        return `<button class="text-button ${item === activeCategory ? "active" : ""}" type="button" onclick="setCategory('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+      }).join("");
+
+      document.getElementById("productionLinks").innerHTML = ["ALL", ...PRODUCTION_STATUSES].map(item => {
+        return `<button class="text-button ${item === activeProduction ? "active" : ""}" type="button" onclick="setProduction('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+      }).join("");
+
+      document.getElementById("managementLinks").innerHTML = ["ALL", ...MANAGEMENT_STATUSES].map(item => {
+        return `<button class="text-button ${item === activeManagement ? "active" : ""}" type="button" onclick="setManagement('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+      }).join("");
+    }
+
+    function renderOptionLists() {
+      renderOptionList("category", categories);
+      renderOptionList("technique", techniques);
+      renderOptionList("location", locations);
+    }
+
+    function renderOptionList(kind, items) {
+      const target = document.getElementById(kind + "OptionList");
+      target.innerHTML = items.map(item => `
+        <div class="option-item">
+          <div>${escapeHtml(item)}</div>
+          <button class="text-button danger" type="button" onclick="deleteOption('${kind}', '${escapeAttr(item)}')">DELETE</button>
+        </div>
+      `).join("");
+    }
+
+    function addOption(kind) {
+      const input = document.getElementById(kind + "OptionInput");
+      const value = input.value.trim();
+      if (!value) return;
+
+      if (kind === "category" && !categories.includes(value)) categories.push(value);
+      if (kind === "technique" && !techniques.includes(value)) techniques.push(value);
+      if (kind === "location" && !locations.includes(value)) locations.push(value);
+
+      input.value = "";
+      saveSettings();
+      setupOptions();
+      resetForm();
+      render();
+    }
+
+    window.deleteOption = function(kind, value) {
+      if (kind === "category") categories = categories.filter(item => item !== value);
+      if (kind === "technique") techniques = techniques.filter(item => item !== value);
+      if (kind === "location") locations = locations.filter(item => item !== value);
+      saveSettings();
+      setupOptions();
+      resetForm();
+      render();
+    };
+
+    window.setCategory = function(value) {
+      activeCategory = value;
+      render();
+    };
+
+    window.setProduction = function(value) {
+      activeProduction = value;
+      render();
+    };
+
+    window.setManagement = function(value) {
+      activeManagement = value;
+      render();
+    };
+
+    window.clearFilters = function() {
+      activeCategory = "ALL";
+      activeProduction = "ALL";
+      activeManagement = "ALL";
+      searchInput.value = "";
+      render();
+    };
+
+    window.toggleStatusPanel = function() {
+      const panel = document.getElementById("statusPanel");
+      const text = document.getElementById("statusPanelText");
+      panel.classList.toggle("open");
+      text.textContent = panel.classList.contains("open") ? "tap to close" : "tap to open";
+    };
+
+    window.showScreen = function(name) {
+      ["works", "entry", "data"].forEach(id => {
+        document.getElementById(id + "Screen").classList.toggle("active", id === name);
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    function normalizeStatuses(w = {}) {
+      const legacy = LEGACY_STATUS_MAP[w.status] || {};
+      return {
+        productionStatus: PRODUCTION_STATUSES.includes(w.productionStatus) ? w.productionStatus : legacy.productionStatus || "制作中",
+        managementStatus: MANAGEMENT_STATUSES.includes(w.managementStatus) ? w.managementStatus : legacy.managementStatus || "保管中"
+      };
+    }
+
+    function normalizeDimensions(w = {}) {
+      if (w.sizeW || w.sizeH || w.sizeD) {
+        return {
+          w: String(w.sizeW || ""),
+          h: String(w.sizeH || ""),
+          d: String(w.sizeD || "")
+        };
+      }
+      const size = String(w.size || "");
+      const match = size.match(/W?\s*(\d+)\D+H?\s*(\d+)\D+D?\s*(\d+)/i);
+      return {
+        w: match ? match[1] : "",
+        h: match ? match[2] : "",
+        d: match ? match[3] : ""
+      };
+    }
+
+    function formatDimensions(w = {}) {
+      const d = normalizeDimensions(w);
+      const parts = [];
+      if (d.w) parts.push(`W${d.w}`);
+      if (d.h) parts.push(`H${d.h}`);
+      if (d.d) parts.push(`D${d.d}`);
+      return parts.length ? `${parts.join(" × ")} mm` : "";
+    }
+
+    function formatMoney(value) {
+      return value === "" || value == null ? "" : yen.format(Number(value) || 0);
+    }
+
+    function resetForm() {
+      editingId = null;
+      form.reset();
+      renderCatalogSelect(fields.category, categories);
+      renderCatalogSelect(fields.technique, techniques);
+      renderCatalogSelect(fields.location, locations);
+      fields.category.value = categories[0] || "";
+      fields.technique.value = techniques[0] || "";
+      fields.location.value = locations[0] || "";
+      fields.productionStatus.value = "制作中";
+      fields.managementStatus.value = "保管中";
+      fields.priceAsk.checked = false;
+      fields.price.disabled = false;
+      document.getElementById("submitButton").textContent = "SAVE";
+      document.getElementById("cancelButton").style.display = "none";
+    }
+
+    function formToWork(existing = {}) {
+      const price = fields.price.value === "" ? "" : Math.max(0, Math.round(Number(fields.price.value) || 0));
+      const cost = fields.cost.value === "" ? "" : Math.max(0, Math.round(Number(fields.cost.value) || 0));
+
+      return {
+        ...existing,
+        id: existing.id || createId(),
+        title: fields.title.value.trim(),
+        completedDate: fields.completedDate.value,
+        category: fields.category.value,
+        series: fields.series.value.trim(),
+        year: fields.year.value.trim(),
+        productionStatus: fields.productionStatus.value,
+        managementStatus: fields.managementStatus.value,
+        technique: fields.technique.value,
+        materials: fields.materials.value.trim(),
+        sizeW: fields.sizeW.value.trim(),
+        sizeH: fields.sizeH.value.trim(),
+        sizeD: fields.sizeD.value.trim(),
+        price,
+        priceAsk: fields.priceAsk.checked,
+        cost,
+        location: fields.location.value,
+        owner: fields.owner.value.trim(),
+        exhibitionHistory: fields.exhibitionHistory.value.trim(),
+        memo: fields.memo.value.trim(),
+        createdAt: existing.createdAt || nowIso(),
+        updatedAt: nowIso()
+      };
+    }
+
+    function render() {
+      renderFilters();
+
+      const query = searchInput.value.trim().toLowerCase();
+
+      const filtered = works
+        .filter(w => activeCategory === "ALL" || String(w.category || "") === activeCategory)
+        .filter(w => {
+          const statuses = normalizeStatuses(w);
+          return activeProduction === "ALL" || statuses.productionStatus === activeProduction;
+        })
+        .filter(w => {
+          const statuses = normalizeStatuses(w);
+          return activeManagement === "ALL" || statuses.managementStatus === activeManagement;
+        })
+        .filter(w => {
+          if (!query) return true;
+          const statuses = normalizeStatuses(w);
+          return [
+            w.title,
+            w.completedDate,
+            w.category,
+            w.series,
+            w.year,
+            statuses.productionStatus,
+            statuses.managementStatus,
+            w.technique,
+            w.materials,
+            formatDimensions(w),
+            w.priceAsk ? "ASK" : "",
+            w.price,
+            w.cost,
+            w.location,
+            w.owner,
+            w.exhibitionHistory,
+            w.memo
+          ].some(value => String(value || "").toLowerCase().includes(query));
+        })
+        .sort((a, b) => {
+          const dateCompare = String(b.completedDate || "").localeCompare(String(a.completedDate || ""));
+          if (dateCompare) return dateCompare;
+          return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+        });
+
+      if (!filtered.length) {
+        workList.innerHTML = '<div class="empty">該当する作品がありません。</div>';
+        return;
+      }
+
+      workList.innerHTML = filtered.map(w => {
+        const statuses = normalizeStatuses(w);
+        const priceText = w.priceAsk ? "ASK" : formatMoney(w.price);
+        const costText = formatMoney(w.cost);
+        return `
+          <article class="work" id="work-${escapeAttr(w.id)}">
+            <button class="work-summary has-category" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
+              <div class="work-title">${escapeHtml(w.title || "Untitled")}</div>
+              <div class="work-category">${escapeHtml(w.category || "")}</div>
+              <div class="work-date">${escapeHtml(w.completedDate || "")}</div>
+            </button>
+            <div class="work-detail">
+              <div class="detail-grid">
+                <div class="detail-row"><div class="detail-key">Category</div><div class="detail-value">${escapeHtml(w.category || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${escapeHtml(w.series || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Year</div><div class="detail-value">${escapeHtml(w.year || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Production</div><div class="detail-value">${escapeHtml(statuses.productionStatus)}</div></div>
+                <div class="detail-row"><div class="detail-key">Management</div><div class="detail-value">${escapeHtml(statuses.managementStatus)}</div></div>
+                <div class="detail-row"><div class="detail-key">Technique</div><div class="detail-value">${escapeHtml(w.technique || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Materials</div><div class="detail-value">${escapeHtml(w.materials || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Size</div><div class="detail-value">${escapeHtml(formatDimensions(w))}</div></div>
+                <div class="detail-row"><div class="detail-key">Price</div><div class="detail-value">${escapeHtml(priceText)}</div></div>
+                <div class="detail-row"><div class="detail-key">Cost</div><div class="detail-value">${escapeHtml(costText)}</div></div>
+                <div class="detail-row"><div class="detail-key">Location</div><div class="detail-value">${escapeHtml(w.location || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Owner</div><div class="detail-value">${escapeHtml(w.owner || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Exhibition</div><div class="detail-value">${escapeHtml(w.exhibitionHistory || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Memo</div><div class="detail-value">${escapeHtml(w.memo || "")}</div></div>
+              </div>
+              <div class="detail-actions">
+                <button class="text-button" type="button" onclick="startEdit('${escapeAttr(w.id)}')">EDIT</button>
+                <button class="text-button danger" type="button" onclick="deleteWork('${escapeAttr(w.id)}')">DELETE</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    window.toggleWork = function(id) {
+      const target = document.getElementById("work-" + id);
+      if (target) target.classList.toggle("open");
+    };
+
+    window.startEdit = function(id) {
+      const w = works.find(item => item.id === id);
+      if (!w) return;
+
+      editingId = id;
+      fields.title.value = w.title || "";
+      fields.completedDate.value = w.completedDate || "";
+      renderCatalogSelect(fields.category, categories, w.category || "");
+      fields.series.value = w.series || "";
+      fields.year.value = w.year || "";
+
+      const statuses = normalizeStatuses(w);
+      fields.productionStatus.value = statuses.productionStatus;
+      fields.managementStatus.value = statuses.managementStatus;
+
+      renderCatalogSelect(fields.technique, techniques, w.technique || "");
+      fields.materials.value = w.materials || "";
+
+      const dims = normalizeDimensions(w);
+      fields.sizeW.value = dims.w;
+      fields.sizeH.value = dims.h;
+      fields.sizeD.value = dims.d;
+
+      fields.priceAsk.checked = Boolean(w.priceAsk) || String(w.price || "").toUpperCase() === "ASK";
+      fields.price.value = fields.priceAsk.checked ? "" : (w.price || "");
+      fields.price.disabled = fields.priceAsk.checked;
+      fields.cost.value = w.cost || "";
+
+      renderCatalogSelect(fields.location, locations, w.location || "");
+      fields.owner.value = w.owner || "";
+      fields.exhibitionHistory.value = w.exhibitionHistory || "";
+      fields.memo.value = w.memo || "";
+
+      document.getElementById("submitButton").textContent = "UPDATE";
+      document.getElementById("cancelButton").style.display = "inline-block";
+      showScreen("entry");
+    };
+
+    window.deleteWork = function(id) {
+      if (!confirm("この作品を削除しますか？")) return;
+      works = works.filter(w => w.id !== id);
+      save();
+      if (editingId === id) resetForm();
+      render();
+    };
+
+    fields.priceAsk.addEventListener("change", () => {
+      fields.price.disabled = fields.priceAsk.checked;
+      if (fields.priceAsk.checked) fields.price.value = "";
+    });
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!fields.title.value.trim()) {
+        alert("作品名を入力してください。");
+        return;
+      }
+
+      if (editingId) {
+        works = works.map(w => w.id === editingId ? formToWork(w) : w);
+      } else {
+        works.push(formToWork());
+      }
+
+      save();
+      resetForm();
+      render();
+      showScreen("works");
+    });
+
+    document.getElementById("cancelButton").addEventListener("click", () => {
+      resetForm();
+      showScreen("works");
+    });
+
+    searchInput.addEventListener("input", render);
+
+    document.getElementById("addCategoryButton").addEventListener("click", () => addOption("category"));
+    document.getElementById("addTechniqueButton").addEventListener("click", () => addOption("technique"));
+    document.getElementById("addLocationButton").addEventListener("click", () => addOption("location"));
+
+    ["category", "technique", "location"].forEach(kind => {
+      document.getElementById(kind + "OptionInput").addEventListener("keydown", event => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        addOption(kind);
+      });
+    });
+
+    document.getElementById("exportButton").addEventListener("click", () => {
+      const backup = {
+        app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
+        abbreviation: "WSV",
+        version: "minimal-text-1.0",
+        exportedAt: nowIso(),
+        works,
+        categories,
+        techniques,
+        locations
+      };
+
+      const now = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      const filename = `WSV-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}.json`;
+
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("importFile").addEventListener("change", event => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          const importedWorks = Array.isArray(data) ? data : data.works;
+          if (!Array.isArray(importedWorks)) throw new Error("Invalid format");
+
+          if (!confirm(`${importedWorks.length}件の作品データで現在のWSVを上書きしますか？`)) return;
+
+          works = importedWorks.map(w => {
+            const statuses = normalizeStatuses(w);
+            const dims = normalizeDimensions(w);
+            return {
+              id: w.id || createId(),
+              title: String(w.title || "Untitled"),
+              completedDate: String(w.completedDate || ""),
+              category: String(w.category || w.workCategory || "OTHER"),
+              series: String(w.series || ""),
+              year: String(w.year || ""),
+              productionStatus: statuses.productionStatus,
+              managementStatus: statuses.managementStatus,
+              technique: String(w.technique || ""),
+              materials: String(w.materials || ""),
+              sizeW: dims.w,
+              sizeH: dims.h,
+              sizeD: dims.d,
+              price: String(w.price || "").toUpperCase() === "ASK" ? "" : (w.price === "" || w.price == null ? "" : Math.max(0, Math.round(Number(w.price) || 0))),
+              priceAsk: Boolean(w.priceAsk) || String(w.price || "").toUpperCase() === "ASK",
+              cost: w.cost === "" || w.cost == null ? "" : Math.max(0, Math.round(Number(w.cost) || 0)),
+              location: String(w.location || ""),
+              owner: String(w.owner || ""),
+              exhibitionHistory: String(w.exhibitionHistory || ""),
+              memo: String(w.memo || ""),
+              createdAt: w.createdAt || nowIso(),
+              updatedAt: w.updatedAt || nowIso()
+            };
+          });
+
+          categories = cleanOptions([...(data.categories || categories), ...works.map(w => w.category)], DEFAULT_CATEGORIES);
+          techniques = cleanOptions([...(data.techniques || techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
+          locations = cleanOptions([...(data.locations || locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
+
+          saveSettings();
+          save();
+          setupOptions();
+          resetForm();
+          render();
+          showScreen("works");
+          alert("インポートが完了しました。");
+        } catch {
+          alert("JSONファイルを読み込めませんでした。");
+        } finally {
+          event.target.value = "";
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById("resetButton").addEventListener("click", () => {
+      if (!confirm("すべての作品データを削除しますか？")) return;
+      if (!confirm("本当に削除しますか？この操作は元に戻せません。")) return;
+      works = [];
+      save();
+      resetForm();
+      render();
+      showScreen("works");
+    });
 
     load();
     loadSettings();
     seedIfEmpty();
-    setupStatusOptions();
+    setupOptions();
     resetForm();
     render();
   </script>
