@@ -860,6 +860,65 @@
       overflow-wrap: anywhere;
     }
 
+
+
+    .shopping-board {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .shopping-add-row,
+    .shopping-item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .shopping-add-row input,
+    .shopping-item-input {
+      min-height: 48px;
+      border-radius: var(--radius-small);
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .shopping-item-input {
+      border-color: transparent;
+      background: transparent;
+      padding-left: 0;
+      padding-right: 8px;
+      color: var(--ink);
+    }
+
+    .shopping-item-input:focus {
+      border-color: var(--line);
+      background: var(--surface);
+      padding-left: 14px;
+    }
+
+    .bought-button {
+      min-width: 92px;
+      min-height: 42px;
+      border-radius: 999px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--sub);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .shopping-list .empty {
+      margin-top: 14px;
+      border-bottom: 0;
+    }
+
     .bottom-nav {
       position: fixed;
       left: 50%;
@@ -988,7 +1047,66 @@
     }
 
     @media (max-width: 380px) {
-      .bottom-nav { width: calc(100% - 16px); }
+  
+
+    .shopping-board {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .shopping-add-row,
+    .shopping-item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .shopping-add-row input,
+    .shopping-item-input {
+      min-height: 48px;
+      border-radius: var(--radius-small);
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .shopping-item-input {
+      border-color: transparent;
+      background: transparent;
+      padding-left: 0;
+      padding-right: 8px;
+      color: var(--ink);
+    }
+
+    .shopping-item-input:focus {
+      border-color: var(--line);
+      background: var(--surface);
+      padding-left: 14px;
+    }
+
+    .bought-button {
+      min-width: 92px;
+      min-height: 42px;
+      border-radius: 999px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--sub);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .shopping-list .empty {
+      margin-top: 14px;
+      border-bottom: 0;
+    }
+
+    .bottom-nav { width: calc(100% - 16px); }
       .nav-button { font-size: 8px; letter-spacing: .025em; }
       .schedule-row { grid-template-columns: 44px minmax(0, 1fr); }
       .days-left { font-size: 8px; }
@@ -1118,20 +1236,30 @@
         </section>
       </section>
 
-      <section class="app-view" data-page="shopping" aria-label="Shopping todo page">
+      <section class="app-view" data-page="shopping" aria-label="Shopping list page">
         <section class="hero" aria-labelledby="shoppingPageTitle">
           <div>
-            <p class="kicker">Shopping todo</p>
-            <h1 id="shoppingPageTitle">Shopping<br>TODO</h1>
+            <p class="kicker">Shared shopping list</p>
+            <h1 id="shoppingPageTitle">Shopping<br>List</h1>
           </div>
-          <p class="lead">買い物リスト専用ページです。次の工程で、できるだけ少ない入力で追加できる共通TODOフォームをここに配置します。</p>
+          <p class="lead">買うものだけを短く追加します。リスト上の文字を直接編集でき、購入済みにすると確認なしでリストから消えます。</p>
         </section>
-        <section class="page-card">
-          <h2>Coming Next<span class="jp-note">次工程</span></h2>
-          <div class="placeholder-list">
-            <div class="placeholder-row"><span>入力フォーム：品名のみで追加できる構成</span><span class="owner-pill">Plan</span></div>
-            <div class="placeholder-row"><span>一覧表示：横罫線のみでコンパクト表示</span><span class="owner-pill">Plan</span></div>
-            <div class="placeholder-row"><span>完了済み：必要に応じて折りたたみ表示</span><span class="owner-pill">Plan</span></div>
+
+        <section class="section" aria-labelledby="shoppingListHeading">
+          <div class="section-head">
+            <div>
+              <h2 id="shoppingListHeading">Shopping List<span class="jp-note">買い物</span></h2>
+              <p class="section-description">入力欄と一覧を一体化しています。チェックボックスや履歴は残さず、購入済みのものはすぐ削除します。</p>
+            </div>
+            <div class="section-number">SHOP</div>
+          </div>
+
+          <div class="shopping-board">
+            <form class="shopping-add-row" id="shoppingForm" autocomplete="off">
+              <input id="shoppingInput" type="text" inputmode="text" placeholder="買うものを追加" maxlength="80" aria-label="買うものを追加">
+              <button class="secondary-button" type="submit">Add</button>
+            </form>
+            <div class="shopping-list" id="shoppingList" aria-live="polite"></div>
           </div>
         </section>
       </section>
@@ -1278,7 +1406,8 @@
 
     const TABLES = {
       books: 'hmb_books',
-      schedules: 'hmb_schedules'
+      schedules: 'hmb_schedules',
+      todos: 'hmb_todos'
     };
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -1292,6 +1421,7 @@
 
     const state = {
       schedules: [],
+      todos: [],
       names: [],
       selectedOwners: ['EVERYONE'],
       showAll: false,
@@ -1333,7 +1463,10 @@
       nameList: document.getElementById('nameList'),
       exportButton: document.getElementById('exportButton'),
       toast: document.getElementById('toast'),
-      bookIdLabel: document.getElementById('bookIdLabel')
+      bookIdLabel: document.getElementById('bookIdLabel'),
+      shoppingForm: document.getElementById('shoppingForm'),
+      shoppingInput: document.getElementById('shoppingInput'),
+      shoppingList: document.getElementById('shoppingList')
     };
 
     function isConfigured() {
@@ -1534,6 +1667,27 @@
       };
     }
 
+
+
+    function toTodo(row) {
+      return {
+        id: row.id,
+        type: row.todo_type || 'shopping',
+        title: row.title || '',
+        memo: row.memo || '',
+        owners: Array.isArray(row.owners) ? row.owners : ['EVERYONE'],
+        done: Boolean(row.done),
+        sortOrder: Number(row.sort_order || 0),
+        createdAt: row.created_at || ''
+      };
+    }
+
+    function shoppingItems() {
+      return state.todos
+        .filter(item => item.type === 'shopping' && !item.done)
+        .sort((a, b) => (a.sortOrder - b.sortOrder) || String(a.createdAt).localeCompare(String(b.createdAt)) || a.title.localeCompare(b.title, 'ja'));
+    }
+
     function toSchedulePayload() {
       const startDate = normalizeDateInput(els.startDate.value);
       const endDate = normalizeDateInput(els.endDate.value);
@@ -1561,6 +1715,10 @@
     function seedDemoData() {
       const today = dateOnly(localDateString());
       state.names = ['Mamoru', 'Partner'];
+      state.todos = [
+        { id: 'demo-shop-1', type: 'shopping', title: '牛乳', memo: '', owners: ['EVERYONE'], done: false, sortOrder: 0, createdAt: '' },
+        { id: 'demo-shop-2', type: 'shopping', title: 'トイレットペーパー', memo: '', owners: ['EVERYONE'], done: false, sortOrder: 1, createdAt: '' }
+      ];
       state.schedules = [
         { id: 'demo-1', date: localDateString(addDays(today, -18)), startDate: localDateString(addDays(today, -18)), startTime: '15:00', endDate: localDateString(addDays(today, -18)), endTime: '16:30', title: '先月の買い出し', owners: ['EVERYONE'], memo: 'Supabase未設定時の表示確認用。' },
         { id: 'demo-2', date: localDateString(today), startDate: localDateString(today), startTime: '', endDate: localDateString(today), endTime: '', title: '燃えるごみ', owners: ['EVERYONE'], memo: '朝のうちに出す。' },
@@ -1606,15 +1764,27 @@
       isLoading = true;
       try {
         await ensureBook();
-        const { data, error } = await client
-          .from(TABLES.schedules)
-          .select('*')
-          .eq('book_id', BOOK_ID)
-          .order('start_date', { ascending: true })
-          .order('start_time', { ascending: true, nullsFirst: true })
-          .order('created_at', { ascending: true });
-        if (error) throw error;
-        state.schedules = (data || []).map(toSchedule);
+        const [scheduleResult, todoResult] = await Promise.all([
+          client
+            .from(TABLES.schedules)
+            .select('*')
+            .eq('book_id', BOOK_ID)
+            .order('start_date', { ascending: true })
+            .order('start_time', { ascending: true, nullsFirst: true })
+            .order('created_at', { ascending: true }),
+          client
+            .from(TABLES.todos)
+            .select('*')
+            .eq('book_id', BOOK_ID)
+            .eq('todo_type', 'shopping')
+            .eq('done', false)
+            .order('sort_order', { ascending: true })
+            .order('created_at', { ascending: true })
+        ]);
+        if (scheduleResult.error) throw scheduleResult.error;
+        if (todoResult.error) throw todoResult.error;
+        state.schedules = (scheduleResult.data || []).map(toSchedule);
+        state.todos = (todoResult.data || []).map(toTodo);
         render();
         subscribeRealtime();
       } catch (error) {
@@ -1639,6 +1809,7 @@
         .channel('home-board-' + BOOK_ID)
         .on('postgres_changes', { event: '*', schema: 'public', table: TABLES.books, filter: 'id=eq.' + BOOK_ID }, loadAllSilently)
         .on('postgres_changes', { event: '*', schema: 'public', table: TABLES.schedules, filter: 'book_id=eq.' + BOOK_ID }, loadAllSilently)
+        .on('postgres_changes', { event: '*', schema: 'public', table: TABLES.todos, filter: 'book_id=eq.' + BOOK_ID }, loadAllSilently)
         .subscribe();
     }
 
@@ -1827,6 +1998,40 @@
       }
     }
 
+
+
+    function renderShoppingList() {
+      if (!els.shoppingList) return;
+      const items = shoppingItems();
+      els.shoppingList.innerHTML = '';
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'Shopping list is empty';
+        els.shoppingList.appendChild(empty);
+        return;
+      }
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'shopping-item-row';
+        row.innerHTML = `
+          <input class="shopping-item-input" type="text" value="${escapeHtml(item.title)}" data-id="${escapeHtml(item.id)}" maxlength="80" aria-label="買い物項目を編集">
+          <button class="bought-button" type="button" data-id="${escapeHtml(item.id)}">Bought</button>
+        `;
+        const input = row.querySelector('.shopping-item-input');
+        const button = row.querySelector('.bought-button');
+        input.addEventListener('blur', () => updateShoppingItem(item.id, input.value));
+        input.addEventListener('keydown', event => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            input.blur();
+          }
+        });
+        button.addEventListener('click', () => buyShoppingItem(item.id));
+        els.shoppingList.appendChild(row);
+      });
+    }
+
     function renderPages() {
       els.views.forEach(view => view.classList.toggle('is-active', view.dataset.page === state.currentPage));
       els.navButtons.forEach(btn => btn.classList.toggle('is-active', btn.dataset.nav === state.currentPage));
@@ -1838,6 +2043,7 @@
       renderPages();
       renderScheduleRows(els.list, visibleSchedules(), { showMore: true });
       renderScheduleRows(els.pastList, filteredPastSchedules(), { emptyText: 'No past schedule in this range' });
+      renderShoppingList();
     }
 
     function resetForm() {
@@ -2053,6 +2259,87 @@
       }
     }
 
+
+
+    async function addShoppingItem(event) {
+      event.preventDefault();
+      if (!els.shoppingInput) return;
+      const title = els.shoppingInput.value.trim();
+      if (!title) return;
+      const client = getDb();
+      if (!client) {
+        const nextOrder = state.todos.length ? Math.max(...state.todos.map(item => item.sortOrder || 0)) + 1 : 0;
+        state.todos.push({ id: 'demo-shop-' + Date.now(), type: 'shopping', title, memo: '', owners: ['EVERYONE'], done: false, sortOrder: nextOrder, createdAt: new Date().toISOString() });
+        els.shoppingInput.value = '';
+        renderShoppingList();
+        return;
+      }
+      els.shoppingInput.disabled = true;
+      try {
+        const nextOrder = shoppingItems().length ? Math.max(...shoppingItems().map(item => item.sortOrder || 0)) + 1 : 0;
+        const { error } = await client.from(TABLES.todos).insert({
+          book_id: BOOK_ID,
+          todo_type: 'shopping',
+          title,
+          memo: '',
+          owners: ['EVERYONE'],
+          done: false,
+          sort_order: nextOrder
+        });
+        if (error) throw error;
+        els.shoppingInput.value = '';
+        await loadAllSilently();
+      } catch (error) {
+        console.error(error);
+        showToast('Shopping save error');
+      } finally {
+        els.shoppingInput.disabled = false;
+        els.shoppingInput.focus();
+      }
+    }
+
+    async function updateShoppingItem(id, value) {
+      const title = String(value || '').trim();
+      const item = state.todos.find(entry => entry.id === id);
+      if (!item) return;
+      if (!title) {
+        await buyShoppingItem(id);
+        return;
+      }
+      if (title === item.title) return;
+      const client = getDb();
+      if (!client) {
+        item.title = title;
+        renderShoppingList();
+        return;
+      }
+      try {
+        const { error } = await client.from(TABLES.todos).update({ title }).eq('id', id).eq('book_id', BOOK_ID).eq('todo_type', 'shopping');
+        if (error) throw error;
+        await loadAllSilently();
+      } catch (error) {
+        console.error(error);
+        showToast('Shopping update error');
+      }
+    }
+
+    async function buyShoppingItem(id) {
+      const client = getDb();
+      if (!client) {
+        state.todos = state.todos.filter(item => item.id !== id);
+        renderShoppingList();
+        return;
+      }
+      try {
+        const { error } = await client.from(TABLES.todos).delete().eq('id', id).eq('book_id', BOOK_ID).eq('todo_type', 'shopping');
+        if (error) throw error;
+        await loadAllSilently();
+      } catch (error) {
+        console.error(error);
+        showToast('Shopping delete error');
+      }
+    }
+
     function switchPage(page) {
       if (!['schedule', 'shopping', 'want', 'settings'].includes(page)) return;
       state.currentPage = page;
@@ -2068,7 +2355,7 @@
       const h = String(now.getHours()).padStart(2, '0');
       const min = String(now.getMinutes()).padStart(2, '0');
       const filename = `HMB-${y}${m}${d}-${h}${min}.json`;
-      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: APP_VERSION, book: BOOK_ID, names: state.names, schedules: state.schedules }, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify({ app: 'Home Board', version: APP_VERSION, book: BOOK_ID, names: state.names, schedules: state.schedules, todos: state.todos }, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -2101,6 +2388,7 @@
     });
 
     els.form.addEventListener('submit', submitForm);
+    if (els.shoppingForm) els.shoppingForm.addEventListener('submit', addShoppingItem);
     els.close.addEventListener('click', closeDetail);
     els.edit.addEventListener('click', editActive);
     els.del.addEventListener('click', deleteActive);
