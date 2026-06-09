@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.3.1</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.3.3</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -114,10 +114,30 @@
     }
 
     .text-button:hover,
-    .text-button.active,
+    .text-button.active {
+      color: var(--ink);
+    }
+
     .text-button.selected {
+      color: var(--ink);
+    }
+
+    .text-button.selected::before {
+      content: "[";
+    }
+
+    .text-button.selected::after {
+      content: "]";
+    }
+
+    #categoryLinks .text-button.selected {
       color: var(--invert-ink);
       background: var(--invert-bg);
+    }
+
+    #categoryLinks .text-button.selected::before,
+    #categoryLinks .text-button.selected::after {
+      content: "";
     }
 
     .text-button.danger {
@@ -175,6 +195,38 @@
       line-height: 2;
     }
 
+    .search-line input {
+      border-bottom: 1px solid var(--sub);
+    }
+
+    .search-line input:focus {
+      border-bottom-color: var(--ink);
+    }
+
+    .form input,
+    .form textarea,
+    .form select,
+    .data-block input,
+    .data-block textarea,
+    .data-block select {
+      border-bottom: 1px solid var(--sub);
+    }
+
+    .form input:focus,
+    .form textarea:focus,
+    .form select:focus,
+    .data-block input:focus,
+    .data-block textarea:focus,
+    .data-block select:focus {
+      border-bottom-color: var(--ink);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--muted);
+      opacity: 1;
+    }
+
     textarea {
       min-height: 72px;
       resize: vertical;
@@ -202,7 +254,7 @@
     .work-summary {
       width: 100%;
       display: grid;
-      grid-template-columns: 46px minmax(0, 1fr) 48px;
+      grid-template-columns: 46px minmax(0, 1fr) 86px;
       gap: 10px;
       align-items: baseline;
       border: 0;
@@ -221,6 +273,17 @@
     }
 
     .list-head button:last-child {
+      text-align: right;
+    }
+
+    .list-head .text-button {
+      white-space: nowrap;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .list-head .text-button:nth-child(3) {
+      justify-self: end;
       text-align: right;
     }
 
@@ -457,7 +520,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.1</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.3</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
@@ -491,7 +554,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.1</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.3</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -503,22 +566,22 @@
         <div class="form-grid">
           <div class="field">
             <label for="workNo"># / 作品番号</label>
-            <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
+            <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="0427">
           </div>
 
           <div class="field">
             <label for="year">Date / 制作日</label>
-            <input id="year" type="date" placeholder="">
+            <input id="year" type="date" placeholder="2026-04-28">
           </div>
 
           <div class="field">
             <label for="title">Title / 作品名</label>
-            <input id="title" type="text" required placeholder="">
+            <input id="title" type="text" required placeholder="LUCK INDEX">
           </div>
 
           <div class="field">
             <label for="completedDate">Completed / 完成日</label>
-            <input id="completedDate" type="date" placeholder="">
+            <input id="completedDate" type="date" placeholder="2026-05-01">
           </div>
 
           <div class="field">
@@ -528,7 +591,7 @@
 
           <div class="field">
             <label for="series">Series / シリーズ</label>
-            <input id="series" type="text" placeholder="">
+            <input id="series" type="text" placeholder="VLNS">
           </div>
 
           <div class="field">
@@ -548,15 +611,15 @@
 
           <div class="field">
             <label for="materials">Materials / 素材</label>
-            <input id="materials" type="text" placeholder="">
+            <input id="materials" type="text" placeholder="LED, acrylic">
           </div>
 
           <div class="field">
             <label>Dimensions / サイズ mm</label>
             <div class="three-grid">
-              <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="">
-              <input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="">
-              <input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="">
+              <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="600">
+              <input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="900">
+              <input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="80">
             </div>
           </div>
 
@@ -564,10 +627,10 @@
             <label>Ledger / 価格記録</label>
             <div class="two-grid">
               <div>
-                <input id="price" type="number" inputmode="numeric" min="0" placeholder="">
+                <input id="price" type="number" inputmode="numeric" min="0" placeholder="120000">
                 <label class="ask-line" for="priceAsk"><input id="priceAsk" type="checkbox"> ASK</label>
               </div>
-              <input id="cost" type="number" inputmode="numeric" min="0" placeholder="">
+              <input id="cost" type="number" inputmode="numeric" min="0" placeholder="50000">
             </div>
           </div>
 
@@ -578,17 +641,17 @@
 
           <div class="field">
             <label for="owner">Owner / 所蔵先</label>
-            <input id="owner" type="text" placeholder="">
+            <input id="owner" type="text" placeholder="Private">
           </div>
 
           <div class="field">
             <label for="exhibitionHistory">Exhibition History / 展示履歴</label>
-            <textarea id="exhibitionHistory" placeholder=""></textarea>
+            <textarea id="exhibitionHistory" placeholder="Solo Exhibition 2026"></textarea>
           </div>
 
           <div class="field">
             <label for="memo">Memo / メモ</label>
-            <textarea id="memo" placeholder=""></textarea>
+            <textarea id="memo" placeholder="Short note"></textarea>
           </div>
         </div>
 
@@ -601,7 +664,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.1</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.3</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -621,10 +684,11 @@
         <input id="importFile" type="file" accept="application/json,.json">
       </div>
 
+
       <div class="data-block">
         <div class="section-title">Category</div>
         <div class="search-line">
-          <input id="categoryOptionInput" type="text" placeholder="">
+          <input id="categoryOptionInput" type="text" placeholder="LED SIGN">
           <button class="text-button" type="button" id="addCategoryButton">ADD</button>
         </div>
         <div id="categoryOptionList" class="option-list"></div>
@@ -633,7 +697,7 @@
       <div class="data-block">
         <div class="section-title">Technique</div>
         <div class="search-line">
-          <input id="techniqueOptionInput" type="text" placeholder="">
+          <input id="techniqueOptionInput" type="text" placeholder="Installation">
           <button class="text-button" type="button" id="addTechniqueButton">ADD</button>
         </div>
         <div id="techniqueOptionList" class="option-list"></div>
@@ -642,7 +706,7 @@
       <div class="data-block">
         <div class="section-title">Location</div>
         <div class="search-line">
-          <input id="locationOptionInput" type="text" placeholder="">
+          <input id="locationOptionInput" type="text" placeholder="Studio">
           <button class="text-button" type="button" id="addLocationButton">ADD</button>
         </div>
         <div id="locationOptionList" class="option-list"></div>
@@ -2174,7 +2238,7 @@
     function setupOptions() {
       fields.productionStatus.innerHTML = PRODUCTION_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
       fields.managementStatus.innerHTML = MANAGEMENT_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-      renderCatalogSelect(fields.category, categories);
+      renderCatalogSelect(fields.category, cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
       renderOptionLists();
@@ -2218,7 +2282,7 @@
       };
       Object.keys(marks).forEach(key => {
         if (!marks[key]) return;
-        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? " ↑" : " ↓") : "";
+        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? "↑" : "↓") : "";
         marks[key].parentElement.classList.toggle("selected", sortKey === key);
       });
     }
@@ -2231,6 +2295,7 @@
 
     function renderOptionList(kind, items) {
       const target = document.getElementById(kind + "OptionList");
+      if (!target) return;
       target.innerHTML = items.map(item => `
         <div class="option-item">
           <div>${escapeHtml(item)}</div>
@@ -2378,7 +2443,7 @@
     function resetForm() {
       editingId = null;
       form.reset();
-      renderCatalogSelect(fields.category, categories);
+      renderCatalogSelect(fields.category, cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
       fields.category.value = categories[0] || "";
@@ -2659,7 +2724,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.3.1",
+        version: "minimal-text-v0.3.3",
         exportedAt: nowIso(),
         works,
         categories,
