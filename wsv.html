@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.3.0</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.3.1</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -457,7 +457,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.0</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.1</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
@@ -484,14 +484,14 @@
       <div class="list-head">
         <button class="text-button" type="button" onclick="setSort('workNo')">#<span id="sortMarkWorkNo"></span></button>
         <button class="text-button" type="button" onclick="setSort('title')">TITLE<span id="sortMarkTitle"></span></button>
-        <button class="text-button" type="button" onclick="setSort('year')">YEAR<span id="sortMarkYear"></span></button>
+        <button class="text-button" type="button" onclick="setSort('year')">DATE<span id="sortMarkYear"></span></button>
       </div>
       <div id="workList" class="list"></div>
     </section>
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.0</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.1</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -507,8 +507,8 @@
           </div>
 
           <div class="field">
-            <label for="year">Year / 制作年</label>
-            <input id="year" type="number" inputmode="numeric" placeholder="">
+            <label for="year">Date / 制作日</label>
+            <input id="year" type="date" placeholder="">
           </div>
 
           <div class="field">
@@ -601,7 +601,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.0</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.1</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -701,7 +701,7 @@
             "completedDate": "2023-01-01",
             "category": "LED SIGN",
             "series": "VLNS",
-            "year": "2023",
+            "year": "2023-01-01",
             "productionStatus": "制作中",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -723,7 +723,7 @@
             "completedDate": "2024-02-04",
             "category": "OBJECT",
             "series": "VNBX",
-            "year": "2024",
+            "year": "2024-02-04",
             "productionStatus": "完成",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -745,7 +745,7 @@
             "completedDate": "2025-03-07",
             "category": "DRAWING",
             "series": "SIGN",
-            "year": "2025",
+            "year": "2025-03-07",
             "productionStatus": "完成",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -767,7 +767,7 @@
             "completedDate": "2026-04-10",
             "category": "PHOTO",
             "series": "DRAWING",
-            "year": "2026",
+            "year": "2026-04-10",
             "productionStatus": "制作終了",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -789,7 +789,7 @@
             "completedDate": "2023-05-13",
             "category": "POSTER",
             "series": "PHOTO",
-            "year": "2023",
+            "year": "2023-05-13",
             "productionStatus": "制作中",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -811,7 +811,7 @@
             "completedDate": "2024-06-16",
             "category": "DEVICE",
             "series": "PRINT",
-            "year": "2024",
+            "year": "2024-06-16",
             "productionStatus": "完成",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -833,7 +833,7 @@
             "completedDate": "2025-07-19",
             "category": "OTHER",
             "series": "OBJECT",
-            "year": "2025",
+            "year": "2025-07-19",
             "productionStatus": "完成",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -855,7 +855,7 @@
             "completedDate": "2026-08-22",
             "category": "LED SIGN",
             "series": "DEVICE",
-            "year": "2026",
+            "year": "2026-08-22",
             "productionStatus": "制作終了",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -877,7 +877,7 @@
             "completedDate": "2023-09-25",
             "category": "OBJECT",
             "series": "OTHER",
-            "year": "2023",
+            "year": "2023-09-25",
             "productionStatus": "制作中",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -899,7 +899,7 @@
             "completedDate": "2024-10-01",
             "category": "DRAWING",
             "series": "VLNS",
-            "year": "2024",
+            "year": "2024-10-01",
             "productionStatus": "完成",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -921,7 +921,7 @@
             "completedDate": "2025-11-04",
             "category": "PHOTO",
             "series": "VNBX",
-            "year": "2025",
+            "year": "2025-11-04",
             "productionStatus": "完成",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -943,7 +943,7 @@
             "completedDate": "2026-12-07",
             "category": "POSTER",
             "series": "SIGN",
-            "year": "2026",
+            "year": "2026-12-07",
             "productionStatus": "制作終了",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -965,7 +965,7 @@
             "completedDate": "2023-01-10",
             "category": "DEVICE",
             "series": "DRAWING",
-            "year": "2023",
+            "year": "2023-01-10",
             "productionStatus": "制作中",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -987,7 +987,7 @@
             "completedDate": "2024-02-13",
             "category": "OTHER",
             "series": "PHOTO",
-            "year": "2024",
+            "year": "2024-02-13",
             "productionStatus": "完成",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -1009,7 +1009,7 @@
             "completedDate": "2025-03-16",
             "category": "LED SIGN",
             "series": "PRINT",
-            "year": "2025",
+            "year": "2025-03-16",
             "productionStatus": "完成",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -1031,7 +1031,7 @@
             "completedDate": "2026-04-19",
             "category": "OBJECT",
             "series": "OBJECT",
-            "year": "2026",
+            "year": "2026-04-19",
             "productionStatus": "制作終了",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -1053,7 +1053,7 @@
             "completedDate": "2023-05-22",
             "category": "DRAWING",
             "series": "DEVICE",
-            "year": "2023",
+            "year": "2023-05-22",
             "productionStatus": "制作中",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -1075,7 +1075,7 @@
             "completedDate": "2024-06-25",
             "category": "PHOTO",
             "series": "OTHER",
-            "year": "2024",
+            "year": "2024-06-25",
             "productionStatus": "完成",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -1097,7 +1097,7 @@
             "completedDate": "2025-07-01",
             "category": "POSTER",
             "series": "VLNS",
-            "year": "2025",
+            "year": "2025-07-01",
             "productionStatus": "完成",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -1119,7 +1119,7 @@
             "completedDate": "2026-08-04",
             "category": "DEVICE",
             "series": "VNBX",
-            "year": "2026",
+            "year": "2026-08-04",
             "productionStatus": "制作終了",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -1141,7 +1141,7 @@
             "completedDate": "2023-09-07",
             "category": "OTHER",
             "series": "SIGN",
-            "year": "2023",
+            "year": "2023-09-07",
             "productionStatus": "制作中",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -1163,7 +1163,7 @@
             "completedDate": "2024-10-10",
             "category": "LED SIGN",
             "series": "DRAWING",
-            "year": "2024",
+            "year": "2024-10-10",
             "productionStatus": "完成",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -1185,7 +1185,7 @@
             "completedDate": "2025-11-13",
             "category": "OBJECT",
             "series": "PHOTO",
-            "year": "2025",
+            "year": "2025-11-13",
             "productionStatus": "完成",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -1207,7 +1207,7 @@
             "completedDate": "2026-12-16",
             "category": "DRAWING",
             "series": "PRINT",
-            "year": "2026",
+            "year": "2026-12-16",
             "productionStatus": "制作終了",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -1229,7 +1229,7 @@
             "completedDate": "2023-01-19",
             "category": "PHOTO",
             "series": "OBJECT",
-            "year": "2023",
+            "year": "2023-01-19",
             "productionStatus": "制作中",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -1251,7 +1251,7 @@
             "completedDate": "2024-02-22",
             "category": "POSTER",
             "series": "DEVICE",
-            "year": "2024",
+            "year": "2024-02-22",
             "productionStatus": "完成",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -1273,7 +1273,7 @@
             "completedDate": "2025-03-25",
             "category": "DEVICE",
             "series": "OTHER",
-            "year": "2025",
+            "year": "2025-03-25",
             "productionStatus": "完成",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -1295,7 +1295,7 @@
             "completedDate": "2026-04-01",
             "category": "OTHER",
             "series": "VLNS",
-            "year": "2026",
+            "year": "2026-04-01",
             "productionStatus": "制作終了",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -1317,7 +1317,7 @@
             "completedDate": "2023-05-04",
             "category": "LED SIGN",
             "series": "VNBX",
-            "year": "2023",
+            "year": "2023-05-04",
             "productionStatus": "制作中",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -1339,7 +1339,7 @@
             "completedDate": "2024-06-07",
             "category": "OBJECT",
             "series": "SIGN",
-            "year": "2024",
+            "year": "2024-06-07",
             "productionStatus": "完成",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -1361,7 +1361,7 @@
             "completedDate": "2025-07-10",
             "category": "DRAWING",
             "series": "DRAWING",
-            "year": "2025",
+            "year": "2025-07-10",
             "productionStatus": "完成",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -1383,7 +1383,7 @@
             "completedDate": "2026-08-13",
             "category": "PHOTO",
             "series": "PHOTO",
-            "year": "2026",
+            "year": "2026-08-13",
             "productionStatus": "制作終了",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -1405,7 +1405,7 @@
             "completedDate": "2023-09-16",
             "category": "POSTER",
             "series": "PRINT",
-            "year": "2023",
+            "year": "2023-09-16",
             "productionStatus": "制作中",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -1427,7 +1427,7 @@
             "completedDate": "2024-10-19",
             "category": "DEVICE",
             "series": "OBJECT",
-            "year": "2024",
+            "year": "2024-10-19",
             "productionStatus": "完成",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -1449,7 +1449,7 @@
             "completedDate": "2025-11-22",
             "category": "OTHER",
             "series": "DEVICE",
-            "year": "2025",
+            "year": "2025-11-22",
             "productionStatus": "完成",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -1471,7 +1471,7 @@
             "completedDate": "2026-12-25",
             "category": "LED SIGN",
             "series": "OTHER",
-            "year": "2026",
+            "year": "2026-12-25",
             "productionStatus": "制作終了",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -1493,7 +1493,7 @@
             "completedDate": "2023-01-01",
             "category": "OBJECT",
             "series": "VLNS",
-            "year": "2023",
+            "year": "2023-01-01",
             "productionStatus": "制作中",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -1515,7 +1515,7 @@
             "completedDate": "2024-02-04",
             "category": "DRAWING",
             "series": "VNBX",
-            "year": "2024",
+            "year": "2024-02-04",
             "productionStatus": "完成",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -1537,7 +1537,7 @@
             "completedDate": "2025-03-07",
             "category": "PHOTO",
             "series": "SIGN",
-            "year": "2025",
+            "year": "2025-03-07",
             "productionStatus": "完成",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -1559,7 +1559,7 @@
             "completedDate": "2026-04-10",
             "category": "POSTER",
             "series": "DRAWING",
-            "year": "2026",
+            "year": "2026-04-10",
             "productionStatus": "制作終了",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -1581,7 +1581,7 @@
             "completedDate": "2023-05-13",
             "category": "DEVICE",
             "series": "PHOTO",
-            "year": "2023",
+            "year": "2023-05-13",
             "productionStatus": "制作中",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -1603,7 +1603,7 @@
             "completedDate": "2024-06-16",
             "category": "OTHER",
             "series": "PRINT",
-            "year": "2024",
+            "year": "2024-06-16",
             "productionStatus": "完成",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -1625,7 +1625,7 @@
             "completedDate": "2025-07-19",
             "category": "LED SIGN",
             "series": "OBJECT",
-            "year": "2025",
+            "year": "2025-07-19",
             "productionStatus": "完成",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -1647,7 +1647,7 @@
             "completedDate": "2026-08-22",
             "category": "OBJECT",
             "series": "DEVICE",
-            "year": "2026",
+            "year": "2026-08-22",
             "productionStatus": "制作終了",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -1669,7 +1669,7 @@
             "completedDate": "2023-09-25",
             "category": "DRAWING",
             "series": "OTHER",
-            "year": "2023",
+            "year": "2023-09-25",
             "productionStatus": "制作中",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -1691,7 +1691,7 @@
             "completedDate": "2024-10-01",
             "category": "PHOTO",
             "series": "VLNS",
-            "year": "2024",
+            "year": "2024-10-01",
             "productionStatus": "完成",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -1713,7 +1713,7 @@
             "completedDate": "2025-11-04",
             "category": "POSTER",
             "series": "VNBX",
-            "year": "2025",
+            "year": "2025-11-04",
             "productionStatus": "完成",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -1735,7 +1735,7 @@
             "completedDate": "2026-12-07",
             "category": "DEVICE",
             "series": "SIGN",
-            "year": "2026",
+            "year": "2026-12-07",
             "productionStatus": "制作終了",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -1757,7 +1757,7 @@
             "completedDate": "2023-01-10",
             "category": "OTHER",
             "series": "DRAWING",
-            "year": "2023",
+            "year": "2023-01-10",
             "productionStatus": "制作中",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -1779,7 +1779,7 @@
             "completedDate": "2024-02-13",
             "category": "LED SIGN",
             "series": "PHOTO",
-            "year": "2024",
+            "year": "2024-02-13",
             "productionStatus": "完成",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -1801,7 +1801,7 @@
             "completedDate": "2025-03-16",
             "category": "OBJECT",
             "series": "PRINT",
-            "year": "2025",
+            "year": "2025-03-16",
             "productionStatus": "完成",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -1823,7 +1823,7 @@
             "completedDate": "2026-04-19",
             "category": "DRAWING",
             "series": "OBJECT",
-            "year": "2026",
+            "year": "2026-04-19",
             "productionStatus": "制作終了",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -1845,7 +1845,7 @@
             "completedDate": "2023-05-22",
             "category": "PHOTO",
             "series": "DEVICE",
-            "year": "2023",
+            "year": "2023-05-22",
             "productionStatus": "制作中",
             "managementStatus": "貸出中",
             "technique": "Woodwork",
@@ -1867,7 +1867,7 @@
             "completedDate": "2024-06-25",
             "category": "POSTER",
             "series": "OTHER",
-            "year": "2024",
+            "year": "2024-06-25",
             "productionStatus": "完成",
             "managementStatus": "処分済",
             "technique": "Video",
@@ -1889,7 +1889,7 @@
             "completedDate": "2025-07-01",
             "category": "DEVICE",
             "series": "VLNS",
-            "year": "2025",
+            "year": "2025-07-01",
             "productionStatus": "完成",
             "managementStatus": "保管中",
             "technique": "Installation",
@@ -1911,7 +1911,7 @@
             "completedDate": "2026-08-04",
             "category": "OTHER",
             "series": "VNBX",
-            "year": "2026",
+            "year": "2026-08-04",
             "productionStatus": "制作終了",
             "managementStatus": "販売中",
             "technique": "Mixed Media",
@@ -1933,7 +1933,7 @@
             "completedDate": "2023-09-07",
             "category": "LED SIGN",
             "series": "SIGN",
-            "year": "2023",
+            "year": "2023-09-07",
             "productionStatus": "制作中",
             "managementStatus": "展示中",
             "technique": "Drawing",
@@ -1955,7 +1955,7 @@
             "completedDate": "2024-10-10",
             "category": "OBJECT",
             "series": "DRAWING",
-            "year": "2024",
+            "year": "2024-10-10",
             "productionStatus": "完成",
             "managementStatus": "売却済",
             "technique": "Photography",
@@ -1977,7 +1977,7 @@
             "completedDate": "2025-11-13",
             "category": "DRAWING",
             "series": "PHOTO",
-            "year": "2025",
+            "year": "2025-11-13",
             "productionStatus": "完成",
             "managementStatus": "譲渡済",
             "technique": "Print",
@@ -1999,7 +1999,7 @@
             "completedDate": "2026-12-16",
             "category": "PHOTO",
             "series": "PRINT",
-            "year": "2026",
+            "year": "2026-12-16",
             "productionStatus": "制作終了",
             "managementStatus": "非売品",
             "technique": "Acrylic",
@@ -2328,6 +2328,15 @@
       applyTheme(current === "dark" ? "light" : "dark");
     };
 
+
+    function normalizeProductionDate(w = {}) {
+      const value = String(w.year || w.productionDate || "");
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(String(w.completedDate || ""))) return String(w.completedDate);
+      if (/^\d{4}$/.test(value)) return `${value}-01-01`;
+      return value;
+    }
+
     function normalizeStatuses(w = {}) {
       const legacy = LEGACY_STATUS_MAP[w.status] || {};
       return {
@@ -2438,8 +2447,8 @@
         av = String(a.title || "");
         bv = String(b.title || "");
       } else if (sortKey === "year") {
-        av = String(a.year || "");
-        bv = String(b.year || "");
+        av = normalizeProductionDate(a);
+        bv = normalizeProductionDate(b);
       }
 
       const result = av.localeCompare(bv, "ja", { numeric: true });
@@ -2470,7 +2479,7 @@
             w.completedDate,
             w.category,
             w.series,
-            w.year,
+            normalizeProductionDate(w),
             statuses.productionStatus,
             statuses.managementStatus,
             w.technique,
@@ -2502,13 +2511,13 @@
             <button class="work-summary" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
               <div class="work-no">${escapeHtml(workNo)}</div>
               <div class="work-title">${escapeHtml(w.title || "Untitled")}</div>
-              <div class="work-year">${escapeHtml(w.year || "")}</div>
+              <div class="work-year">${escapeHtml(normalizeProductionDate(w))}</div>
             </button>
             <div class="work-detail">
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(workNo)}</div></div>
                 <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Year</div><div class="detail-value">${escapeHtml(w.year || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Date</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
                 <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Category</div><div class="detail-value">${escapeHtml(w.category || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${escapeHtml(w.series || "")}</div></div>
@@ -2549,7 +2558,7 @@
       fields.completedDate.value = w.completedDate || "";
       renderCatalogSelect(fields.category, categories, w.category || "");
       fields.series.value = w.series || "";
-      fields.year.value = w.year || "";
+      fields.year.value = normalizeProductionDate(w);
 
       const statuses = normalizeStatuses(w);
       fields.productionStatus.value = statuses.productionStatus;
@@ -2650,7 +2659,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.3.0",
+        version: "minimal-text-v0.3.1",
         exportedAt: nowIso(),
         works,
         categories,
@@ -2707,7 +2716,7 @@
               completedDate: String(w.completedDate || ""),
               category: String(w.category || w.workCategory || "OTHER"),
               series: String(w.series || ""),
-              year: String(w.year || ""),
+              year: normalizeProductionDate(w),
               productionStatus: statuses.productionStatus,
               managementStatus: statuses.managementStatus,
               technique: String(w.technique || ""),
