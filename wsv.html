@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.3.3</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.3.4</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -421,6 +421,35 @@
       accent-color: var(--ink);
     }
 
+
+
+    .inline-add {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 11px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .inline-add.single-action {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .selected-list {
+      display: grid;
+      gap: 1px;
+      margin: 2px 0;
+      color: var(--sub);
+    }
+
+    .selected-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: baseline;
+    }
+
     .button-row {
       display: flex;
       gap: 12px;
@@ -520,7 +549,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.3</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.4</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
@@ -547,14 +576,14 @@
       <div class="list-head">
         <button class="text-button" type="button" onclick="setSort('workNo')">#<span id="sortMarkWorkNo"></span></button>
         <button class="text-button" type="button" onclick="setSort('title')">TITLE<span id="sortMarkTitle"></span></button>
-        <button class="text-button" type="button" onclick="setSort('year')">DATE<span id="sortMarkYear"></span></button>
+        <button class="text-button" type="button" onclick="setSort('year')">COMPLETED<span id="sortMarkYear"></span></button>
       </div>
       <div id="workList" class="list"></div>
     </section>
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.3</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.4</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -566,22 +595,22 @@
         <div class="form-grid">
           <div class="field">
             <label for="workNo"># / 作品番号</label>
-            <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="0427">
+            <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
           </div>
 
           <div class="field">
-            <label for="year">Date / 制作日</label>
-            <input id="year" type="date" placeholder="2026-04-28">
+            <label for="year">Start Date / 制作開始日</label>
+            <input id="year" type="date" placeholder="">
           </div>
 
           <div class="field">
             <label for="title">Title / 作品名</label>
-            <input id="title" type="text" required placeholder="LUCK INDEX">
+            <input id="title" type="text" required placeholder="">
           </div>
 
           <div class="field">
             <label for="completedDate">Completed / 完成日</label>
-            <input id="completedDate" type="date" placeholder="2026-05-01">
+            <input id="completedDate" type="date" placeholder="">
           </div>
 
           <div class="field">
@@ -591,7 +620,11 @@
 
           <div class="field">
             <label for="series">Series / シリーズ</label>
-            <input id="series" type="text" placeholder="VLNS">
+            <select id="series"></select>
+            <div class="inline-add">
+              <input id="seriesInlineInput" type="text" placeholder="">
+              <button class="text-button" type="button" id="addSeriesInlineButton">ADD</button>
+            </div>
           </div>
 
           <div class="field">
@@ -611,15 +644,15 @@
 
           <div class="field">
             <label for="materials">Materials / 素材</label>
-            <input id="materials" type="text" placeholder="LED, acrylic">
+            <input id="materials" type="text" placeholder="">
           </div>
 
           <div class="field">
             <label>Dimensions / サイズ mm</label>
             <div class="three-grid">
-              <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="600">
-              <input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="900">
-              <input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="80">
+              <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="">
+              <input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="">
+              <input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="">
             </div>
           </div>
 
@@ -627,10 +660,10 @@
             <label>Ledger / 価格記録</label>
             <div class="two-grid">
               <div>
-                <input id="price" type="number" inputmode="numeric" min="0" placeholder="120000">
+                <input id="price" type="number" inputmode="numeric" min="0" placeholder="">
                 <label class="ask-line" for="priceAsk"><input id="priceAsk" type="checkbox"> ASK</label>
               </div>
-              <input id="cost" type="number" inputmode="numeric" min="0" placeholder="50000">
+              <input id="cost" type="number" inputmode="numeric" min="0" placeholder="">
             </div>
           </div>
 
@@ -641,17 +674,25 @@
 
           <div class="field">
             <label for="owner">Owner / 所蔵先</label>
-            <input id="owner" type="text" placeholder="Private">
+            <input id="owner" type="text" placeholder="">
           </div>
 
           <div class="field">
-            <label for="exhibitionHistory">Exhibition History / 展示履歴</label>
-            <textarea id="exhibitionHistory" placeholder="Solo Exhibition 2026"></textarea>
+            <label for="exhibitionSelect">Exhibition History / 展示履歴</label>
+            <select id="exhibitionSelect"></select>
+            <div class="inline-add single-action">
+              <button class="text-button" type="button" id="addExhibitionToWorkButton">ADD SELECTED</button>
+            </div>
+            <div id="selectedExhibitionList" class="selected-list"></div>
+            <div class="inline-add">
+              <input id="exhibitionInlineInput" type="text" placeholder="">
+              <button class="text-button" type="button" id="addExhibitionInlineButton">ADD NEW</button>
+            </div>
           </div>
 
           <div class="field">
             <label for="memo">Memo / メモ</label>
-            <textarea id="memo" placeholder="Short note"></textarea>
+            <textarea id="memo" placeholder=""></textarea>
           </div>
         </div>
 
@@ -664,7 +705,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.3</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.4</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -692,6 +733,24 @@
           <button class="text-button" type="button" id="addCategoryButton">ADD</button>
         </div>
         <div id="categoryOptionList" class="option-list"></div>
+      </div>
+
+      <div class="data-block">
+        <div class="section-title">Series</div>
+        <div class="search-line">
+          <input id="seriesOptionInput" type="text" placeholder="Single">
+          <button class="text-button" type="button" id="addSeriesButton">ADD</button>
+        </div>
+        <div id="seriesOptionList" class="option-list"></div>
+      </div>
+
+      <div class="data-block">
+        <div class="section-title">Exhibition</div>
+        <div class="search-line">
+          <input id="exhibitionOptionInput" type="text" placeholder="None">
+          <button class="text-button" type="button" id="addExhibitionButton">ADD</button>
+        </div>
+        <div id="exhibitionOptionList" class="option-list"></div>
       </div>
 
       <div class="data-block">
@@ -730,11 +789,15 @@
     const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v3";
     const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v3";
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
+    const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
+    const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
     const DEFAULT_TECHNIQUES = ["Installation", "Mixed Media", "Drawing", "Photography", "Print", "Acrylic", "Woodwork", "Video"];
     const DEFAULT_LOCATIONS = ["Studio", "Storage", "Gallery", "Collector", "Archive"];
+    const DEFAULT_SERIES = ["Single", "VLNS", "VNBX", "SIGN", "DRAWING", "PHOTO", "PRINT", "OBJECT", "DEVICE", "OTHER"];
+    const DEFAULT_EXHIBITIONS = ["None"];
     const PRODUCTION_STATUSES = ["制作中", "完成", "制作終了"];
     const MANAGEMENT_STATUSES = ["展示中", "販売中", "売却済", "譲渡済", "非売品", "保管中", "貸出中", "処分済"];
 
@@ -2105,6 +2168,9 @@
     let categories = [];
     let techniques = [];
     let locations = [];
+    let seriesOptions = [];
+    let exhibitionOptions = [];
+    let currentExhibitions = [];
     let editingId = null;
     let activeCategory = "ALL";
     let activeProduction = "ALL";
@@ -2135,7 +2201,7 @@
       cost: document.getElementById("cost"),
       location: document.getElementById("location"),
       owner: document.getElementById("owner"),
-      exhibitionHistory: document.getElementById("exhibitionHistory"),
+      exhibitionSelect: document.getElementById("exhibitionSelect"),
       memo: document.getElementById("memo")
     };
 
@@ -2162,6 +2228,36 @@
       const source = Array.isArray(items) && items.length ? items : fallback;
       return [...new Set(source.map(item => String(item || "").trim()).filter(Boolean))];
     }
+
+
+    function normalizeExhibitions(value) {
+      if (Array.isArray(value)) return value.map(v => String(v || "").trim()).filter(Boolean);
+      return String(value || "")
+        .split(/\n|,|、/)
+        .map(v => v.trim())
+        .filter(Boolean);
+    }
+
+    function setCurrentExhibitions(items) {
+      currentExhibitions = cleanOptions(items, []);
+      renderSelectedExhibitions();
+    }
+
+    function renderSelectedExhibitions() {
+      const target = document.getElementById("selectedExhibitionList");
+      if (!target) return;
+      target.innerHTML = currentExhibitions.map(item => `
+        <div class="selected-item">
+          <div>${escapeHtml(item)}</div>
+          <button class="text-button danger" type="button" onclick="removeExhibitionFromWork('${escapeAttr(item)}')">DELETE</button>
+        </div>
+      `).join("");
+    }
+
+    window.removeExhibitionFromWork = function(value) {
+      currentExhibitions = currentExhibitions.filter(item => item !== value);
+      renderSelectedExhibitions();
+    };
 
     function normalizeWorkNo(value) {
       const digits = String(value || "").replace(/\D/g, "");
@@ -2205,12 +2301,20 @@
 
       try { locations = cleanOptions(JSON.parse(localStorage.getItem(LOCATION_STORAGE_KEY)), DEFAULT_LOCATIONS); }
       catch { locations = [...DEFAULT_LOCATIONS]; }
+
+      try { seriesOptions = cleanOptions(JSON.parse(localStorage.getItem(SERIES_STORAGE_KEY)), DEFAULT_SERIES); }
+      catch { seriesOptions = [...DEFAULT_SERIES]; }
+
+      try { exhibitionOptions = cleanOptions(JSON.parse(localStorage.getItem(EXHIBITION_STORAGE_KEY)), DEFAULT_EXHIBITIONS); }
+      catch { exhibitionOptions = [...DEFAULT_EXHIBITIONS]; }
     }
 
     function saveSettings() {
       localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(categories));
       localStorage.setItem(TECHNIQUE_STORAGE_KEY, JSON.stringify(techniques));
       localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(locations));
+      localStorage.setItem(SERIES_STORAGE_KEY, JSON.stringify(seriesOptions));
+      localStorage.setItem(EXHIBITION_STORAGE_KEY, JSON.stringify(exhibitionOptions));
     }
 
     function seedIfEmpty() {
@@ -2224,6 +2328,8 @@
       categories = cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES);
       techniques = cleanOptions([...techniques, ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
       locations = cleanOptions([...locations, ...works.map(w => w.location)], DEFAULT_LOCATIONS);
+      seriesOptions = cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES);
+      exhibitionOptions = cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
       saveSettings();
       save();
     }
@@ -2239,6 +2345,8 @@
       fields.productionStatus.innerHTML = PRODUCTION_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
       fields.managementStatus.innerHTML = MANAGEMENT_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
       renderCatalogSelect(fields.category, cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES));
+      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES));
+      renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
       renderOptionLists();
@@ -2289,6 +2397,8 @@
 
     function renderOptionLists() {
       renderOptionList("category", categories);
+      renderOptionList("series", seriesOptions);
+      renderOptionList("exhibition", exhibitionOptions);
       renderOptionList("technique", techniques);
       renderOptionList("location", locations);
     }
@@ -2299,7 +2409,10 @@
       target.innerHTML = items.map(item => `
         <div class="option-item">
           <div>${escapeHtml(item)}</div>
-          <button class="text-button danger" type="button" onclick="deleteOption('${kind}', '${escapeAttr(item)}')">DELETE</button>
+          <div class="text-nav">
+            <button class="text-button" type="button" onclick="editOption('${kind}', '${escapeAttr(item)}')">EDIT</button>
+            <button class="text-button danger" type="button" onclick="deleteOption('${kind}', '${escapeAttr(item)}')">DELETE</button>
+          </div>
         </div>
       `).join("");
     }
@@ -2312,6 +2425,8 @@
       if (kind === "category" && !categories.includes(value)) categories.push(value);
       if (kind === "technique" && !techniques.includes(value)) techniques.push(value);
       if (kind === "location" && !locations.includes(value)) locations.push(value);
+      if (kind === "series" && !seriesOptions.includes(value)) seriesOptions.push(value);
+      if (kind === "exhibition" && !exhibitionOptions.includes(value)) exhibitionOptions.push(value);
 
       input.value = "";
       saveSettings();
@@ -2324,11 +2439,57 @@
       if (kind === "category") categories = categories.filter(item => item !== value);
       if (kind === "technique") techniques = techniques.filter(item => item !== value);
       if (kind === "location") locations = locations.filter(item => item !== value);
+      if (kind === "series") seriesOptions = seriesOptions.filter(item => item !== value);
+      if (kind === "exhibition") exhibitionOptions = exhibitionOptions.filter(item => item !== value);
       saveSettings();
       setupOptions();
       resetForm();
       render();
     };
+
+    window.editOption = function(kind, oldValue) {
+      const nextValue = prompt("New name", oldValue);
+      if (nextValue == null) return;
+      const value = nextValue.trim();
+      if (!value || value === oldValue) return;
+
+      function renameInList(list) {
+        return cleanOptions(list.map(item => item === oldValue ? value : item), []);
+      }
+
+      if (kind === "category") {
+        categories = renameInList(categories);
+        works = works.map(w => w.category === oldValue ? { ...w, category: value, updatedAt: nowIso() } : w);
+      }
+      if (kind === "series") {
+        seriesOptions = renameInList(seriesOptions);
+        works = works.map(w => w.series === oldValue ? { ...w, series: value, updatedAt: nowIso() } : w);
+      }
+      if (kind === "exhibition") {
+        exhibitionOptions = renameInList(exhibitionOptions);
+        works = works.map(w => {
+          const renamed = normalizeExhibitions(w.exhibitionHistory).map(item => item === oldValue ? value : item);
+          return renamed.join("\n") === String(w.exhibitionHistory || "") ? w : { ...w, exhibitionHistory: renamed.join("\n"), updatedAt: nowIso() };
+        });
+        currentExhibitions = currentExhibitions.map(item => item === oldValue ? value : item);
+        renderSelectedExhibitions();
+      }
+      if (kind === "technique") {
+        techniques = renameInList(techniques);
+        works = works.map(w => w.technique === oldValue ? { ...w, technique: value, updatedAt: nowIso() } : w);
+      }
+      if (kind === "location") {
+        locations = renameInList(locations);
+        works = works.map(w => w.location === oldValue ? { ...w, location: value, updatedAt: nowIso() } : w);
+      }
+
+      saveSettings();
+      save();
+      setupOptions();
+      resetForm();
+      render();
+    };
+
 
     window.setCategory = function(value) {
       activeCategory = value;
@@ -2444,9 +2605,14 @@
       editingId = null;
       form.reset();
       renderCatalogSelect(fields.category, cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES));
+      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES));
+      renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
       fields.category.value = categories[0] || "";
+      fields.series.value = seriesOptions[0] || "Single";
+      fields.exhibitionSelect.value = exhibitionOptions[0] || "None";
+      setCurrentExhibitions([]);
       fields.technique.value = techniques[0] || "";
       fields.location.value = locations[0] || "";
       fields.productionStatus.value = "制作中";
@@ -2494,7 +2660,7 @@
         cost,
         location: fields.location.value,
         owner: fields.owner.value.trim(),
-        exhibitionHistory: fields.exhibitionHistory.value.trim(),
+        exhibitionHistory: currentExhibitions.join("\n"),
         memo: fields.memo.value.trim(),
         createdAt: existing.createdAt || nowIso(),
         updatedAt: nowIso()
@@ -2512,8 +2678,8 @@
         av = String(a.title || "");
         bv = String(b.title || "");
       } else if (sortKey === "year") {
-        av = normalizeProductionDate(a);
-        bv = normalizeProductionDate(b);
+        av = String(a.completedDate || "");
+        bv = String(b.completedDate || "");
       }
 
       const result = av.localeCompare(bv, "ja", { numeric: true });
@@ -2545,6 +2711,7 @@
             w.category,
             w.series,
             normalizeProductionDate(w),
+            w.completedDate,
             statuses.productionStatus,
             statuses.managementStatus,
             w.technique,
@@ -2576,13 +2743,13 @@
             <button class="work-summary" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
               <div class="work-no">${escapeHtml(workNo)}</div>
               <div class="work-title">${escapeHtml(w.title || "Untitled")}</div>
-              <div class="work-year">${escapeHtml(normalizeProductionDate(w))}</div>
+              <div class="work-year">${escapeHtml(w.completedDate || "")}</div>
             </button>
             <div class="work-detail">
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(workNo)}</div></div>
                 <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Date</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
+                <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
                 <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Category</div><div class="detail-value">${escapeHtml(w.category || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${escapeHtml(w.series || "")}</div></div>
@@ -2622,7 +2789,7 @@
       fields.title.value = w.title || "";
       fields.completedDate.value = w.completedDate || "";
       renderCatalogSelect(fields.category, categories, w.category || "");
-      fields.series.value = w.series || "";
+      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(item => item.series)], DEFAULT_SERIES), w.series || "Single");
       fields.year.value = normalizeProductionDate(w);
 
       const statuses = normalizeStatuses(w);
@@ -2644,7 +2811,7 @@
 
       renderCatalogSelect(fields.location, locations, w.location || "");
       fields.owner.value = w.owner || "";
-      fields.exhibitionHistory.value = w.exhibitionHistory || "";
+      setCurrentExhibitions(normalizeExhibitions(w.exhibitionHistory));
       fields.memo.value = w.memo || "";
 
       document.getElementById("submitButton").textContent = "UPDATE";
@@ -2667,6 +2834,63 @@
 
     fields.workNo.addEventListener("input", () => {
       fields.workNo.value = fields.workNo.value.replace(/\D/g, "").slice(0, 4);
+    });
+
+
+    function addSeriesFromEntry() {
+      const input = document.getElementById("seriesInlineInput");
+      const value = input.value.trim();
+      if (!value) return;
+      if (!seriesOptions.includes(value)) {
+        seriesOptions.push(value);
+        saveSettings();
+      }
+      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES), value);
+      renderOptionLists();
+      renderFilters();
+      input.value = "";
+    }
+
+    function addExhibitionOptionFromEntry() {
+      const input = document.getElementById("exhibitionInlineInput");
+      const value = input.value.trim();
+      if (!value) return;
+      if (!exhibitionOptions.includes(value)) {
+        exhibitionOptions.push(value);
+        saveSettings();
+      }
+      renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS), value);
+      if (!currentExhibitions.includes(value)) {
+        currentExhibitions.push(value);
+        renderSelectedExhibitions();
+      }
+      renderOptionLists();
+      input.value = "";
+    }
+
+    function addSelectedExhibitionToWork() {
+      const value = fields.exhibitionSelect.value;
+      if (!value) return;
+      if (!currentExhibitions.includes(value)) {
+        currentExhibitions.push(value);
+        renderSelectedExhibitions();
+      }
+    }
+
+    document.getElementById("addSeriesInlineButton").addEventListener("click", addSeriesFromEntry);
+    document.getElementById("addExhibitionInlineButton").addEventListener("click", addExhibitionOptionFromEntry);
+    document.getElementById("addExhibitionToWorkButton").addEventListener("click", addSelectedExhibitionToWork);
+
+    document.getElementById("seriesInlineInput").addEventListener("keydown", event => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      addSeriesFromEntry();
+    });
+
+    document.getElementById("exhibitionInlineInput").addEventListener("keydown", event => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      addExhibitionOptionFromEntry();
     });
 
     form.addEventListener("submit", event => {
@@ -2709,10 +2933,12 @@
     searchInput.addEventListener("input", render);
 
     document.getElementById("addCategoryButton").addEventListener("click", () => addOption("category"));
+    document.getElementById("addSeriesButton").addEventListener("click", () => addOption("series"));
+    document.getElementById("addExhibitionButton").addEventListener("click", () => addOption("exhibition"));
     document.getElementById("addTechniqueButton").addEventListener("click", () => addOption("technique"));
     document.getElementById("addLocationButton").addEventListener("click", () => addOption("location"));
 
-    ["category", "technique", "location"].forEach(kind => {
+    ["category", "series", "exhibition", "technique", "location"].forEach(kind => {
       document.getElementById(kind + "OptionInput").addEventListener("keydown", event => {
         if (event.key !== "Enter") return;
         event.preventDefault();
@@ -2724,10 +2950,12 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.3.3",
+        version: "minimal-text-v0.3.4",
         exportedAt: nowIso(),
         works,
         categories,
+        seriesOptions,
+        exhibitionOptions,
         techniques,
         locations
       };
@@ -2794,7 +3022,7 @@
               cost: w.cost === "" || w.cost == null ? "" : Math.max(0, Math.round(Number(w.cost) || 0)),
               location: String(w.location || ""),
               owner: String(w.owner || ""),
-              exhibitionHistory: String(w.exhibitionHistory || ""),
+              exhibitionHistory: normalizeExhibitions(w.exhibitionHistory).join("\n"),
               memo: String(w.memo || ""),
               createdAt: w.createdAt || nowIso(),
               updatedAt: w.updatedAt || nowIso()
@@ -2804,6 +3032,8 @@
           categories = cleanOptions([...(data.categories || categories), ...works.map(w => w.category)], DEFAULT_CATEGORIES);
           techniques = cleanOptions([...(data.techniques || techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
           locations = cleanOptions([...(data.locations || locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
+          seriesOptions = cleanOptions([...(data.seriesOptions || data.series || seriesOptions), ...works.map(w => w.series)], DEFAULT_SERIES);
+          exhibitionOptions = cleanOptions([...(data.exhibitionOptions || data.exhibitions || exhibitionOptions), ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
 
           saveSettings();
           save();
