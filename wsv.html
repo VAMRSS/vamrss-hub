@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.4.8</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.5.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -85,10 +85,16 @@
     }
 
 
+    .site-title {
+      justify-self: start;
+      text-align: left;
+    }
+
     .site-logo {
       display: inline-flex;
-      align-items: baseline;
-      width: 86px;
+      align-items: center;
+      justify-content: flex-start;
+      width: 129px;
       max-width: 38vw;
       vertical-align: baseline;
     }
@@ -97,7 +103,11 @@
       display: block;
       width: 100%;
       height: auto;
-      max-height: 18px;
+      max-height: 27px;
+    }
+
+    html[data-theme="dark"] .site-logo-img {
+      filter: invert(1);
     }
 
     .screen-label {
@@ -651,7 +661,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.4.8</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -691,7 +701,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.4.8</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -813,7 +823,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.4.8</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -853,7 +863,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.4.8</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">☾</button>
@@ -2581,7 +2591,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.4.8",
+        version: "minimal-text-v0.5.0",
         exportedAt: nowIso(),
         works,
         seriesRecords,
