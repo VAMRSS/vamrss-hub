@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.5.9</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.6.2</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -59,7 +59,7 @@
       width: 100%;
       max-width: 520px;
       margin: 0 auto;
-      padding: max(18px, env(safe-area-inset-top)) 20px max(36px, env(safe-area-inset-bottom));
+      padding: calc(max(18px, env(safe-area-inset-top)) + 24px) 20px max(36px, env(safe-area-inset-bottom));
     }
 
     .screen { display: none; }
@@ -254,6 +254,87 @@
       background: var(--danger);
     }
 
+
+    .mode-switch .text-button::before,
+    .bracket-switch .text-button::before {
+      content: "[";
+      color: var(--bg);
+    }
+
+    .mode-switch .text-button::after,
+    .bracket-switch .text-button::after {
+      content: "]";
+      color: var(--bg);
+    }
+
+    .mode-switch .text-button.selected::before,
+    .mode-switch .text-button.selected::after,
+    .bracket-switch .text-button.selected::before,
+    .bracket-switch .text-button.selected::after {
+      content: "";
+    }
+
+    .mode-switch .text-button .mode-bracket {
+      color: var(--bg);
+    }
+
+    .mode-switch .text-button.selected,
+    .bracket-switch .text-button.selected {
+      color: var(--ink);
+    }
+
+    .mode-switch .text-button.selected::before,
+    .bracket-switch .text-button.selected::before {
+      content: "[";
+      color: var(--ink);
+    }
+
+    .mode-switch .text-button.selected::after,
+    .bracket-switch .text-button.selected::after {
+      content: "]";
+      color: var(--ink);
+    }
+
+    #entryScreen .form input,
+    #entryScreen .form textarea,
+    #entryScreen .form select,
+    #seriesEntryScreen .form input,
+    #seriesEntryScreen .form textarea,
+    #seriesEntryScreen .form select {
+      border: 0;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 2px 8px;
+    }
+
+    #entryScreen .form input::placeholder,
+    #entryScreen .form textarea::placeholder,
+    #seriesEntryScreen .form input::placeholder,
+    #seriesEntryScreen .form textarea::placeholder {
+      color: var(--bg);
+      opacity: 0.65;
+    }
+
+    #entryScreen .ask-line,
+    #seriesEntryScreen .ask-line {
+      color: var(--sub);
+    }
+
+    #entryScreen .ask-line input {
+      background: transparent;
+      padding: 0;
+    }
+
+    #entryScreen .form select,
+    #seriesEntryScreen .form select {
+      color-scheme: dark;
+    }
+
+    html[data-theme="dark"] #entryScreen .form select,
+    html[data-theme="dark"] #seriesEntryScreen .form select {
+      color-scheme: light;
+    }
+
     .filter-area {
       display: grid;
       gap: 8px;
@@ -263,8 +344,13 @@
     .link-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0 11px;
+      gap: 0 5px;
       min-width: 0;
+    }
+
+    .mode-switch,
+    .bracket-switch {
+      gap: 0 2px;
     }
 
     .collapsible {
@@ -780,20 +866,20 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.9</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
         </nav>
       </div>
 
-      <div class="link-list" style="margin-bottom: 9px;">
+      <div class="link-list mode-switch" style="margin-bottom: 9px;">
         <button class="text-button selected" type="button" id="worksModeButton" onclick="setListMode('works')">WORKS</button>
         <button class="text-button" type="button" id="seriesModeButton" onclick="setListMode('series')">SERIES</button>
       </div>
 
       <div class="filter-area" id="worksFilterArea">
-        <div class="link-list" id="techniqueLinks"></div>
+        <div class="link-list bracket-switch" id="techniqueLinks"></div>
       </div>
 
       <div class="search-line utility-line">
@@ -805,21 +891,21 @@
       </div>
 
       <div class="collapsible" id="statusPanel">
-        <div class="link-list" id="productionLinks"></div>
-        <div class="link-list" id="managementLinks"></div>
+        <div class="link-list bracket-switch" id="productionLinks"></div>
+        <div class="link-list bracket-switch" id="managementLinks"></div>
       </div>
 
       <div class="list-head">
         <button class="text-button" type="button" onclick="setSort('workNo')">#<span id="sortMarkWorkNo"></span></button>
         <button class="text-button" type="button" onclick="setSort('title')">TITLE<span id="sortMarkTitle"></span></button>
-        <button class="text-button" type="button" onclick="setSort('year')">COMPLETED<span id="sortMarkYear"></span></button>
+        <button class="text-button" type="button" onclick="setSort('year')">DONE<span id="sortMarkYear"></span></button>
       </div>
       <div id="workList" class="list"></div>
     </section>
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.9</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -940,7 +1026,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.9</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -979,7 +1065,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.9</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -2311,7 +2397,7 @@
       if (modeEntryButton) modeEntryButton.textContent = isSeries ? "SERIES ENTRY" : "ENTRY";
       document.getElementById("worksFilterArea").style.display = isSeries ? "none" : "grid";
       const headerButtons = document.querySelectorAll(".list-head .text-button");
-      if (headerButtons[2]) headerButtons[2].firstChild.nodeValue = isSeries ? "START" : "COMPLETED";
+      if (headerButtons[2]) headerButtons[2].firstChild.nodeValue = isSeries ? "START" : "DONE";
       const productionLinks = document.getElementById("productionLinks");
       const managementLinks = document.getElementById("managementLinks");
       if (productionLinks) productionLinks.style.display = isSeries ? "none" : "flex";
@@ -2704,7 +2790,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.5.9",
+        version: "minimal-text-v0.6.2",
         exportedAt: nowIso(),
         works,
         seriesRecords,
