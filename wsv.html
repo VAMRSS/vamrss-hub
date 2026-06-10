@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.4.2</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.4.5</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -180,6 +180,20 @@
       margin-bottom: 14px;
     }
 
+    .utility-line {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .utility-line button:first-child {
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .utility-line button:last-child {
+      grid-column: 3;
+      justify-self: end;
+    }
+
     input, textarea, select {
       width: 100%;
       min-width: 0;
@@ -315,11 +329,16 @@
 
     .work-detail {
       display: none;
-      padding: 2px 0 9px 14px;
+      margin-left: 1em;
+      padding: 2px 0 9px 0;
       color: var(--sub);
       font-size: 12px;
       font-weight: 300;
       line-height: 2;
+    }
+
+    .inline-expanded {
+      margin-left: 1em;
     }
 
     .work.open .work-detail {
@@ -499,6 +518,41 @@
       color: var(--ink);
     }
 
+
+    .theme-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .nested-list {
+      display: grid;
+      gap: 0;
+      margin-top: 4px;
+    }
+
+    .nested-work {
+      padding-left: 0;
+    }
+
+    .nested-work .work-summary {
+      grid-template-columns: 46px minmax(0, 1fr) 86px;
+    }
+
+    .inline-series-link {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .inline-series-link:hover {
+      text-decoration: underline;
+    }
+
     .font-sampler {
       margin-top: 28px;
       padding-top: 10px;
@@ -562,12 +616,11 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.4.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.4.5</span></h1>
         <nav class="text-nav">
-          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">DARK</button>
-          <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
-          <button class="text-button" type="button" onclick="showScreen('seriesEntry')">SERIES ENTRY</button>
+          <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">☾</button>
         </nav>
       </div>
 
@@ -578,18 +631,19 @@
 
       <div class="filter-area" id="worksFilterArea">
         <div class="link-list" id="techniqueLinks"></div>
-        <div>
-          <button class="text-button" type="button" onclick="toggleStatusPanel()" id="statusPanelText">＋</button>
-          <div class="collapsible" id="statusPanel">
-            <div class="link-list" id="productionLinks"></div>
-            <div class="link-list" id="managementLinks"></div>
-          </div>
-        </div>
       </div>
 
-      <div class="search-line">
-        <input id="searchInput" type="search" placeholder="">
-        <button class="text-button" type="button" onclick="clearFilters()">CLEAR</button>
+      <div class="search-line utility-line">
+        <button class="text-button" type="button" onclick="toggleStatusPanel()" id="statusPanelText">＋</button>
+        <button class="text-button" type="button" onclick="clearFilters()">RESET</button>
+      </div>
+
+      <div class="collapsible" id="statusPanel">
+        <div class="search-line">
+          <input id="searchInput" type="search" placeholder="">
+        </div>
+        <div class="link-list" id="productionLinks"></div>
+        <div class="link-list" id="managementLinks"></div>
       </div>
 
       <div class="list-head">
@@ -602,11 +656,11 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.4.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.4.5</span></h1>
         <nav class="text-nav">
-          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">☾</button>
         </nav>
       </div>
 
@@ -724,11 +778,11 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / SERIES ENTRY <span class="version-mark">v0.4.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / SERIES ENTRY <span class="version-mark">v0.4.5</span></h1>
         <nav class="text-nav">
-          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonSeriesEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonSeriesEntry">☾</button>
         </nav>
       </div>
 
@@ -764,12 +818,10 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.4.2</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.4.5</span></h1>
         <nav class="text-nav">
-          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
-          <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
-          <button class="text-button" type="button" onclick="showScreen('seriesEntry')">SERIES ENTRY</button>
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">☾</button>
         </nav>
       </div>
 
@@ -1789,7 +1841,7 @@
       const next = theme === "dark" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem(THEME_STORAGE_KEY, next);
-      const label = next === "dark" ? "LIGHT" : "DARK";
+      const label = next === "dark" ? "☀" : "☾";
       ["themeButton", "themeButtonEntry", "themeButtonSeriesEntry", "themeButtonData"].forEach(id => {
         const button = document.getElementById(id);
         if (button) button.textContent = label;
@@ -1930,6 +1982,81 @@
       return sortDirection === "asc" ? result : -result;
     }
 
+
+    function findSeriesByTitle(title) {
+      return seriesRecords.find(s => String(s.title || "") === String(title || ""));
+    }
+
+    function seriesLinkHtml(title) {
+      const series = findSeriesByTitle(title);
+      if (!title) return "";
+      if (!series) return escapeHtml(title);
+      return `<button class="inline-series-link" type="button" onclick="toggleInlineSeries(event, '${escapeAttr(series.id)}', '${escapeAttr(title)}')">${escapeHtml(title)}</button>`;
+    }
+
+    window.toggleInlineSeries = function(event, seriesId, title) {
+      const host = document.querySelector(`#inline-series-${CSS.escape(event.target.closest(".work").id.replace("work-", ""))}`);
+      const series = seriesRecords.find(s => s.id === seriesId);
+      if (!host || !series) return;
+
+      if (host.dataset.open === seriesId) {
+        host.innerHTML = "";
+        host.dataset.open = "";
+        return;
+      }
+
+      const relatedWorks = works
+        .filter(w => String(w.series || "") === String(title || ""))
+        .sort(compareWorks);
+
+      host.dataset.open = seriesId;
+      host.innerHTML = `
+        <div class="detail-grid inline-expanded" style="margin-top:4px;">
+          <div class="detail-row"><div class="detail-key">Series #</div><div class="detail-value">${escapeHtml(normalizeWorkNo(series.seriesNo))}</div></div>
+          <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(series.startDate || "")}</div></div>
+          <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(series.description || "")}</div></div>
+          <div class="detail-row"><div class="detail-key">Works</div><div class="detail-value">${escapeHtml(String(relatedWorks.length))}</div></div>
+          ${relatedWorks.map(w => `
+            <div class="detail-row">
+              <div class="detail-key">${escapeHtml(normalizeWorkNo(w.workNo))}</div>
+              <div class="detail-value"><button class="inline-series-link" type="button" onclick="toggleNestedWork('${escapeAttr(host.id)}', '${escapeAttr(w.id)}')">${escapeHtml(w.title || "Untitled")}</button></div>
+            </div>
+            <div id="${escapeAttr(host.id)}-work-${escapeAttr(w.id)}"></div>
+          `).join("")}
+        </div>
+      `;
+    };
+
+    window.toggleNestedWork = function(hostId, workId) {
+      const target = document.getElementById(`${hostId}-work-${workId}`);
+      const w = works.find(item => item.id === workId);
+      if (!target || !w) return;
+
+      if (target.dataset.open === "1") {
+        target.innerHTML = "";
+        target.dataset.open = "";
+        return;
+      }
+
+      const statuses = normalizeStatuses(w);
+      const priceText = w.priceAsk ? "ASK" : formatMoney(w.price);
+      target.dataset.open = "1";
+      target.innerHTML = `
+        <div class="detail-grid inline-expanded" style="margin-top:2px; margin-bottom:4px;">
+          <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(normalizeWorkNo(w.workNo))}</div></div>
+          <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
+          <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
+          <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
+          <div class="detail-row"><div class="detail-key">Production</div><div class="detail-value">${escapeHtml(statuses.productionStatus)}</div></div>
+          <div class="detail-row"><div class="detail-key">Management</div><div class="detail-value">${escapeHtml(statuses.managementStatus)}</div></div>
+          <div class="detail-row"><div class="detail-key">Technique</div><div class="detail-value">${escapeHtml(w.technique || "")}</div></div>
+          <div class="detail-row"><div class="detail-key">Price</div><div class="detail-value">${escapeHtml(priceText)}</div></div>
+          <div class="detail-row"><div class="detail-key">Memo</div><div class="detail-value">${escapeHtml(w.memo || "")}</div></div>
+        </div>
+      `;
+    };
+
+
     function renderWorksList() {
       renderFilters();
 
@@ -1994,7 +2121,8 @@
                 <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
                 <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${escapeHtml(w.series || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${seriesLinkHtml(w.series)}</div></div>
+                <div id="inline-series-${escapeAttr(w.id)}"></div>
                 <div class="detail-row"><div class="detail-key">Production</div><div class="detail-value">${escapeHtml(statuses.productionStatus)}</div></div>
                 <div class="detail-row"><div class="detail-key">Management</div><div class="detail-value">${escapeHtml(statuses.managementStatus)}</div></div>
                 <div class="detail-row"><div class="detail-key">Technique</div><div class="detail-value">${escapeHtml(w.technique || "")}</div></div>
@@ -2021,9 +2149,15 @@
       const isSeries = activeListMode === "series";
       document.getElementById("worksModeButton").classList.toggle("selected", !isSeries);
       document.getElementById("seriesModeButton").classList.toggle("selected", isSeries);
+      const modeEntryButton = document.getElementById("modeEntryButton");
+      if (modeEntryButton) modeEntryButton.textContent = isSeries ? "SERIES ENTRY" : "ENTRY";
       document.getElementById("worksFilterArea").style.display = isSeries ? "none" : "grid";
       const headerButtons = document.querySelectorAll(".list-head .text-button");
       if (headerButtons[2]) headerButtons[2].firstChild.nodeValue = isSeries ? "START" : "COMPLETED";
+      const productionLinks = document.getElementById("productionLinks");
+      const managementLinks = document.getElementById("managementLinks");
+      if (productionLinks) productionLinks.style.display = isSeries ? "none" : "flex";
+      if (managementLinks) managementLinks.style.display = isSeries ? "none" : "flex";
       if (isSeries) renderSeriesList();
       else renderWorksList();
     }
@@ -2197,8 +2331,9 @@
                   ${relatedWorks.map(w => `
                     <div class="detail-row">
                       <div class="detail-key">${escapeHtml(normalizeWorkNo(w.workNo))}</div>
-                      <div class="detail-value">${escapeHtml(w.title || "Untitled")}</div>
+                      <div class="detail-value"><button class="inline-series-link" type="button" onclick="toggleNestedWork('series-${escapeAttr(s.id)}', '${escapeAttr(w.id)}')">${escapeHtml(w.title || "Untitled")}</button></div>
                     </div>
+                    <div id="series-${escapeAttr(s.id)}-work-${escapeAttr(w.id)}"></div>
                   `).join("")}
                 </div>
               ` : ""}
@@ -2292,6 +2427,10 @@
     window.setListMode = function(mode) {
       activeListMode = mode === "series" ? "series" : "works";
       render();
+    };
+
+    window.showModeEntry = function() {
+      showScreen(activeListMode === "series" ? "seriesEntry" : "entry");
     };
 
 
@@ -2407,7 +2546,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.4.2",
+        version: "minimal-text-v0.4.5",
         exportedAt: nowIso(),
         works,
         seriesRecords,
