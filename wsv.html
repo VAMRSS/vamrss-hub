@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.3.4</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.4.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -130,13 +130,13 @@
       content: "]";
     }
 
-    #categoryLinks .text-button.selected {
+    #techniqueLinks .text-button.selected {
       color: var(--invert-ink);
       background: var(--invert-bg);
     }
 
-    #categoryLinks .text-button.selected::before,
-    #categoryLinks .text-button.selected::after {
+    #techniqueLinks .text-button.selected::before,
+    #techniqueLinks .text-button.selected::after {
       content: "";
     }
 
@@ -401,6 +401,19 @@
       gap: 15px;
     }
 
+    .sub-field {
+      display: grid;
+      gap: 1px;
+    }
+
+    .sub-field label:not(.ask-line) {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
     .ask-line {
       display: flex;
       align-items: center;
@@ -549,16 +562,22 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.3.4</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV <span class="version-mark">v0.4.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButton">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
+          <button class="text-button" type="button" onclick="showScreen('seriesEntry')">SERIES ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
         </nav>
       </div>
 
-      <div class="filter-area">
-        <div class="link-list" id="categoryLinks"></div>
+      <div class="link-list" style="margin-bottom: 9px;">
+        <button class="text-button selected" type="button" id="worksModeButton" onclick="setListMode('works')">WORKS</button>
+        <button class="text-button" type="button" id="seriesModeButton" onclick="setListMode('series')">SERIES</button>
+      </div>
+
+      <div class="filter-area" id="worksFilterArea">
+        <div class="link-list" id="techniqueLinks"></div>
         <div>
           <button class="text-button" type="button" onclick="toggleStatusPanel()" id="statusPanelText">＋</button>
           <div class="collapsible" id="statusPanel">
@@ -583,7 +602,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.3.4</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / ENTRY <span class="version-mark">v0.4.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonEntry">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
@@ -611,11 +630,6 @@
           <div class="field">
             <label for="completedDate">Completed / 完成日</label>
             <input id="completedDate" type="date" placeholder="">
-          </div>
-
-          <div class="field">
-            <label for="category">Category / 作品カテゴリ</label>
-            <select id="category"></select>
           </div>
 
           <div class="field">
@@ -659,11 +673,15 @@
           <div class="field">
             <label>Ledger / 価格記録</label>
             <div class="two-grid">
-              <div>
+              <div class="sub-field">
+                <label for="price">Sale Price / 販売価格</label>
                 <input id="price" type="number" inputmode="numeric" min="0" placeholder="">
                 <label class="ask-line" for="priceAsk"><input id="priceAsk" type="checkbox"> ASK</label>
               </div>
-              <input id="cost" type="number" inputmode="numeric" min="0" placeholder="">
+              <div class="sub-field">
+                <label for="cost">Cost / 原価</label>
+                <input id="cost" type="number" inputmode="numeric" min="0" placeholder="">
+              </div>
             </div>
           </div>
 
@@ -703,13 +721,55 @@
       </form>
     </section>
 
+
+    <section id="seriesEntryScreen" class="screen">
+      <div class="topbar">
+        <h1 class="site-title">＊ (VAMRSS) WSV / SERIES ENTRY <span class="version-mark">v0.4.0</span></h1>
+        <nav class="text-nav">
+          <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonSeriesEntry">DARK</button>
+          <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
+          <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
+        </nav>
+      </div>
+
+      <form id="seriesForm" class="form">
+        <div class="form-grid">
+          <div class="field">
+            <label for="seriesNo"># / シリーズ番号</label>
+            <input id="seriesNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="seriesStartDate">Start Date / 開始日</label>
+            <input id="seriesStartDate" type="date" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="seriesTitle">Title / シリーズ名</label>
+            <input id="seriesTitle" type="text" required placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="seriesDescription">Description / 説明文</label>
+            <textarea id="seriesDescription" placeholder=""></textarea>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="text-button active" type="submit" id="seriesSubmitButton">SAVE</button>
+          <button class="text-button" type="button" id="seriesCancelButton" style="display:none;">CANCEL</button>
+        </div>
+      </form>
+    </section>
+
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.3.4</span></h1>
+        <h1 class="site-title">＊ (VAMRSS) WSV / DATA <span class="version-mark">v0.4.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">DARK</button>
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('entry')">ENTRY</button>
+          <button class="text-button" type="button" onclick="showScreen('seriesEntry')">SERIES ENTRY</button>
         </nav>
       </div>
 
@@ -725,15 +785,6 @@
         <input id="importFile" type="file" accept="application/json,.json">
       </div>
 
-
-      <div class="data-block">
-        <div class="section-title">Category</div>
-        <div class="search-line">
-          <input id="categoryOptionInput" type="text" placeholder="LED SIGN">
-          <button class="text-button" type="button" id="addCategoryButton">ADD</button>
-        </div>
-        <div id="categoryOptionList" class="option-list"></div>
-      </div>
 
       <div class="data-block">
         <div class="section-title">Series</div>
@@ -791,6 +842,7 @@
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
     const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
     const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
+    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v1";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
@@ -2165,6 +2217,9 @@
     const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
 
     let works = [];
+    let seriesRecords = [];
+    let activeListMode = "works";
+    let editingSeriesId = null;
     let categories = [];
     let techniques = [];
     let locations = [];
@@ -2172,7 +2227,7 @@
     let exhibitionOptions = [];
     let currentExhibitions = [];
     let editingId = null;
-    let activeCategory = "ALL";
+    let activeTechnique = "ALL";
     let activeProduction = "ALL";
     let activeManagement = "ALL";
     let sortKey = "workNo";
@@ -2186,7 +2241,6 @@
       workNo: document.getElementById("workNo"),
       title: document.getElementById("title"),
       completedDate: document.getElementById("completedDate"),
-      category: document.getElementById("category"),
       series: document.getElementById("series"),
       year: document.getElementById("year"),
       productionStatus: document.getElementById("productionStatus"),
@@ -2264,19 +2318,42 @@
       return digits ? digits.padStart(4, "0").slice(-4) : "";
     }
 
-    function usedWorkNos(excludeId = null) {
-      return new Set(works.filter(w => w.id !== excludeId).map(w => normalizeWorkNo(w.workNo)).filter(Boolean));
+    function usedNumbers(exclude = {}) {
+      const used = new Set();
+      works.forEach(w => {
+        if (exclude.type === "work" && w.id === exclude.id) return;
+        const no = normalizeWorkNo(w.workNo);
+        if (no) used.add(no);
+      });
+      seriesRecords.forEach(s => {
+        if (exclude.type === "series" && s.id === exclude.id) return;
+        const no = normalizeWorkNo(s.seriesNo);
+        if (no) used.add(no);
+      });
+      return used;
     }
 
-    function generateRandomWorkNo(excludeId = null) {
-      const used = usedWorkNos(excludeId);
+    function usedWorkNos(excludeId = null) {
+      return usedNumbers({ type: "work", id: excludeId });
+    }
+
+    function generateRandomNumber(exclude = {}) {
+      const used = usedNumbers(exclude);
       const available = [];
       for (let i = 0; i <= 9999; i++) {
         const no = String(i).padStart(4, "0");
         if (!used.has(no)) available.push(no);
       }
-      if (!available.length) throw new Error("No available work number");
+      if (!available.length) throw new Error("No available number");
       return available[Math.floor(Math.random() * available.length)];
+    }
+
+    function generateRandomWorkNo(excludeId = null) {
+      return generateRandomNumber({ type: "work", id: excludeId });
+    }
+
+    function generateRandomSeriesNo(excludeId = null) {
+      return generateRandomNumber({ type: "series", id: excludeId });
     }
 
     function load() {
@@ -2290,6 +2367,19 @@
 
     function save() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(works));
+    }
+
+    function loadSeriesRecords() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(SERIES_DATA_STORAGE_KEY));
+        seriesRecords = Array.isArray(saved) ? saved : [];
+      } catch {
+        seriesRecords = [];
+      }
+    }
+
+    function saveSeriesRecords() {
+      localStorage.setItem(SERIES_DATA_STORAGE_KEY, JSON.stringify(seriesRecords));
     }
 
     function loadSettings() {
@@ -2344,7 +2434,6 @@
     function setupOptions() {
       fields.productionStatus.innerHTML = PRODUCTION_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
       fields.managementStatus.innerHTML = MANAGEMENT_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-      renderCatalogSelect(fields.category, cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES));
       renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES));
       renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS));
       renderCatalogSelect(fields.technique, techniques);
@@ -2353,22 +2442,23 @@
       renderFilters();
     }
 
-    function categoryCounts() {
+    function techniqueCounts() {
       const map = new Map();
       works.forEach(w => {
-        const category = String(w.category || "OTHER");
-        map.set(category, (map.get(category) || 0) + 1);
+        const technique = String(w.technique || "OTHER");
+        map.set(technique, (map.get(technique) || 0) + 1);
       });
-      categories.forEach(category => {
-        if (!map.has(category)) map.set(category, 0);
+      techniques.forEach(technique => {
+        if (!map.has(technique)) map.set(technique, 0);
       });
       return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ja"));
     }
 
     function renderFilters() {
-      const categoryItems = ["ALL", ...categoryCounts().map(([category]) => category)];
-      document.getElementById("categoryLinks").innerHTML = categoryItems.map(item => {
-        return `<button class="text-button ${item === activeCategory ? "selected" : ""}" type="button" onclick="setCategory('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
+      const techniqueItems = ["ALL", ...techniqueCounts().map(([technique]) => technique)];
+      const techniqueLinks = document.getElementById("techniqueLinks");
+      if (techniqueLinks) techniqueLinks.innerHTML = techniqueItems.map(item => {
+        return `<button class="text-button ${item === activeTechnique ? "selected" : ""}" type="button" onclick="setTechnique('${escapeAttr(item)}')">${escapeHtml(item)}</button>`;
       }).join("");
 
       document.getElementById("productionLinks").innerHTML = ["ALL", ...PRODUCTION_STATUSES].map(item => {
@@ -2396,7 +2486,6 @@
     }
 
     function renderOptionLists() {
-      renderOptionList("category", categories);
       renderOptionList("series", seriesOptions);
       renderOptionList("exhibition", exhibitionOptions);
       renderOptionList("technique", techniques);
@@ -2491,8 +2580,8 @@
     };
 
 
-    window.setCategory = function(value) {
-      activeCategory = value;
+    window.setTechnique = function(value) {
+      activeTechnique = value;
       render();
     };
 
@@ -2517,7 +2606,7 @@
     };
 
     window.clearFilters = function() {
-      activeCategory = "ALL";
+      activeTechnique = "ALL";
       activeProduction = "ALL";
       activeManagement = "ALL";
       searchInput.value = "";
@@ -2532,7 +2621,7 @@
     };
 
     window.showScreen = function(name) {
-      ["works", "entry", "data"].forEach(id => {
+      ["works", "entry", "seriesEntry", "data"].forEach(id => {
         document.getElementById(id + "Screen").classList.toggle("active", id === name);
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2543,7 +2632,7 @@
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem(THEME_STORAGE_KEY, next);
       const label = next === "dark" ? "LIGHT" : "DARK";
-      ["themeButton", "themeButtonEntry", "themeButtonData"].forEach(id => {
+      ["themeButton", "themeButtonEntry", "themeButtonSeriesEntry", "themeButtonData"].forEach(id => {
         const button = document.getElementById(id);
         if (button) button.textContent = label;
       });
@@ -2604,12 +2693,10 @@
     function resetForm() {
       editingId = null;
       form.reset();
-      renderCatalogSelect(fields.category, cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES));
       renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES));
       renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
-      fields.category.value = categories[0] || "";
       fields.series.value = seriesOptions[0] || "Single";
       fields.exhibitionSelect.value = exhibitionOptions[0] || "None";
       setCurrentExhibitions([]);
@@ -2645,7 +2732,6 @@
         workNo,
         title: fields.title.value.trim(),
         completedDate: fields.completedDate.value,
-        category: fields.category.value,
         series: fields.series.value.trim(),
         year: fields.year.value.trim(),
         productionStatus: fields.productionStatus.value,
@@ -2686,13 +2772,13 @@
       return sortDirection === "asc" ? result : -result;
     }
 
-    function render() {
+    function renderWorksList() {
       renderFilters();
 
       const query = searchInput.value.trim().toLowerCase();
 
       const filtered = works
-        .filter(w => activeCategory === "ALL" || String(w.category || "") === activeCategory)
+        .filter(w => activeTechnique === "ALL" || String(w.technique || "") === activeTechnique)
         .filter(w => {
           const statuses = normalizeStatuses(w);
           return activeProduction === "ALL" || statuses.productionStatus === activeProduction;
@@ -2708,7 +2794,6 @@
             w.workNo,
             w.title,
             w.completedDate,
-            w.category,
             w.series,
             normalizeProductionDate(w),
             w.completedDate,
@@ -2751,7 +2836,6 @@
                 <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
                 <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Category</div><div class="detail-value">${escapeHtml(w.category || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${escapeHtml(w.series || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Production</div><div class="detail-value">${escapeHtml(statuses.productionStatus)}</div></div>
                 <div class="detail-row"><div class="detail-key">Management</div><div class="detail-value">${escapeHtml(statuses.managementStatus)}</div></div>
@@ -2775,6 +2859,17 @@
       }).join("");
     }
 
+    function render() {
+      const isSeries = activeListMode === "series";
+      document.getElementById("worksModeButton").classList.toggle("selected", !isSeries);
+      document.getElementById("seriesModeButton").classList.toggle("selected", isSeries);
+      document.getElementById("worksFilterArea").style.display = isSeries ? "none" : "grid";
+      const headerButtons = document.querySelectorAll(".list-head .text-button");
+      if (headerButtons[2]) headerButtons[2].firstChild.nodeValue = isSeries ? "START" : "COMPLETED";
+      if (isSeries) renderSeriesList();
+      else renderWorksList();
+    }
+
     window.toggleWork = function(id) {
       const target = document.getElementById("work-" + id);
       if (target) target.classList.toggle("open");
@@ -2788,7 +2883,6 @@
       fields.workNo.value = normalizeWorkNo(w.workNo);
       fields.title.value = w.title || "";
       fields.completedDate.value = w.completedDate || "";
-      renderCatalogSelect(fields.category, categories, w.category || "");
       renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(item => item.series)], DEFAULT_SERIES), w.series || "Single");
       fields.year.value = normalizeProductionDate(w);
 
@@ -2835,6 +2929,212 @@
     fields.workNo.addEventListener("input", () => {
       fields.workNo.value = fields.workNo.value.replace(/\D/g, "").slice(0, 4);
     });
+
+
+
+    const seriesForm = document.getElementById("seriesForm");
+    const seriesFields = {
+      seriesNo: document.getElementById("seriesNo"),
+      title: document.getElementById("seriesTitle"),
+      startDate: document.getElementById("seriesStartDate"),
+      description: document.getElementById("seriesDescription")
+    };
+
+    function resetSeriesForm() {
+      editingSeriesId = null;
+      seriesForm.reset();
+      document.getElementById("seriesSubmitButton").textContent = "SAVE";
+      document.getElementById("seriesCancelButton").style.display = "none";
+    }
+
+    function seriesFormToRecord(existing = {}) {
+      let seriesNo = normalizeWorkNo(seriesFields.seriesNo.value);
+      if (!seriesNo) seriesNo = generateRandomSeriesNo(existing.id || null);
+
+      if (!/^\d{4}$/.test(seriesNo)) {
+        throw new Error("INVALID_SERIES_NO");
+      }
+
+      const used = usedNumbers({ type: "series", id: existing.id || null });
+      if (used.has(seriesNo)) {
+        throw new Error("DUPLICATE_SERIES_NO");
+      }
+
+      return {
+        ...existing,
+        id: existing.id || createId(),
+        seriesNo,
+        title: seriesFields.title.value.trim(),
+        startDate: seriesFields.startDate.value,
+        description: seriesFields.description.value.trim(),
+        createdAt: existing.createdAt || nowIso(),
+        updatedAt: nowIso()
+      };
+    }
+
+    function compareSeries(a, b) {
+      let av = "";
+      let bv = "";
+
+      if (sortKey === "workNo") {
+        av = normalizeWorkNo(a.seriesNo);
+        bv = normalizeWorkNo(b.seriesNo);
+      } else if (sortKey === "title") {
+        av = String(a.title || "");
+        bv = String(b.title || "");
+      } else if (sortKey === "year") {
+        av = String(a.startDate || "");
+        bv = String(b.startDate || "");
+      }
+
+      const result = av.localeCompare(bv, "ja", { numeric: true });
+      return sortDirection === "asc" ? result : -result;
+    }
+
+    function renderSeriesList() {
+      renderFilters();
+
+      const query = searchInput.value.trim().toLowerCase();
+
+      const filtered = seriesRecords
+        .filter(s => {
+          if (!query) return true;
+          return [
+            s.seriesNo,
+            s.title,
+            s.startDate,
+            s.description
+          ].some(value => String(value || "").toLowerCase().includes(query));
+        })
+        .sort(compareSeries);
+
+      if (!filtered.length) {
+        workList.innerHTML = '<div class="empty">該当するシリーズがありません。</div>';
+        return;
+      }
+
+      workList.innerHTML = filtered.map(s => {
+        const no = normalizeWorkNo(s.seriesNo);
+        const relatedWorks = works
+          .filter(w => String(w.series || "") === String(s.title || ""))
+          .sort(compareWorks);
+
+        return `
+          <article class="work" id="series-${escapeAttr(s.id)}">
+            <button class="work-summary" type="button" onclick="toggleSeries('${escapeAttr(s.id)}')">
+              <div class="work-no">${escapeHtml(no)}</div>
+              <div class="work-title">${escapeHtml(s.title || "Untitled Series")}</div>
+              <div class="work-year">${escapeHtml(s.startDate || "")}</div>
+            </button>
+            <div class="work-detail">
+              <div class="detail-grid">
+                <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(no)}</div></div>
+                <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(s.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(s.startDate || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(s.description || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Works</div><div class="detail-value">${escapeHtml(String(relatedWorks.length))}</div></div>
+              </div>
+              ${relatedWorks.length ? `
+                <div class="detail-grid">
+                  ${relatedWorks.map(w => `
+                    <div class="detail-row">
+                      <div class="detail-key">${escapeHtml(normalizeWorkNo(w.workNo))}</div>
+                      <div class="detail-value">${escapeHtml(w.title || "Untitled")}</div>
+                    </div>
+                  `).join("")}
+                </div>
+              ` : ""}
+              <div class="detail-actions">
+                <button class="text-button" type="button" onclick="startSeriesEdit('${escapeAttr(s.id)}')">EDIT</button>
+                <button class="text-button danger" type="button" onclick="deleteSeries('${escapeAttr(s.id)}')">DELETE</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    window.toggleSeries = function(id) {
+      const target = document.getElementById("series-" + id);
+      if (target) target.classList.toggle("open");
+    };
+
+    window.startSeriesEdit = function(id) {
+      const s = seriesRecords.find(item => item.id === id);
+      if (!s) return;
+
+      editingSeriesId = id;
+      seriesFields.seriesNo.value = normalizeWorkNo(s.seriesNo);
+      seriesFields.title.value = s.title || "";
+      seriesFields.startDate.value = s.startDate || "";
+      seriesFields.description.value = s.description || "";
+
+      document.getElementById("seriesSubmitButton").textContent = "UPDATE";
+      document.getElementById("seriesCancelButton").style.display = "inline-block";
+      showScreen("seriesEntry");
+    };
+
+    window.deleteSeries = function(id) {
+      if (!confirm("このシリーズを削除しますか？作品データ自体は削除されません。")) return;
+      seriesRecords = seriesRecords.filter(s => s.id !== id);
+      saveSeriesRecords();
+      if (editingSeriesId === id) resetSeriesForm();
+      render();
+    };
+
+    seriesFields.seriesNo.addEventListener("input", () => {
+      seriesFields.seriesNo.value = seriesFields.seriesNo.value.replace(/\D/g, "").slice(0, 4);
+    });
+
+    seriesForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!seriesFields.title.value.trim()) {
+        alert("シリーズ名を入力してください。");
+        return;
+      }
+
+      try {
+        if (editingSeriesId) {
+          seriesRecords = seriesRecords.map(s => s.id === editingSeriesId ? seriesFormToRecord(s) : s);
+        } else {
+          seriesRecords.push(seriesFormToRecord());
+        }
+      } catch (error) {
+        if (error.message === "DUPLICATE_SERIES_NO") {
+          alert("この番号は作品またはシリーズで既に使用されています。");
+          return;
+        }
+        if (error.message === "INVALID_SERIES_NO") {
+          alert("シリーズ番号は0000〜9999の4桁で入力してください。");
+          return;
+        }
+        alert("保存できませんでした。");
+        return;
+      }
+
+      const title = seriesFields.title.value.trim();
+      if (title && !seriesOptions.includes(title)) {
+        seriesOptions.push(title);
+        saveSettings();
+      }
+
+      saveSeriesRecords();
+      setupOptions();
+      resetSeriesForm();
+      activeListMode = "series";
+      render();
+      showScreen("works");
+    });
+
+    document.getElementById("seriesCancelButton").addEventListener("click", () => {
+      resetSeriesForm();
+      showScreen("works");
+    });
+
+    window.setListMode = function(mode) {
+      activeListMode = mode === "series" ? "series" : "works";
+      render();
+    };
 
 
     function addSeriesFromEntry() {
@@ -2908,7 +3208,7 @@
         }
       } catch (error) {
         if (error.message === "DUPLICATE_WORK_NO") {
-          alert("この作品番号は既に使用されています。");
+          alert("この番号は作品またはシリーズで既に使用されています。");
           return;
         }
         if (error.message === "INVALID_WORK_NO") {
@@ -2932,13 +3232,12 @@
 
     searchInput.addEventListener("input", render);
 
-    document.getElementById("addCategoryButton").addEventListener("click", () => addOption("category"));
     document.getElementById("addSeriesButton").addEventListener("click", () => addOption("series"));
     document.getElementById("addExhibitionButton").addEventListener("click", () => addOption("exhibition"));
     document.getElementById("addTechniqueButton").addEventListener("click", () => addOption("technique"));
     document.getElementById("addLocationButton").addEventListener("click", () => addOption("location"));
 
-    ["category", "series", "exhibition", "technique", "location"].forEach(kind => {
+    ["series", "exhibition", "technique", "location"].forEach(kind => {
       document.getElementById(kind + "OptionInput").addEventListener("keydown", event => {
         if (event.key !== "Enter") return;
         event.preventDefault();
@@ -2950,9 +3249,10 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.3.4",
+        version: "minimal-text-v0.4.0",
         exportedAt: nowIso(),
         works,
+        seriesRecords,
         categories,
         seriesOptions,
         exhibitionOptions,
@@ -2984,6 +3284,7 @@
         try {
           const data = JSON.parse(reader.result);
           const importedWorks = Array.isArray(data) ? data : data.works;
+          const importedSeriesRecords = Array.isArray(data.seriesRecords) ? data.seriesRecords : [];
           if (!Array.isArray(importedWorks)) throw new Error("Invalid format");
 
           if (!confirm(`${importedWorks.length}件の作品データで現在のWSVを上書きしますか？`)) return;
@@ -3007,12 +3308,11 @@
               workNo,
               title: String(w.title || "Untitled"),
               completedDate: String(w.completedDate || ""),
-              category: String(w.category || w.workCategory || "OTHER"),
               series: String(w.series || ""),
               year: normalizeProductionDate(w),
               productionStatus: statuses.productionStatus,
               managementStatus: statuses.managementStatus,
-              technique: String(w.technique || ""),
+              technique: String(w.technique || w.category || w.workCategory || ""),
               materials: String(w.materials || ""),
               sizeW: dims.w,
               sizeH: dims.h,
@@ -3029,6 +3329,28 @@
             };
           });
 
+          const usedAfterWorks = new Set(works.map(w => normalizeWorkNo(w.workNo)).filter(Boolean));
+          seriesRecords = importedSeriesRecords.map((s, index) => {
+            let seriesNo = normalizeWorkNo(s.seriesNo || s.no || s.number);
+            if (!seriesNo || usedAfterWorks.has(seriesNo)) {
+              let candidate;
+              do {
+                candidate = String(9000 + index).padStart(4, "0").slice(-4);
+              } while (usedAfterWorks.has(candidate));
+              seriesNo = candidate;
+            }
+            usedAfterWorks.add(seriesNo);
+            return {
+              id: s.id || createId(),
+              seriesNo,
+              title: String(s.title || "Untitled Series"),
+              startDate: String(s.startDate || ""),
+              description: String(s.description || ""),
+              createdAt: s.createdAt || nowIso(),
+              updatedAt: s.updatedAt || nowIso()
+            };
+          });
+
           categories = cleanOptions([...(data.categories || categories), ...works.map(w => w.category)], DEFAULT_CATEGORIES);
           techniques = cleanOptions([...(data.techniques || techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
           locations = cleanOptions([...(data.locations || locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
@@ -3037,6 +3359,7 @@
 
           saveSettings();
           save();
+          saveSeriesRecords();
           setupOptions();
           resetForm();
           render();
@@ -3055,8 +3378,11 @@
       if (!confirm("すべての作品データを削除しますか？")) return;
       if (!confirm("本当に削除しますか？この操作は元に戻せません。")) return;
       works = [];
+      seriesRecords = [];
       save();
+      saveSeriesRecords();
       resetForm();
+      resetSeriesForm();
       render();
       showScreen("works");
     });
@@ -3078,10 +3404,12 @@
     }
 
     load();
+    loadSeriesRecords();
     loadSettings();
     seedIfEmpty();
     setupOptions();
     resetForm();
+    resetSeriesForm();
     applyTheme(localStorage.getItem(THEME_STORAGE_KEY) || "light");
     render();
     renderFontSampler();
