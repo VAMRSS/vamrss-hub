@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.5.0</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.5.1</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -87,16 +87,27 @@
 
     .site-title {
       justify-self: start;
+      align-self: center;
       text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+      width: 100%;
+      padding: 0;
+      margin-left: 0;
     }
 
     .site-logo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: flex-start;
+      display: block;
       width: 129px;
       max-width: 38vw;
-      vertical-align: baseline;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      text-align: left;
+      flex: 0 0 auto;
+      transform: translateX(0);
     }
 
     .site-logo-img {
@@ -104,6 +115,10 @@
       width: 100%;
       height: auto;
       max-height: 27px;
+      margin: 0;
+      padding: 0;
+      object-fit: contain;
+      object-position: left center;
     }
 
     html[data-theme="dark"] .site-logo-img {
@@ -645,6 +660,18 @@
       text-overflow: ellipsis;
     }
 
+
+    .topbar .site-title,
+    .site-title .site-logo,
+    .site-title .site-logo-img {
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .topbar .site-title {
+      justify-self: start;
+    }
+
     @media (max-width: 420px) {
       .topbar {
         grid-template-columns: 1fr;
@@ -661,7 +688,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.1</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -701,7 +728,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.1</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -823,7 +850,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.1</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -863,7 +890,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.0</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.1</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="toggleTheme()" id="themeButtonData">☾</button>
@@ -2591,7 +2618,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.5.0",
+        version: "minimal-text-v0.5.1",
         exportedAt: nowIso(),
         works,
         seriesRecords,
