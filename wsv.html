@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.6.2</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.6.3</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -302,17 +302,74 @@
     #seriesEntryScreen .form textarea,
     #seriesEntryScreen .form select {
       border: 0;
-      background: var(--ink);
-      color: var(--bg);
+      background: rgba(104, 115, 111, 0.10);
+      color: var(--ink);
       padding: 2px 8px;
+    }
+
+    html[data-theme="dark"] #entryScreen .form input,
+    html[data-theme="dark"] #entryScreen .form textarea,
+    html[data-theme="dark"] #entryScreen .form select,
+    html[data-theme="dark"] #seriesEntryScreen .form input,
+    html[data-theme="dark"] #seriesEntryScreen .form textarea,
+    html[data-theme="dark"] #seriesEntryScreen .form select {
+      background: rgba(237, 241, 239, 0.10);
+      color: var(--ink);
+    }
+
+    #entryScreen .form input[type="number"],
+    #entryScreen .form input[inputmode="numeric"],
+    #seriesEntryScreen .form input[inputmode="numeric"] {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      background-image: linear-gradient(90deg, transparent calc(100% - 1.25em), rgba(104, 115, 111, 0.18) calc(100% - 1.25em));
+    }
+
+    #entryScreen .form input[type="text"],
+    #entryScreen .form textarea,
+    #seriesEntryScreen .form input[type="text"],
+    #seriesEntryScreen .form textarea {
+      text-align: left;
+      background-image: linear-gradient(90deg, rgba(104, 115, 111, 0.18) 0.25em, transparent 0.25em);
+    }
+
+    #entryScreen .form input[type="date"],
+    #seriesEntryScreen .form input[type="date"] {
+      text-align: left;
+      font-variant-numeric: tabular-nums;
+      background-image: linear-gradient(90deg, rgba(104, 115, 111, 0.18) 0, rgba(104, 115, 111, 0.18) 2px, transparent 2px);
+    }
+
+    #entryScreen .form select,
+    #seriesEntryScreen .form select {
+      text-align: left;
+      background-image: linear-gradient(90deg, transparent calc(100% - 1.25em), rgba(104, 115, 111, 0.18) calc(100% - 1.25em));
+    }
+
+    #entryScreen .form input:focus,
+    #entryScreen .form textarea:focus,
+    #entryScreen .form select:focus,
+    #seriesEntryScreen .form input:focus,
+    #seriesEntryScreen .form textarea:focus,
+    #seriesEntryScreen .form select:focus {
+      background-color: rgba(104, 115, 111, 0.16);
+    }
+
+    html[data-theme="dark"] #entryScreen .form input:focus,
+    html[data-theme="dark"] #entryScreen .form textarea:focus,
+    html[data-theme="dark"] #entryScreen .form select:focus,
+    html[data-theme="dark"] #seriesEntryScreen .form input:focus,
+    html[data-theme="dark"] #seriesEntryScreen .form textarea:focus,
+    html[data-theme="dark"] #seriesEntryScreen .form select:focus {
+      background-color: rgba(237, 241, 239, 0.16);
     }
 
     #entryScreen .form input::placeholder,
     #entryScreen .form textarea::placeholder,
     #seriesEntryScreen .form input::placeholder,
     #seriesEntryScreen .form textarea::placeholder {
-      color: var(--bg);
-      opacity: 0.65;
+      color: var(--muted);
+      opacity: 1;
     }
 
     #entryScreen .ask-line,
@@ -323,16 +380,6 @@
     #entryScreen .ask-line input {
       background: transparent;
       padding: 0;
-    }
-
-    #entryScreen .form select,
-    #seriesEntryScreen .form select {
-      color-scheme: dark;
-    }
-
-    html[data-theme="dark"] #entryScreen .form select,
-    html[data-theme="dark"] #seriesEntryScreen .form select {
-      color-scheme: light;
     }
 
     .filter-area {
@@ -616,6 +663,14 @@
       margin-top: 5px;
     }
 
+    .list-end {
+      margin-top: 24px;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 0.13em;
+      font-size: 12px;
+    }
+
     .empty {
       padding: 14px 0;
       color: var(--sub);
@@ -866,7 +921,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -905,7 +960,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1026,7 +1081,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1065,7 +1120,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.2</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1149,19 +1204,19 @@
     const DEFAULT_SERIES = ["Single", "VLNS", "VNBX", "SIGN", "DRAWING", "PHOTO", "PRINT", "OBJECT", "DEVICE", "OTHER"];
     const DEFAULT_EXHIBITIONS = ["None"];
     const PRODUCTION_STATUSES = ["制作中", "完成", "制作終了"];
-    const MANAGEMENT_STATUSES = ["展示中", "販売中", "売却済", "譲渡済", "非売品", "保管中", "貸出中", "処分済"];
+    const MANAGEMENT_STATUSES = ["保管中", "売却済", "譲渡済", "貸出中", "処分済"];
 
     const LEGACY_STATUS_MAP = {
       "制作中": { productionStatus: "制作中", managementStatus: "保管中" },
       "完成": { productionStatus: "完成", managementStatus: "保管中" },
-      "展示中": { productionStatus: "完成", managementStatus: "展示中" },
-      "販売中": { productionStatus: "完成", managementStatus: "販売中" },
+      "展示中": { productionStatus: "完成", managementStatus: "保管中" },
+      "販売中": { productionStatus: "完成", managementStatus: "保管中" },
       "売約済": { productionStatus: "完成", managementStatus: "売却済" },
       "売却済": { productionStatus: "完成", managementStatus: "売却済" },
       "売却済み": { productionStatus: "完成", managementStatus: "売却済" },
       "譲渡済": { productionStatus: "完成", managementStatus: "譲渡済" },
-      "非売": { productionStatus: "完成", managementStatus: "非売品" },
-      "非売品": { productionStatus: "完成", managementStatus: "非売品" },
+      "非売": { productionStatus: "完成", managementStatus: "保管中" },
+      "非売品": { productionStatus: "完成", managementStatus: "保管中" },
       "保管中": { productionStatus: "完成", managementStatus: "保管中" },
       "貸出中": { productionStatus: "完成", managementStatus: "貸出中" },
       "手放し済み": { productionStatus: "完成", managementStatus: "譲渡済" },
@@ -1200,7 +1255,7 @@
             "series": "VLNS",
             "year": "2023-05-02",
             "productionStatus": "完成",
-            "managementStatus": "販売中",
+            "managementStatus": "保管中",
             "technique": "LED SIGN",
             "materials": "LED, acrylic",
             "sizeW": "450",
@@ -1221,7 +1276,7 @@
             "series": "VLNS",
             "year": "2023-06-11",
             "productionStatus": "完成",
-            "managementStatus": "展示中",
+            "managementStatus": "保管中",
             "technique": "LED SIGN",
             "materials": "LED, acrylic, paint",
             "sizeW": "520",
@@ -1326,7 +1381,7 @@
             "series": "SIGN",
             "year": "2024-02-02",
             "productionStatus": "完成",
-            "managementStatus": "販売中",
+            "managementStatus": "保管中",
             "technique": "POSTER",
             "materials": "paper, ink",
             "sizeW": "420",
@@ -1389,7 +1444,7 @@
             "series": "DRAWING",
             "year": "2024-06-03",
             "productionStatus": "完成",
-            "managementStatus": "非売品",
+            "managementStatus": "保管中",
             "technique": "DRAWING",
             "materials": "paper, pencil",
             "sizeW": "297",
@@ -1494,7 +1549,7 @@
             "series": "DEVICE",
             "year": "2026-01-12",
             "productionStatus": "完成",
-            "managementStatus": "販売中",
+            "managementStatus": "保管中",
             "technique": "DEVICE",
             "materials": "display, case, cable",
             "sizeW": "160",
@@ -1936,7 +1991,7 @@
       };
       Object.keys(marks).forEach(key => {
         if (!marks[key]) return;
-        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? "↑" : "↓") : "";
+        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? "△" : "▽") : "";
         marks[key].parentElement.classList.toggle("selected", sortKey === key);
       });
     }
@@ -2386,7 +2441,7 @@
             </div>
           </article>
         `;
-      }).join("");
+      }).join("") + '<div class="list-end">END</div>';
     }
 
     function render() {
@@ -2588,7 +2643,7 @@
             </div>
           </article>
         `;
-      }).join("");
+      }).join("") + '<div class="list-end">END</div>';
     }
 
     window.toggleSeries = function(id) {
@@ -2790,7 +2845,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.6.2",
+        version: "minimal-text-v0.6.3",
         exportedAt: nowIso(),
         works,
         seriesRecords,
