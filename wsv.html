@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.5.2</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.5.3</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -66,6 +66,7 @@
     .screen.active { display: block; }
 
     .topbar {
+      position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: start;
@@ -100,7 +101,7 @@
 
     .site-logo {
       display: block;
-      width: 150px;
+      width: 145px;
       max-width: 38vw;
       margin: 0;
       padding: 0;
@@ -144,7 +145,10 @@
       flex-wrap: wrap;
       text-align: right;
       align-self: start;
+      justify-self: end;
       padding-top: 0;
+      margin-top: 0;
+      line-height: 1;
     }
 
     .text-button {
@@ -163,10 +167,15 @@
 
     .theme-symbol {
       font-family: var(--font-main);
-      font-size: 14px;
+      font-size: 12px;
       line-height: 2;
       letter-spacing: 0;
       text-transform: none;
+    }
+
+    .topbar .text-nav .text-button {
+      line-height: 1;
+      padding-top: 0;
     }
 
     .text-button:hover,
@@ -698,11 +707,11 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.2</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButton">☾</button>
+          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButton">●</button>
         </nav>
       </div>
 
@@ -738,11 +747,11 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.2</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonEntry">☾</button>
+          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonEntry">●</button>
         </nav>
       </div>
 
@@ -860,11 +869,11 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.2</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonSeriesEntry">☾</button>
+          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonSeriesEntry">●</button>
         </nav>
       </div>
 
@@ -900,10 +909,10 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.2</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonData">☾</button>
+          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonData">●</button>
         </nav>
       </div>
 
@@ -1923,7 +1932,7 @@
       const next = theme === "dark" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem(THEME_STORAGE_KEY, next);
-      const label = next === "dark" ? "☀︎" : "☾";
+      const label = next === "dark" ? "○" : "●";
       ["themeButton", "themeButtonEntry", "themeButtonSeriesEntry", "themeButtonData"].forEach(id => {
         const button = document.getElementById(id);
         if (button) button.textContent = label;
@@ -2628,7 +2637,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.5.2",
+        version: "minimal-text-v0.5.3",
         exportedAt: nowIso(),
         works,
         seriesRecords,
