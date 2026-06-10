@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.5.3</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.5.4</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -66,40 +66,47 @@
     .screen.active { display: block; }
 
     .topbar {
-      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) max-content;
+      grid-template-areas: "logo nav";
       align-items: start;
-      gap: 18px;
+      column-gap: 18px;
+      row-gap: 0;
       margin-bottom: 24px;
     }
 
     .site-title {
+      grid-area: logo;
       margin: 0;
       font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.11em;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       text-align: left;
     }
 
 
     .site-title {
+      grid-area: logo;
       justify-self: start;
       align-self: start;
       text-align: left;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-start;
       gap: 6px;
       width: 100%;
       padding: 0;
-      margin-left: 0;
+      margin: 0;
+      line-height: 1;
     }
 
     .site-logo {
+      appearance: none;
+      border: 0;
+      background: transparent;
       display: block;
       width: 145px;
       max-width: 38vw;
@@ -109,6 +116,7 @@
       text-align: left;
       flex: 0 0 auto;
       transform: translateX(0);
+      cursor: pointer;
     }
 
     .site-logo-img {
@@ -120,6 +128,10 @@
       padding: 0;
       object-fit: contain;
       object-position: left center;
+    }
+
+    .site-logo:focus {
+      outline: none;
     }
 
     html[data-theme="dark"] .site-logo-img {
@@ -138,17 +150,19 @@
     }
 
     .text-nav {
+      grid-area: nav;
       display: flex;
       gap: 12px;
       align-items: flex-start;
       justify-content: flex-end;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       text-align: right;
       align-self: start;
       justify-self: end;
-      padding-top: 0;
-      margin-top: 0;
+      padding: 0;
+      margin: 0;
       line-height: 1;
+      white-space: nowrap;
     }
 
     .text-button {
@@ -693,8 +707,9 @@
 
     @media (max-width: 420px) {
       .topbar {
-        grid-template-columns: 1fr;
-        gap: 7px;
+        grid-template-columns: minmax(0, 1fr) max-content;
+        grid-template-areas: "logo nav";
+        gap: 18px;
       }
 
       .text-nav {
@@ -707,11 +722,10 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.4</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButton">●</button>
         </nav>
       </div>
 
@@ -747,11 +761,10 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.4</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonEntry">●</button>
         </nav>
       </div>
 
@@ -869,11 +882,10 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.4</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonSeriesEntry">●</button>
         </nav>
       </div>
 
@@ -909,10 +921,9 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><span class="site-logo" aria-label="(VAMRSS) WSV"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></span> <span class="version-mark">v0.5.3</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.5.4</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
-          <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" id="themeButtonData">●</button>
         </nav>
       </div>
 
@@ -1932,11 +1943,7 @@
       const next = theme === "dark" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem(THEME_STORAGE_KEY, next);
-      const label = next === "dark" ? "○" : "●";
-      ["themeButton", "themeButtonEntry", "themeButtonSeriesEntry", "themeButtonData"].forEach(id => {
-        const button = document.getElementById(id);
-        if (button) button.textContent = label;
-      });
+      // Theme is toggled by tapping the logo.
     }
 
     window.toggleTheme = function() {
@@ -2637,7 +2644,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.5.3",
+        version: "minimal-text-v0.5.4",
         exportedAt: nowIso(),
         works,
         seriesRecords,
