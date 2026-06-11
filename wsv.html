@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.7.6</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.7.8</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -60,6 +60,19 @@
       max-width: 520px;
       margin: 0 auto;
       padding: calc(max(18px, env(safe-area-inset-top)) + 24px) 20px max(36px, env(safe-area-inset-bottom));
+    }
+
+
+    .fixed-version-mark {
+      position: fixed;
+      right: 20px;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 20;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1;
+      pointer-events: none;
     }
 
     .screen { display: none; }
@@ -1038,9 +1051,10 @@
 </head>
 <body>
   <main class="app">
+    <div class="fixed-version-mark">v0.7.8</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1079,7 +1093,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1200,7 +1214,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1244,7 +1258,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1325,19 +1339,19 @@
 
   <script>
     const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v7";
-    const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v3";
-    const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v3";
-    const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
-    const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
-    const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
+    const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v4";
+    const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v4";
+    const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v4";
+    const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v2";
+    const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v2";
     const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v6";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
-    const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
-    const DEFAULT_TECHNIQUES = ["Installation", "Mixed Media", "Drawing", "Photography", "Print", "Acrylic", "Woodwork", "Video"];
-    const DEFAULT_LOCATIONS = ["Studio", "Storage", "Gallery", "Collector", "Archive"];
-    const DEFAULT_SERIES = ["Single", "VLNS", "VNBX", "SIGN", "DRAWING", "PHOTO", "PRINT", "OBJECT", "DEVICE", "OTHER"];
-    const DEFAULT_EXHIBITIONS = ["None"];
+    const DEFAULT_CATEGORIES = [];
+    const DEFAULT_TECHNIQUES = [];
+    const DEFAULT_LOCATIONS = [];
+    const DEFAULT_SERIES = [];
+    const DEFAULT_EXHIBITIONS = [];
     const PRODUCTION_STATUSES = ["制作中", "完成", "制作終了"];
     const MANAGEMENT_STATUSES = ["保管中", "売却済", "譲渡済", "貸出中", "処分済"];
 
@@ -1945,8 +1959,8 @@
       return escapeHtml(text).replaceAll("`", "&#096;");
     }
 
-    function cleanOptions(items, fallback) {
-      const source = Array.isArray(items) && items.length ? items : fallback;
+    function cleanOptions(items, fallback = []) {
+      const source = [...(Array.isArray(items) ? items : []), ...(Array.isArray(fallback) ? fallback : [])];
       return [...new Set(source.map(item => String(item || "").trim()).filter(Boolean))];
     }
 
@@ -2126,7 +2140,6 @@
       exhibitionOptions = cleanOptions(exhibitionOptions, DEFAULT_EXHIBITIONS);
       saveSettings();
     }
-
 
     function renderSeriesSelect(select, selected = "") {
       if (!select) return;
@@ -2433,7 +2446,7 @@
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
       fields.series.value = "";
-      fields.exhibitionSelect.value = exhibitionOptions[0] || "None";
+      fields.exhibitionSelect.value = exhibitionOptions[0] || "";
       setCurrentExhibitions([]);
       fields.technique.value = techniques[0] || "";
       fields.location.value = locations[0] || "";
@@ -3262,7 +3275,7 @@
           cost: String(row.cost || "").trim(),
           location: String(row.location || "").trim(),
           owner: String(row.owner || "").trim(),
-          exhibitionHistory: String(row.exhibitionHistory || "None").replace(/\s*\|\s*/g, "\n"),
+          exhibitionHistory: String(row.exhibitionHistory || "").replace(/\s*\|\s*/g, "\n"),
           memo: String(row.memo || "").trim(),
           createdAt: existing?.createdAt || now,
           updatedAt: now
@@ -3305,11 +3318,50 @@
     }
 
 
+
+    window.resetAllWsvData = function() {
+      if (!confirm("WSVの全データを削除しますか？作品・シリーズ・技法・展示履歴・保管場所など、すべて削除されます。")) return;
+
+      works = [];
+      seriesRecords = [];
+      categories = [];
+      techniques = [];
+      locations = [];
+      seriesOptions = [];
+      exhibitionOptions = [];
+      currentExhibitions = [];
+      editingId = null;
+      editingSeriesId = null;
+      activeTechnique = "ALL";
+      activeProduction = "ALL";
+      activeManagement = "ALL";
+      sortKey = "workNo";
+      sortDirection = "asc";
+
+      localStorage.removeItem(WORK_STORAGE_KEY);
+      localStorage.removeItem(CATEGORY_STORAGE_KEY);
+      localStorage.removeItem(TECHNIQUE_STORAGE_KEY);
+      localStorage.removeItem(LOCATION_STORAGE_KEY);
+      localStorage.removeItem(SERIES_STORAGE_KEY);
+      localStorage.removeItem(EXHIBITION_STORAGE_KEY);
+      localStorage.removeItem(SERIES_DATA_STORAGE_KEY);
+
+      save();
+      saveSeriesRecords();
+      saveSettings();
+      setupOptions();
+      resetForm();
+      resetSeriesForm();
+      render();
+      showScreen("works");
+    };
+
+
     document.getElementById("exportButton").addEventListener("click", () => {
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.7.6",
+        version: "minimal-text-v0.7.8",
         exportedAt: nowIso(),
         works,
         seriesRecords,
