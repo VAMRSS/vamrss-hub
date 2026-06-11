@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.7.4</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.7.6</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -794,6 +794,20 @@
       align-items: baseline;
     }
 
+
+    .hidden-file {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .file-label {
+      display: inline-block;
+      cursor: pointer;
+    }
+
     .button-row {
       display: flex;
       gap: 12px;
@@ -1026,7 +1040,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1065,7 +1079,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1186,7 +1200,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1230,7 +1244,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.6</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1246,6 +1260,17 @@
         <div class="section-title">Import</div>
         <p class="hint">JSONを読み込みます。現在のデータは上書きされます。</p>
         <input id="importFile" type="file" accept="application/json,.json">
+      </div>
+
+      <div class="data-block">
+        <div class="section-title">CSV</div>
+        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。同じ4桁番号は更新、無い番号は追加します。</p>
+        <div class="button-row">
+          <label class="text-button active file-label" for="seriesCsvFile">SERIES CSV</label>
+          <input id="seriesCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
+          <label class="text-button active file-label" for="worksCsvFile">WORKS CSV</label>
+          <input id="worksCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
+        </div>
       </div>
 
 
@@ -1299,13 +1324,13 @@
   </main>
 
   <script>
-    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v4";
+    const STORAGE_KEY = "vamrss-wsv-minimal-text-works-v7";
     const CATEGORY_STORAGE_KEY = "vamrss-wsv-minimal-text-categories-v3";
     const TECHNIQUE_STORAGE_KEY = "vamrss-wsv-minimal-text-techniques-v3";
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
     const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
     const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
-    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v5";
+    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v6";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
@@ -2094,40 +2119,12 @@
     }
 
     function seedIfEmpty() {
-      let changed = false;
-
-      if (!seriesRecords.length) {
-        seriesRecords = SAMPLE_SERIES_RECORDS.map((s, index) => ({
-          ...s,
-          id: "sample-series-" + String(index + 1).padStart(3, "0"),
-          code: normalizeSeriesCode(s.code || ""),
-          createdAt: nowIso(),
-          updatedAt: nowIso()
-        }));
-        changed = true;
-      }
-
-      if (!works.length) {
-        works = SAMPLE_WORKS.map((w, index) => ({
-          ...w,
-          id: "sample-" + String(index + 1).padStart(3, "0"),
-          createdAt: nowIso(),
-          updatedAt: nowIso()
-        }));
-        changed = true;
-      }
-
-      categories = cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES);
-      techniques = cleanOptions([...techniques, ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
-      locations = cleanOptions([...locations, ...works.map(w => w.location)], DEFAULT_LOCATIONS);
-      seriesOptions = cleanOptions([...seriesOptions, ...seriesRecords.map(s => s.title), ...works.map(w => w.series)], DEFAULT_SERIES);
-      exhibitionOptions = cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
-
-      if (changed) {
-        saveSettings();
-        saveSeriesRecords();
-        save();
-      }
+      categories = cleanOptions(categories, DEFAULT_CATEGORIES);
+      techniques = cleanOptions(techniques, DEFAULT_TECHNIQUES);
+      locations = cleanOptions(locations, DEFAULT_LOCATIONS);
+      seriesOptions = cleanOptions(seriesOptions, DEFAULT_SERIES);
+      exhibitionOptions = cleanOptions(exhibitionOptions, DEFAULT_EXHIBITIONS);
+      saveSettings();
     }
 
 
@@ -3087,11 +3084,232 @@
       });
     });
 
+
+    function parseCsv(text) {
+      const normalized = String(text || "").replace(/^\uFEFF/, "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+      const rows = [];
+      let row = [];
+      let field = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < normalized.length; i++) {
+        const char = normalized[i];
+        const next = normalized[i + 1];
+
+        if (inQuotes) {
+          if (char === '"' && next === '"') {
+            field += '"';
+            i++;
+          } else if (char === '"') {
+            inQuotes = false;
+          } else {
+            field += char;
+          }
+          continue;
+        }
+
+        if (char === '"') {
+          inQuotes = true;
+        } else if (char === ",") {
+          row.push(field);
+          field = "";
+        } else if (char === "\n") {
+          row.push(field);
+          if (row.some(cell => String(cell).trim() !== "")) rows.push(row);
+          row = [];
+          field = "";
+        } else {
+          field += char;
+        }
+      }
+
+      row.push(field);
+      if (row.some(cell => String(cell).trim() !== "")) rows.push(row);
+
+      if (!rows.length) return [];
+      const headers = rows[0].map(h => String(h || "").trim());
+      return rows.slice(1).map(values => {
+        const item = {};
+        headers.forEach((header, index) => {
+          item[header] = values[index] == null ? "" : String(values[index]).trim();
+        });
+        return item;
+      });
+    }
+
+    function csvBool(value) {
+      const v = String(value || "").trim().toLowerCase();
+      return v === "true" || v === "1" || v === "yes" || v === "y" || v === "ask";
+    }
+
+    function csvDate(value) {
+      const v = String(value || "").trim();
+      if (!v) return "";
+      const slash = v.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+      if (slash) return `${slash[1]}-${slash[2].padStart(2, "0")}-${slash[3].padStart(2, "0")}`;
+      const hyphen = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (hyphen) return `${hyphen[1]}-${hyphen[2].padStart(2, "0")}-${hyphen[3].padStart(2, "0")}`;
+      return v;
+    }
+
+    function ensureOption(list, value) {
+      const v = String(value || "").trim();
+      if (!v) return list;
+      return cleanOptions([...list, v]);
+    }
+
+    function importSeriesCsvText(text) {
+      const rows = parseCsv(text);
+      if (!rows.length) {
+        alert("series.csvにデータがありません。");
+        return;
+      }
+
+      const seen = new Set();
+      const now = nowIso();
+      let added = 0;
+      let updated = 0;
+      const invalid = [];
+
+      rows.forEach((row, index) => {
+        const seriesNo = normalizeWorkNo(row.seriesNo);
+        const title = String(row.title || "").trim();
+        if (!/^\d{4}$/.test(seriesNo) || !title || seen.has(seriesNo)) {
+          invalid.push(index + 2);
+          return;
+        }
+        seen.add(seriesNo);
+
+        const existing = seriesRecords.find(s => normalizeWorkNo(s.seriesNo) === seriesNo);
+        const record = {
+          ...(existing || {}),
+          id: existing?.id || createId(),
+          seriesNo,
+          code: normalizeSeriesCode(row.code || ""),
+          title,
+          startDate: csvDate(row.startDate),
+          description: String(row.description || "").trim(),
+          createdAt: existing?.createdAt || now,
+          updatedAt: now
+        };
+
+        if (existing) {
+          seriesRecords = seriesRecords.map(s => normalizeWorkNo(s.seriesNo) === seriesNo ? record : s);
+          updated++;
+        } else {
+          seriesRecords.push(record);
+          added++;
+        }
+
+        seriesOptions = ensureOption(seriesOptions, title);
+      });
+
+      if (invalid.length) alert(`series.csvに取り込めない行があります: ${invalid.join(", ")}行目`);
+
+      saveSeriesRecords();
+      saveSettings();
+      setupOptions();
+      render();
+      alert(`SERIES CSVを取り込みました。\n追加: ${added}\n更新: ${updated}`);
+    }
+
+    function importWorksCsvText(text) {
+      const rows = parseCsv(text);
+      if (!rows.length) {
+        alert("works.csvにデータがありません。");
+        return;
+      }
+
+      const seen = new Set();
+      const now = nowIso();
+      let added = 0;
+      let updated = 0;
+      const invalid = [];
+      const missingSeries = [];
+
+      rows.forEach((row, index) => {
+        const workNo = normalizeWorkNo(row.workNo);
+        if (!/^\d{4}$/.test(workNo) || seen.has(workNo)) {
+          invalid.push(index + 2);
+          return;
+        }
+        seen.add(workNo);
+
+        const seriesNo = normalizeWorkNo(row.seriesNo);
+        const linkedSeries = seriesNo ? getSeriesRecordByNo(seriesNo) : null;
+        if (seriesNo && !linkedSeries) missingSeries.push(`${index + 2}行目:${seriesNo}`);
+
+        const existing = works.find(w => normalizeWorkNo(w.workNo) === workNo);
+        const priceAsk = csvBool(row.priceAsk);
+        const record = {
+          ...(existing || {}),
+          id: existing?.id || createId(),
+          workNo,
+          title: String(row.title || "").trim() || "Untitled",
+          seriesNo,
+          series: linkedSeries?.title || (seriesNo ? "" : "Single"),
+          year: csvDate(row.startDate),
+          completedDate: csvDate(row.completedDate),
+          productionStatus: PRODUCTION_STATUSES.includes(row.productionStatus) ? row.productionStatus : "制作中",
+          managementStatus: MANAGEMENT_STATUSES.includes(row.managementStatus) ? row.managementStatus : "保管中",
+          technique: String(row.technique || "").trim(),
+          materials: String(row.materials || "").trim(),
+          sizeW: String(row.sizeW || "").trim(),
+          sizeH: String(row.sizeH || "").trim(),
+          sizeD: String(row.sizeD || "").trim(),
+          price: priceAsk ? "" : String(row.price || "").trim(),
+          priceAsk,
+          cost: String(row.cost || "").trim(),
+          location: String(row.location || "").trim(),
+          owner: String(row.owner || "").trim(),
+          exhibitionHistory: String(row.exhibitionHistory || "None").replace(/\s*\|\s*/g, "\n"),
+          memo: String(row.memo || "").trim(),
+          createdAt: existing?.createdAt || now,
+          updatedAt: now
+        };
+
+        if (existing) {
+          works = works.map(w => normalizeWorkNo(w.workNo) === workNo ? record : w);
+          updated++;
+        } else {
+          works.push(record);
+          added++;
+        }
+
+        techniques = ensureOption(techniques, record.technique);
+        locations = ensureOption(locations, record.location);
+        if (record.series) seriesOptions = ensureOption(seriesOptions, record.series);
+        normalizeExhibitions(record.exhibitionHistory).forEach(item => {
+          exhibitionOptions = ensureOption(exhibitionOptions, item);
+        });
+      });
+
+      if (invalid.length) alert(`works.csvに取り込めない行があります: ${invalid.join(", ")}行目`);
+      if (missingSeries.length) {
+        alert(`未登録のseriesNoがあります。先にSERIES CSVを取り込んでください。\n${missingSeries.slice(0, 20).join("\n")}${missingSeries.length > 20 ? "\n..." : ""}`);
+      }
+
+      save();
+      saveSettings();
+      setupOptions();
+      render();
+      alert(`WORKS CSVを取り込みました。\n追加: ${added}\n更新: ${updated}`);
+    }
+
+    function readCsvFile(file, callback) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => callback(String(reader.result || ""));
+      reader.onerror = () => alert("CSVを読み込めませんでした。");
+      reader.readAsText(file, "utf-8");
+    }
+
+
     document.getElementById("exportButton").addEventListener("click", () => {
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.7.4",
+        version: "minimal-text-v0.7.6",
         exportedAt: nowIso(),
         works,
         seriesRecords,
@@ -3115,6 +3333,23 @@
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+    });
+
+
+    document.getElementById("seriesCsvFile").addEventListener("change", event => {
+      const file = event.target.files[0];
+      readCsvFile(file, text => {
+        importSeriesCsvText(text);
+        event.target.value = "";
+      });
+    });
+
+    document.getElementById("worksCsvFile").addEventListener("change", event => {
+      const file = event.target.files[0];
+      readCsvFile(file, text => {
+        importWorksCsvText(text);
+        event.target.value = "";
+      });
     });
 
     document.getElementById("importFile").addEventListener("change", event => {
