@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.6.3</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.6.7</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -302,74 +302,17 @@
     #seriesEntryScreen .form textarea,
     #seriesEntryScreen .form select {
       border: 0;
-      background: rgba(104, 115, 111, 0.10);
-      color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
       padding: 2px 8px;
-    }
-
-    html[data-theme="dark"] #entryScreen .form input,
-    html[data-theme="dark"] #entryScreen .form textarea,
-    html[data-theme="dark"] #entryScreen .form select,
-    html[data-theme="dark"] #seriesEntryScreen .form input,
-    html[data-theme="dark"] #seriesEntryScreen .form textarea,
-    html[data-theme="dark"] #seriesEntryScreen .form select {
-      background: rgba(237, 241, 239, 0.10);
-      color: var(--ink);
-    }
-
-    #entryScreen .form input[type="number"],
-    #entryScreen .form input[inputmode="numeric"],
-    #seriesEntryScreen .form input[inputmode="numeric"] {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      background-image: linear-gradient(90deg, transparent calc(100% - 1.25em), rgba(104, 115, 111, 0.18) calc(100% - 1.25em));
-    }
-
-    #entryScreen .form input[type="text"],
-    #entryScreen .form textarea,
-    #seriesEntryScreen .form input[type="text"],
-    #seriesEntryScreen .form textarea {
-      text-align: left;
-      background-image: linear-gradient(90deg, rgba(104, 115, 111, 0.18) 0.25em, transparent 0.25em);
-    }
-
-    #entryScreen .form input[type="date"],
-    #seriesEntryScreen .form input[type="date"] {
-      text-align: left;
-      font-variant-numeric: tabular-nums;
-      background-image: linear-gradient(90deg, rgba(104, 115, 111, 0.18) 0, rgba(104, 115, 111, 0.18) 2px, transparent 2px);
-    }
-
-    #entryScreen .form select,
-    #seriesEntryScreen .form select {
-      text-align: left;
-      background-image: linear-gradient(90deg, transparent calc(100% - 1.25em), rgba(104, 115, 111, 0.18) calc(100% - 1.25em));
-    }
-
-    #entryScreen .form input:focus,
-    #entryScreen .form textarea:focus,
-    #entryScreen .form select:focus,
-    #seriesEntryScreen .form input:focus,
-    #seriesEntryScreen .form textarea:focus,
-    #seriesEntryScreen .form select:focus {
-      background-color: rgba(104, 115, 111, 0.16);
-    }
-
-    html[data-theme="dark"] #entryScreen .form input:focus,
-    html[data-theme="dark"] #entryScreen .form textarea:focus,
-    html[data-theme="dark"] #entryScreen .form select:focus,
-    html[data-theme="dark"] #seriesEntryScreen .form input:focus,
-    html[data-theme="dark"] #seriesEntryScreen .form textarea:focus,
-    html[data-theme="dark"] #seriesEntryScreen .form select:focus {
-      background-color: rgba(237, 241, 239, 0.16);
     }
 
     #entryScreen .form input::placeholder,
     #entryScreen .form textarea::placeholder,
     #seriesEntryScreen .form input::placeholder,
     #seriesEntryScreen .form textarea::placeholder {
-      color: var(--muted);
-      opacity: 1;
+      color: var(--bg);
+      opacity: 0.65;
     }
 
     #entryScreen .ask-line,
@@ -380,6 +323,16 @@
     #entryScreen .ask-line input {
       background: transparent;
       padding: 0;
+    }
+
+    #entryScreen .form select,
+    #seriesEntryScreen .form select {
+      color-scheme: dark;
+    }
+
+    html[data-theme="dark"] #entryScreen .form select,
+    html[data-theme="dark"] #seriesEntryScreen .form select {
+      color-scheme: light;
     }
 
     .filter-area {
@@ -547,6 +500,81 @@
       text-align: left;
     }
 
+
+    .list-head .text-button.selected::before,
+    .list-head .text-button.selected::after {
+      content: "";
+    }
+
+    .list-head .text-button.selected {
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .list-head button,
+    .list-head button:last-child,
+    .list-head .text-button:nth-child(1),
+    .list-head .text-button:nth-child(2),
+    .list-head .text-button:nth-child(3) {
+      justify-self: stretch;
+      text-align: left;
+    }
+
+
+    .sort-mark {
+      display: inline-block;
+      width: 1em;
+      text-align: left;
+      transform-origin: center;
+    }
+
+    .sort-mark.desc {
+      transform: rotate(180deg);
+    }
+
+    .title-end-date {
+      color: var(--sub);
+      margin-left: 1em;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #techniqueLinks .text-button {
+      background: transparent;
+    }
+
+    #techniqueLinks .text-button.selected {
+      background: transparent !important;
+      color: var(--ink);
+    }
+
+    #techniqueLinks .text-button::before,
+    #techniqueLinks .text-button::after {
+      display: inline-block;
+      width: 0.55em;
+      text-align: center;
+    }
+
+    #techniqueLinks .text-button.selected::before {
+      content: "[";
+      color: var(--ink);
+    }
+
+    #techniqueLinks .text-button.selected::after {
+      content: "]";
+      color: var(--ink);
+    }
+
+    #techniqueLinks .text-button:not(.selected)::before {
+      content: "[";
+      color: var(--bg);
+    }
+
+    #techniqueLinks .text-button:not(.selected)::after {
+      content: "]";
+      color: var(--bg);
+    }
+
     .list-head {
       color: var(--muted);
       margin-bottom: 4px;
@@ -557,7 +585,7 @@
     }
 
     .list-head button:last-child {
-      text-align: right;
+      text-align: left;
     }
 
     .list-head .text-button {
@@ -576,7 +604,7 @@
 
     .list-head .text-button:nth-child(3) {
       justify-self: stretch;
-      text-align: right;
+      text-align: left;
     }
 
     .work {
@@ -661,14 +689,6 @@
       gap: 12px;
       flex-wrap: wrap;
       margin-top: 5px;
-    }
-
-    .list-end {
-      margin-top: 24px;
-      color: var(--muted);
-      text-align: center;
-      letter-spacing: 0.13em;
-      font-size: 12px;
     }
 
     .empty {
@@ -904,6 +924,91 @@
       justify-self: start;
     }
 
+
+    #techniqueLinks {
+      gap: 0 4px;
+    }
+
+    #techniqueLinks .text-button {
+      font-family: "Courier New", Monaco, Menlo, Consolas, monospace;
+      letter-spacing: 0;
+      padding: 0 0.25em;
+      background: transparent;
+      color: var(--sub);
+      white-space: pre;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #techniqueLinks .text-button::before {
+      content: "[ ";
+      color: var(--bg);
+    }
+
+    #techniqueLinks .text-button::after {
+      content: " ]";
+      color: var(--bg);
+    }
+
+    #techniqueLinks .text-button.selected {
+      color: var(--invert-ink);
+      background: var(--invert-bg) !important;
+    }
+
+    #techniqueLinks .text-button.selected::before {
+      content: "[ ";
+      color: var(--invert-ink);
+    }
+
+    #techniqueLinks .text-button.selected::after {
+      content: " ]";
+      color: var(--invert-ink);
+    }
+
+    html[data-theme="dark"] #techniqueLinks .text-button::before,
+    html[data-theme="dark"] #techniqueLinks .text-button::after {
+      color: var(--bg);
+    }
+
+
+    #techniqueLinks {
+      gap: 0 4px;
+    }
+
+    #techniqueLinks .text-button {
+      font-family: inherit !important;
+      letter-spacing: inherit;
+      padding: 0 0.65em;
+      background: transparent;
+      color: var(--sub);
+      white-space: nowrap;
+      font-variant-numeric: normal;
+    }
+
+    #techniqueLinks .text-button::before,
+    #techniqueLinks .text-button::after,
+    #techniqueLinks .text-button.selected::before,
+    #techniqueLinks .text-button.selected::after,
+    #techniqueLinks .text-button:not(.selected)::before,
+    #techniqueLinks .text-button:not(.selected)::after {
+      content: "" !important;
+      display: none !important;
+    }
+
+    #techniqueLinks .text-button.selected {
+      color: var(--invert-ink);
+      background: var(--invert-bg) !important;
+    }
+
+
+
+
+    .list-head .text-button:nth-child(3) {
+      text-align: left !important;
+      justify-self: stretch;
+      padding-left: max(0px, calc(100% - 10ch));
+      white-space: nowrap;
+    }
+
     @media (max-width: 420px) {
       .topbar {
         grid-template-columns: minmax(0, 1fr) max-content;
@@ -921,7 +1026,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.7</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -960,7 +1065,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.7</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1081,7 +1186,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.7</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1120,7 +1225,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.3</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.7</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1209,14 +1314,14 @@
     const LEGACY_STATUS_MAP = {
       "制作中": { productionStatus: "制作中", managementStatus: "保管中" },
       "完成": { productionStatus: "完成", managementStatus: "保管中" },
-      "展示中": { productionStatus: "完成", managementStatus: "保管中" },
-      "販売中": { productionStatus: "完成", managementStatus: "保管中" },
+      "保管中": { productionStatus: "完成", managementStatus: "保管中" },
+      "保管中": { productionStatus: "完成", managementStatus: "保管中" },
       "売約済": { productionStatus: "完成", managementStatus: "売却済" },
       "売却済": { productionStatus: "完成", managementStatus: "売却済" },
       "売却済み": { productionStatus: "完成", managementStatus: "売却済" },
       "譲渡済": { productionStatus: "完成", managementStatus: "譲渡済" },
       "非売": { productionStatus: "完成", managementStatus: "保管中" },
-      "非売品": { productionStatus: "完成", managementStatus: "保管中" },
+      "保管中": { productionStatus: "完成", managementStatus: "保管中" },
       "保管中": { productionStatus: "完成", managementStatus: "保管中" },
       "貸出中": { productionStatus: "完成", managementStatus: "貸出中" },
       "手放し済み": { productionStatus: "完成", managementStatus: "譲渡済" },
@@ -1991,7 +2096,7 @@
       };
       Object.keys(marks).forEach(key => {
         if (!marks[key]) return;
-        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? "△" : "▽") : "";
+        marks[key].textContent = sortKey === key ? (sortDirection === "asc" ? "↓" : "↑") : "";
         marks[key].parentElement.classList.toggle("selected", sortKey === key);
       });
     }
@@ -2441,7 +2546,7 @@
             </div>
           </article>
         `;
-      }).join("") + '<div class="list-end">END</div>';
+      }).join("");
     }
 
     function render() {
@@ -2643,7 +2748,7 @@
             </div>
           </article>
         `;
-      }).join("") + '<div class="list-end">END</div>';
+      }).join("");
     }
 
     window.toggleSeries = function(id) {
@@ -2845,7 +2950,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.6.3",
+        version: "minimal-text-v0.6.7",
         exportedAt: nowIso(),
         works,
         seriesRecords,
