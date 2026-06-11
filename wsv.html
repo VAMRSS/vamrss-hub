@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.8.0</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.8.1</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -632,50 +632,44 @@
 
 
 
+
     .work-title {
       position: relative;
       min-width: 0;
       overflow: hidden;
       white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .work-title .title-scroll {
-      display: inline-block;
+      display: inline;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       vertical-align: top;
-      will-change: transform;
     }
 
-    .work-summary.is-overflow .title-scroll {
+    .work.open .work-summary {
+      align-items: start;
+    }
+
+    .work.open .work-title {
+      overflow: visible;
+      white-space: normal;
+      text-overflow: clip;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .work.open .work-title .title-scroll {
+      display: inline;
       max-width: none;
-      padding-right: 2em;
-      animation: title-marquee var(--title-duration, 9s) linear infinite;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
     }
 
-    @keyframes title-marquee {
-      0% {
-        transform: translateX(0);
-      }
-      15% {
-        transform: translateX(0);
-      }
-      85% {
-        transform: translateX(calc(-1 * var(--title-distance, 0px)));
-      }
-      100% {
-        transform: translateX(calc(-1 * var(--title-distance, 0px)));
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .work-summary.is-overflow .title-scroll {
-        animation: none;
-        max-width: 100%;
-        text-overflow: ellipsis;
-      }
     }
 
     }
@@ -1091,7 +1085,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.8.0</div>
+    <div class="fixed-version-mark">v0.8.1</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -2638,28 +2632,6 @@
 
 
 
-    function updateTitleMarquee() {
-      document.querySelectorAll(".work-summary").forEach(summary => {
-        const title = summary.querySelector(".work-title");
-        const scroll = summary.querySelector(".title-scroll");
-        if (!title || !scroll) return;
-
-        summary.classList.remove("is-overflow");
-        scroll.style.removeProperty("--title-distance");
-        scroll.style.removeProperty("--title-duration");
-
-        const titleWidth = title.clientWidth;
-        const scrollWidth = scroll.scrollWidth;
-        const distance = Math.max(0, scrollWidth - titleWidth);
-
-        if (distance > 1) {
-          summary.classList.add("is-overflow");
-          scroll.style.setProperty("--title-distance", distance + "px");
-          scroll.style.setProperty("--title-duration", Math.max(7, Math.min(18, distance / 12 + 6)) + "s");
-        }
-      });
-    }
-
 
     function renderWorksList() {
       renderFilters();
@@ -2956,7 +2928,6 @@
           </article>
         `;
       }).join("");
-      requestAnimationFrame(updateTitleMarquee);
     }
 
     window.toggleSeries = function(id) {
@@ -3149,7 +3120,6 @@
     });
 
     searchInput.addEventListener("input", render);
-    window.addEventListener("resize", updateTitleMarquee);
 
     document.getElementById("addSeriesButton").addEventListener("click", () => addOption("series"));
     document.getElementById("addExhibitionButton").addEventListener("click", () => addOption("exhibition"));
@@ -3428,7 +3398,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.8.0",
+        version: "minimal-text-v0.8.1",
         exportedAt: nowIso(),
         works,
         seriesRecords,
