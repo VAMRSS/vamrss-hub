@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.9.8</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.9.9</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1568,11 +1568,38 @@
       opacity: 1 !important;
     }
 
+  
+    /* TOP list/date and version position adjustment */
+    .fixed-version-mark {
+      position: fixed !important;
+      right: 20px !important;
+      bottom: max(12px, env(safe-area-inset-bottom)) !important;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .work-summary {
+      padding-right: 0 !important;
+    }
+
+    .work-year {
+      justify-self: end !important;
+      text-align: right !important;
+      min-width: 0;
+    }
+
+    .works-list,
+    .work-list,
+    #worksList,
+    #seriesList {
+      padding-bottom: 32px;
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.9.8</div>
+    <div class="fixed-version-mark">v0.9.9</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -3942,7 +3969,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.9.8",
+        version: "minimal-text-v0.9.9",
         exportedAt: nowIso(),
         works,
         seriesRecords,
