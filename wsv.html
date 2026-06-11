@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.8.7</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.8.8</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -728,6 +728,9 @@
     }
 
 
+    }
+
+
     .entry-layout {
       display: grid;
       gap: 10px;
@@ -744,8 +747,18 @@
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
-    .entry-row.cols-3 {
-      grid-template-columns: 0.65fr 1fr 1fr;
+    .entry-workno-technique {
+      grid-template-columns: 100px minmax(0, 1fr);
+    }
+
+    .entry-dates {
+      grid-template-columns: 100px 100px;
+      justify-content: start;
+    }
+
+    .entry-price {
+      grid-template-columns: 100px minmax(0, 1fr) auto;
+      align-items: end;
     }
 
     .inline-add {
@@ -756,16 +769,26 @@
       min-width: 0;
     }
 
-    .price-row .ask-line {
+    .price-row .ask-line,
+    .entry-price .ask-line {
       min-height: 24px;
       align-items: center;
       display: flex;
       gap: 6px;
+      white-space: nowrap;
+    }
+
+    .entry-hidden {
+      display: none;
+    }
+
+    input[type="date"] {
+      text-align: left;
     }
 
     @media (max-width: 360px) {
-      .entry-row.cols-3 {
-        grid-template-columns: 0.7fr 1fr 1fr;
+      .entry-price {
+        grid-template-columns: 100px minmax(0, 1fr) auto;
       }
     }
 
@@ -1110,7 +1133,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.8.7</div>
+    <div class="fixed-version-mark">v0.8.8</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1161,7 +1184,7 @@
 
       <form id="workForm" class="form">
         <div class="entry-layout">
-          <div class="entry-row cols-2">
+          <div class="entry-row entry-workno-technique">
             <div class="field">
               <label for="workNo"># / 作品番号</label>
               <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
@@ -1179,13 +1202,13 @@
             </div>
           </div>
 
-          <div class="entry-row cols-2">
+          <div class="entry-row entry-dates">
             <div class="field">
-              <label for="year">Start Date / 制作開始日</label>
+              <label for="year">Start / 制作開始日</label>
               <input id="year" type="date" placeholder="">
             </div>
             <div class="field">
-              <label for="completedDate">Completed / 完成日</label>
+              <label for="completedDate">Done / 完成日</label>
               <input id="completedDate" type="date" placeholder="">
             </div>
           </div>
@@ -1215,10 +1238,17 @@
             </div>
           </div>
 
-          <div class="entry-row">
+          <div class="entry-row" id="locationField">
             <div class="field">
               <label for="location">Location / 保管場所</label>
               <select id="location"></select>
+            </div>
+          </div>
+
+          <div class="entry-row" id="ownerField">
+            <div class="field">
+              <label for="owner">Owner / 所蔵先</label>
+              <input id="owner" type="text" placeholder="">
             </div>
           </div>
 
@@ -1240,38 +1270,28 @@
             </div>
           </div>
 
-          <div class="entry-row cols-3 price-row">
+          <div class="entry-row entry-price">
             <div class="field">
-              <label for="priceAsk">ASK</label>
-              <label class="ask-line"><input id="priceAsk" type="checkbox"> ASK</label>
+              <label for="cost">Cost / コスト</label>
+              <input id="cost" type="number" min="0" inputmode="numeric" placeholder="">
             </div>
             <div class="field">
               <label for="price">Sale Price / 販売価格</label>
               <input id="price" type="number" min="0" inputmode="numeric" placeholder="">
             </div>
             <div class="field">
-              <label for="cost">Cost / 原価</label>
-              <input id="cost" type="number" min="0" inputmode="numeric" placeholder="">
+              <label for="priceAsk">ASK</label>
+              <label class="ask-line"><input id="priceAsk" type="checkbox"> ASK</label>
             </div>
           </div>
 
-          <div class="entry-row">
-            <div class="field">
-              <label for="owner">Owner / 所蔵先</label>
-              <input id="owner" type="text" placeholder="">
-            </div>
-          </div>
-
-          <div class="entry-row">
+          <div class="entry-row cols-2">
             <div class="field">
               <label for="exhibitionSelect">Exhibition History / 展示履歴</label>
               <select id="exhibitionSelect"></select>
               <button class="text-button active" type="button" id="addExhibitionToWorkButton" onclick="addSelectedExhibition()">ADD SELECTED</button>
               <div id="selectedExhibitionList" class="selected-list"></div>
             </div>
-          </div>
-
-          <div class="entry-row">
             <div class="field">
               <label for="exhibitionInlineInput">Exhibition Add / 展示履歴ADD</label>
               <div class="inline-add">
@@ -2523,6 +2543,22 @@
       return value === "" || value == null ? "" : yen.format(Number(value) || 0);
     }
 
+
+    function updateManagementDependentFields() {
+      const status = fields.managementStatus ? fields.managementStatus.value : "";
+      const locationField = document.getElementById("locationField");
+      const ownerField = document.getElementById("ownerField");
+
+      if (locationField) {
+        locationField.classList.toggle("entry-hidden", status !== "保管中");
+      }
+
+      if (ownerField) {
+        ownerField.classList.toggle("entry-hidden", status === "保管中" || status === "処分済");
+      }
+    }
+
+
     function resetForm() {
       editingId = null;
       form.reset();
@@ -2537,6 +2573,7 @@
       fields.location.value = locations[0] || "";
       fields.productionStatus.value = "制作中";
       fields.managementStatus.value = "保管中";
+      updateManagementDependentFields();
       fields.priceAsk.checked = false;
       fields.price.disabled = false;
       document.getElementById("submitButton").textContent = "SAVE";
@@ -2578,8 +2615,8 @@
         price,
         priceAsk: fields.priceAsk.checked,
         cost,
-        location: fields.location.value,
-        owner: fields.owner.value.trim(),
+        location: fields.managementStatus.value === "保管中" ? fields.location.value : "",
+        owner: (fields.managementStatus.value !== "保管中" && fields.managementStatus.value !== "処分済") ? fields.owner.value.trim() : "",
         exhibitionHistory: currentExhibitions.join("\n"),
         memo: fields.memo.value.trim(),
         createdAt: existing.createdAt || nowIso(),
@@ -2811,6 +2848,7 @@
       const statuses = normalizeStatuses(w);
       fields.productionStatus.value = statuses.productionStatus;
       fields.managementStatus.value = statuses.managementStatus;
+      updateManagementDependentFields();
 
       renderCatalogSelect(fields.technique, techniques, w.technique || "");
       fields.materials.value = w.materials || "";
@@ -2842,6 +2880,8 @@
       if (editingId === id) resetForm();
       render();
     };
+
+    fields.managementStatus.addEventListener("change", updateManagementDependentFields);
 
     fields.priceAsk.addEventListener("change", () => {
       fields.price.disabled = fields.priceAsk.checked;
@@ -3449,7 +3489,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.8.7",
+        version: "minimal-text-v0.8.8",
         exportedAt: nowIso(),
         works,
         seriesRecords,
