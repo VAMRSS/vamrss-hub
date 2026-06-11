@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v1.0.1</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0.2</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1633,7 +1633,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v1.0.1</div>
+    <div class="fixed-version-mark">v1.0.2</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -4003,15 +4003,27 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v1.0.1",
+        schemaVersion: 2,
+        version: "minimal-text-v1.0.2",
         exportedAt: nowIso(),
-        works,
-        seriesRecords,
-        categories,
-        seriesOptions,
-        exhibitionOptions,
-        techniques,
-        locations
+        data: {
+          works: works.map(w => ({ ...w })),
+          seriesRecords: seriesRecords.map(s => ({ ...s })),
+          catalogs: {
+            categories: [...categories],
+            seriesOptions: [...seriesOptions],
+            exhibitionOptions: [...exhibitionOptions],
+            techniques: [...techniques],
+            locations: [...locations]
+          }
+        },
+        works: works.map(w => ({ ...w })),
+        seriesRecords: seriesRecords.map(s => ({ ...s })),
+        categories: [...categories],
+        seriesOptions: [...seriesOptions],
+        exhibitionOptions: [...exhibitionOptions],
+        techniques: [...techniques],
+        locations: [...locations]
       };
 
       const now = new Date();
@@ -4054,11 +4066,15 @@
       reader.onload = () => {
         try {
           const data = JSON.parse(reader.result);
-          const importedWorks = Array.isArray(data) ? data : data.works;
-          const importedSeriesRecords = Array.isArray(data.seriesRecords) ? data.seriesRecords : [];
+          const payload = data && data.data ? data.data : data;
+          const importedWorks = Array.isArray(data) ? data : (payload.works || data.works);
+          const importedSeriesRecords = Array.isArray(payload.seriesRecords) ? payload.seriesRecords : (Array.isArray(data.seriesRecords) ? data.seriesRecords : []);
+          const importedCatalogs = payload.catalogs || data.catalogs || {};
           if (!Array.isArray(importedWorks)) throw new Error("Invalid format");
 
           if (!confirm(`${importedWorks.length}件の作品データで現在のWSVを上書きしますか？`)) return;
+
+          const now = nowIso();
 
           const seenNos = new Set();
           works = importedWorks.map((w, index) => {
@@ -4074,11 +4090,14 @@
             }
             seenNos.add(workNo);
 
+            const rawSeriesNo = normalizeWorkNo(w.seriesNo);
+
             return {
               id: w.id || createId(),
               workNo,
               title: String(w.title || "Untitled"),
               completedDate: String(w.completedDate || ""),
+              seriesNo: rawSeriesNo,
               series: String(w.series || ""),
               year: normalizeProductionDate(w),
               productionStatus: statuses.productionStatus,
@@ -4095,8 +4114,8 @@
               owner: String(w.owner || ""),
               exhibitionHistory: normalizeExhibitions(w.exhibitionHistory).join("\n"),
               memo: String(w.memo || ""),
-              createdAt: w.createdAt || nowIso(),
-              updatedAt: w.updatedAt || nowIso()
+              createdAt: w.createdAt || now,
+              updatedAt: w.updatedAt || now
             };
           });
 
@@ -4114,19 +4133,39 @@
             return {
               id: s.id || createId(),
               seriesNo,
+              code: normalizeSeriesCode(s.code || s.seriesCode || ""),
               title: String(s.title || "Untitled Series"),
               startDate: String(s.startDate || ""),
               description: String(s.description || ""),
-              createdAt: s.createdAt || nowIso(),
-              updatedAt: s.updatedAt || nowIso()
+              createdAt: s.createdAt || now,
+              updatedAt: s.updatedAt || now
             };
           });
 
-          categories = cleanOptions([...(data.categories || categories), ...works.map(w => w.category)], DEFAULT_CATEGORIES);
-          techniques = cleanOptions([...(data.techniques || techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
-          locations = cleanOptions([...(data.locations || locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
-          seriesOptions = cleanOptions([...(data.seriesOptions || data.series || seriesOptions), ...works.map(w => w.series)], DEFAULT_SERIES);
-          exhibitionOptions = cleanOptions([...(data.exhibitionOptions || data.exhibitions || exhibitionOptions), ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
+          works = works.map(w => {
+            if (normalizeWorkNo(w.seriesNo)) {
+              const linked = getSeriesRecordByNo(w.seriesNo);
+              return {
+                ...w,
+                series: linked ? linked.title : w.series
+              };
+            }
+            const linkedByTitle = getSeriesRecordByTitle(w.series);
+            if (linkedByTitle) {
+              return {
+                ...w,
+                seriesNo: normalizeWorkNo(linkedByTitle.seriesNo),
+                series: linkedByTitle.title
+              };
+            }
+            return w;
+          });
+
+          categories = cleanOptions([...(importedCatalogs.categories || data.categories || categories), ...works.map(w => w.category)], DEFAULT_CATEGORIES);
+          techniques = cleanOptions([...(importedCatalogs.techniques || data.techniques || techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
+          locations = cleanOptions([...(importedCatalogs.locations || data.locations || locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
+          seriesOptions = cleanOptions([...(importedCatalogs.seriesOptions || data.seriesOptions || data.series || seriesOptions), ...seriesRecords.map(s => s.title), ...works.map(w => w.series)], DEFAULT_SERIES);
+          exhibitionOptions = cleanOptions([...(importedCatalogs.exhibitionOptions || data.exhibitionOptions || data.exhibitions || exhibitionOptions), ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
 
           saveSettings();
           save();
@@ -4136,7 +4175,8 @@
           render();
           showScreen("works");
           alert("インポートが完了しました。");
-        } catch {
+        } catch (error) {
+          console.error(error);
           alert("JSONファイルを読み込めませんでした。");
         } finally {
           event.target.value = "";
