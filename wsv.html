@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.7.1</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.7.4</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1026,7 +1026,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1065,7 +1065,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1186,7 +1186,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1230,7 +1230,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.4</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1305,7 +1305,7 @@
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
     const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
     const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
-    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v4";
+    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v5";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
@@ -1342,6 +1342,7 @@
             "title": "WHO CURATED YOUR LUCK",
             "completedDate": "2023-06-12",
             "series": "VLNS",
+            "seriesNo": "0427",
             "year": "2023-04-08",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1363,6 +1364,7 @@
             "title": "LUCK INDEX",
             "completedDate": "2023-07-21",
             "series": "VLNS",
+            "seriesNo": "0427",
             "year": "2023-05-02",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1384,6 +1386,7 @@
             "title": "VLNS 幸運の入口",
             "completedDate": "2023-09-03",
             "series": "VLNS",
+            "seriesNo": "0427",
             "year": "2023-06-11",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1405,6 +1408,7 @@
             "title": "CURATED FIELD",
             "completedDate": "2024-02-14",
             "series": "VLNS",
+            "seriesNo": "0427",
             "year": "2023-12-20",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1426,6 +1430,7 @@
             "title": "Archive Tray 記憶の皿",
             "completedDate": "2023-11-08",
             "series": "VNBX",
+            "seriesNo": "1283",
             "year": "2023-09-22",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1447,6 +1452,7 @@
             "title": "BASE MODULE",
             "completedDate": "2024-01-30",
             "series": "VNBX",
+            "seriesNo": "1283",
             "year": "2023-10-13",
             "productionStatus": "完成",
             "managementStatus": "売却済",
@@ -1468,6 +1474,7 @@
             "title": "Quiet Sign 静かな警告",
             "completedDate": "2024-04-18",
             "series": "SIGN",
+            "seriesNo": "2710",
             "year": "2024-01-29",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1489,6 +1496,7 @@
             "title": "DO NOT TOUCH LIGHT",
             "completedDate": "2024-05-05",
             "series": "SIGN",
+            "seriesNo": "2710",
             "year": "2024-02-02",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1510,6 +1518,7 @@
             "title": "沈黙する看板",
             "completedDate": "2024-06-17",
             "series": "SIGN",
+            "seriesNo": "2710",
             "year": "2024-03-12",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1531,6 +1540,7 @@
             "title": "Drawing Cloud 線の雲",
             "completedDate": "2024-08-09",
             "series": "DRAWING",
+            "seriesNo": "3902",
             "year": "2024-05-16",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1552,6 +1562,7 @@
             "title": "索引のための線",
             "completedDate": "2024-09-11",
             "series": "DRAWING",
+            "seriesNo": "3902",
             "year": "2024-06-03",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1573,6 +1584,7 @@
             "title": "CATALOG STUDY A",
             "completedDate": "2025-03-04",
             "series": "ARCHIVE",
+            "seriesNo": "5632",
             "year": "2025-02-12",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1594,6 +1606,7 @@
             "title": "LISTING TERMINAL",
             "completedDate": "2025-04-25",
             "series": "ARCHIVE",
+            "seriesNo": "5632",
             "year": "2025-02-27",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1615,6 +1628,7 @@
             "title": "誰かの幸運",
             "completedDate": "2025-06-02",
             "series": "Single",
+            "seriesNo": "7106",
             "year": "2025-05-18",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1636,6 +1650,7 @@
             "title": "Temporary Light 仮設の光",
             "completedDate": "2025-08-19",
             "series": "Single",
+            "seriesNo": "7106",
             "year": "2025-07-20",
             "productionStatus": "完成",
             "managementStatus": "貸出中",
@@ -1657,6 +1672,7 @@
             "title": "SIGNAL BOX",
             "completedDate": "2026-02-01",
             "series": "DEVICE",
+            "seriesNo": "8401",
             "year": "2026-01-12",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1678,6 +1694,7 @@
             "title": "DEVICE PRAYER 装置の祈り",
             "completedDate": "2026-03-15",
             "series": "DEVICE",
+            "seriesNo": "8401",
             "year": "2026-01-29",
             "productionStatus": "制作中",
             "managementStatus": "保管中",
@@ -1699,6 +1716,7 @@
             "title": "NIGHT WINDOW",
             "completedDate": "2026-04-10",
             "series": "PHOTO",
+            "seriesNo": "9635",
             "year": "2026-03-24",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1720,6 +1738,7 @@
             "title": "手前の風景",
             "completedDate": "2026-05-28",
             "series": "PHOTO",
+            "seriesNo": "9635",
             "year": "2026-04-03",
             "productionStatus": "完成",
             "managementStatus": "保管中",
@@ -1741,6 +1760,7 @@
             "title": "GREEN ROOM",
             "completedDate": "2026-06-20",
             "series": "Single",
+            "seriesNo": "7106",
             "year": "2026-05-09",
             "productionStatus": "制作中",
             "managementStatus": "保管中",
@@ -1939,6 +1959,29 @@
       return String(value || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
     }
 
+
+    function getSeriesRecordByNo(seriesNo) {
+      const no = normalizeWorkNo(seriesNo);
+      return seriesRecords.find(s => normalizeWorkNo(s.seriesNo) === no) || null;
+    }
+
+    function getSeriesRecordByTitle(title) {
+      return seriesRecords.find(s => String(s.title || "") === String(title || "")) || null;
+    }
+
+    function getSeriesRecordForWork(work) {
+      if (!work) return null;
+      return getSeriesRecordByNo(work.seriesNo) || getSeriesRecordByTitle(work.series) || null;
+    }
+
+    function seriesLabel(series) {
+      if (!series) return "Single";
+      const code = normalizeSeriesCode(series.code || "");
+      const title = String(series.title || "").trim();
+      if (code && title) return code + " / " + title;
+      return code || title || "Untitled Series";
+    }
+
     function normalizeWorkNo(value) {
       const digits = String(value || "").replace(/\D/g, "");
       return digits ? digits.padStart(4, "0").slice(-4) : "";
@@ -2033,6 +2076,23 @@
       localStorage.setItem(EXHIBITION_STORAGE_KEY, JSON.stringify(exhibitionOptions));
     }
 
+
+    function migrateWorkSeriesNo() {
+      let changed = false;
+      works = works.map(w => {
+        if (normalizeWorkNo(w.seriesNo)) return w;
+        const series = getSeriesRecordByTitle(w.series);
+        if (!series) return w;
+        changed = true;
+        return {
+          ...w,
+          seriesNo: normalizeWorkNo(series.seriesNo),
+          series: series.title || w.series
+        };
+      });
+      if (changed) save();
+    }
+
     function seedIfEmpty() {
       let changed = false;
 
@@ -2070,6 +2130,40 @@
       }
     }
 
+
+    function renderSeriesSelect(select, selected = "") {
+      if (!select) return;
+
+      const selectedNo = normalizeWorkNo(selected);
+      const selectedRecord = getSeriesRecordByNo(selectedNo) || getSeriesRecordByTitle(selected);
+
+      select.innerHTML = "";
+      const fragment = document.createDocumentFragment();
+
+      const singleOption = document.createElement("option");
+      singleOption.value = "";
+      singleOption.textContent = "Single";
+      fragment.appendChild(singleOption);
+
+      seriesRecords
+        .slice()
+        .sort((a, b) => normalizeWorkNo(a.seriesNo).localeCompare(normalizeWorkNo(b.seriesNo), "ja", { numeric: true }))
+        .forEach(series => {
+          const option = document.createElement("option");
+          option.value = normalizeWorkNo(series.seriesNo);
+          option.textContent = seriesLabel(series);
+          fragment.appendChild(option);
+        });
+
+      select.appendChild(fragment);
+
+      if (selectedRecord) {
+        select.value = normalizeWorkNo(selectedRecord.seriesNo);
+      } else {
+        select.value = selectedNo || "";
+      }
+    }
+
     function renderCatalogSelect(select, items, selected = "") {
       const options = [...items];
       if (selected && !options.includes(selected)) options.unshift(selected);
@@ -2080,7 +2174,7 @@
     function setupOptions() {
       fields.productionStatus.innerHTML = PRODUCTION_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
       fields.managementStatus.innerHTML = MANAGEMENT_STATUSES.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES));
+      renderSeriesSelect(fields.series, fields.series.value);
       renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
@@ -2337,11 +2431,11 @@
     function resetForm() {
       editingId = null;
       form.reset();
-      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(w => w.series)], DEFAULT_SERIES));
+      renderSeriesSelect(fields.series, fields.series.value);
       renderCatalogSelect(fields.exhibitionSelect, cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS));
       renderCatalogSelect(fields.technique, techniques);
       renderCatalogSelect(fields.location, locations);
-      fields.series.value = seriesOptions[0] || "Single";
+      fields.series.value = "";
       fields.exhibitionSelect.value = exhibitionOptions[0] || "None";
       setCurrentExhibitions([]);
       fields.technique.value = techniques[0] || "";
@@ -2376,7 +2470,8 @@
         workNo,
         title: fields.title.value.trim(),
         completedDate: fields.completedDate.value,
-        series: fields.series.value.trim(),
+        seriesNo: normalizeWorkNo(fields.series.value),
+        series: getSeriesRecordByNo(fields.series.value)?.title || "Single",
         year: fields.year.value.trim(),
         productionStatus: fields.productionStatus.value,
         managementStatus: fields.managementStatus.value,
@@ -2513,6 +2608,8 @@
             w.workNo,
             w.title,
             w.completedDate,
+            w.seriesNo,
+            seriesLabel(getSeriesRecordForWork(w)),
             w.series,
             normalizeProductionDate(w),
             w.completedDate,
@@ -2609,7 +2706,8 @@
       fields.workNo.value = normalizeWorkNo(w.workNo);
       fields.title.value = w.title || "";
       fields.completedDate.value = w.completedDate || "";
-      renderCatalogSelect(fields.series, cleanOptions([...seriesOptions, ...works.map(item => item.series)], DEFAULT_SERIES), w.series || "Single");
+      renderSeriesSelect(fields.series, normalizeWorkNo(w.seriesNo) || getSeriesRecordByTitle(w.series)?.seriesNo || "");
+      fields.series.value = normalizeWorkNo(w.seriesNo) || getSeriesRecordByTitle(w.series)?.seriesNo || "";
       fields.year.value = normalizeProductionDate(w);
 
       const statuses = normalizeStatuses(w);
@@ -2745,7 +2843,7 @@
       workList.innerHTML = filtered.map(s => {
         const no = normalizeWorkNo(s.seriesNo);
         const relatedWorks = works
-          .filter(w => String(w.series || "") === String(s.title || ""))
+          .filter(w => normalizeWorkNo(w.seriesNo) === normalizeWorkNo(s.seriesNo) || String(w.series || "") === String(s.title || ""))
           .sort(compareWorks);
 
         return `
@@ -2856,6 +2954,8 @@
         saveSettings();
       }
 
+      works = works.map(w => normalizeWorkNo(w.seriesNo) === normalizeWorkNo(seriesRecords.find(s => s.id === editingSeriesId)?.seriesNo || "") ? { ...w, series: seriesRecords.find(s => s.id === editingSeriesId)?.title || w.series, updatedAt: nowIso() } : w);
+      save();
       saveSeriesRecords();
       setupOptions();
       resetSeriesForm();
@@ -2991,7 +3091,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.7.1",
+        version: "minimal-text-v0.7.4",
         exportedAt: nowIso(),
         works,
         seriesRecords,
@@ -3149,6 +3249,7 @@
     loadSeriesRecords();
     loadSettings();
     seedIfEmpty();
+    migrateWorkSeriesNo();
     setupOptions();
     resetForm();
     resetSeriesForm();
