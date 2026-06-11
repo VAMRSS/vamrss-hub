@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.7.0</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.7.1</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1026,7 +1026,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1065,7 +1065,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1186,7 +1186,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1230,7 +1230,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.1</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1305,7 +1305,7 @@
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
     const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
     const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
-    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v3";
+    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v4";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
@@ -2034,27 +2034,40 @@
     }
 
     function seedIfEmpty() {
-      if (works.length || seriesRecords.length) return;
-      seriesRecords = SAMPLE_SERIES_RECORDS.map((s, index) => ({
-        ...s,
-        id: "sample-series-" + String(index + 1).padStart(3, "0"),
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      }));
-      works = SAMPLE_WORKS.map((w, index) => ({
-        ...w,
-        id: "sample-" + String(index + 1).padStart(3, "0"),
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      }));
+      let changed = false;
+
+      if (!seriesRecords.length) {
+        seriesRecords = SAMPLE_SERIES_RECORDS.map((s, index) => ({
+          ...s,
+          id: "sample-series-" + String(index + 1).padStart(3, "0"),
+          code: normalizeSeriesCode(s.code || ""),
+          createdAt: nowIso(),
+          updatedAt: nowIso()
+        }));
+        changed = true;
+      }
+
+      if (!works.length) {
+        works = SAMPLE_WORKS.map((w, index) => ({
+          ...w,
+          id: "sample-" + String(index + 1).padStart(3, "0"),
+          createdAt: nowIso(),
+          updatedAt: nowIso()
+        }));
+        changed = true;
+      }
+
       categories = cleanOptions([...categories, ...works.map(w => w.category)], DEFAULT_CATEGORIES);
       techniques = cleanOptions([...techniques, ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
       locations = cleanOptions([...locations, ...works.map(w => w.location)], DEFAULT_LOCATIONS);
       seriesOptions = cleanOptions([...seriesOptions, ...seriesRecords.map(s => s.title), ...works.map(w => w.series)], DEFAULT_SERIES);
       exhibitionOptions = cleanOptions([...exhibitionOptions, ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
-      saveSettings();
-      saveSeriesRecords();
-      save();
+
+      if (changed) {
+        saveSettings();
+        saveSeriesRecords();
+        save();
+      }
     }
 
     function renderCatalogSelect(select, items, selected = "") {
@@ -2978,7 +2991,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.7.0",
+        version: "minimal-text-v0.7.1",
         exportedAt: nowIso(),
         works,
         seriesRecords,
