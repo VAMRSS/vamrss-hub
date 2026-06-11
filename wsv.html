@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.7.9</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.8.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -631,6 +631,7 @@
     }
 
 
+
     .work-title {
       position: relative;
       min-width: 0;
@@ -645,39 +646,38 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       vertical-align: top;
+      will-change: transform;
     }
 
-    .work-summary:hover .title-scroll,
-    .work-summary:focus-visible .title-scroll,
-    .work-summary.auto-scroll .title-scroll {
+    .work-summary.is-overflow .title-scroll {
       max-width: none;
       padding-right: 2em;
-      animation: title-marquee 9s linear infinite;
+      animation: title-marquee var(--title-duration, 9s) linear infinite;
     }
 
     @keyframes title-marquee {
       0% {
         transform: translateX(0);
       }
-      18% {
+      15% {
         transform: translateX(0);
       }
-      82% {
-        transform: translateX(calc(-100% + var(--title-window, 100%)));
+      85% {
+        transform: translateX(calc(-1 * var(--title-distance, 0px)));
       }
       100% {
-        transform: translateX(calc(-100% + var(--title-window, 100%)));
+        transform: translateX(calc(-1 * var(--title-distance, 0px)));
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .work-summary:hover .title-scroll,
-      .work-summary:focus-visible .title-scroll,
-      .work-summary.auto-scroll .title-scroll {
+      .work-summary.is-overflow .title-scroll {
         animation: none;
         max-width: 100%;
         text-overflow: ellipsis;
       }
+    }
+
     }
 
 
@@ -1091,7 +1091,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.7.9</div>
+    <div class="fixed-version-mark">v0.8.0</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -2637,17 +2637,25 @@
 
 
 
+
     function updateTitleMarquee() {
       document.querySelectorAll(".work-summary").forEach(summary => {
         const title = summary.querySelector(".work-title");
         const scroll = summary.querySelector(".title-scroll");
         if (!title || !scroll) return;
-        const overflow = scroll.scrollWidth > title.clientWidth + 1;
-        summary.classList.toggle("auto-scroll", overflow);
-        if (overflow) {
-          title.style.setProperty("--title-window", title.clientWidth + "px");
-        } else {
-          title.style.removeProperty("--title-window");
+
+        summary.classList.remove("is-overflow");
+        scroll.style.removeProperty("--title-distance");
+        scroll.style.removeProperty("--title-duration");
+
+        const titleWidth = title.clientWidth;
+        const scrollWidth = scroll.scrollWidth;
+        const distance = Math.max(0, scrollWidth - titleWidth);
+
+        if (distance > 1) {
+          summary.classList.add("is-overflow");
+          scroll.style.setProperty("--title-distance", distance + "px");
+          scroll.style.setProperty("--title-duration", Math.max(7, Math.min(18, distance / 12 + 6)) + "s");
         }
       });
     }
@@ -2948,7 +2956,7 @@
           </article>
         `;
       }).join("");
-      setTimeout(updateTitleMarquee, 0);
+      requestAnimationFrame(updateTitleMarquee);
     }
 
     window.toggleSeries = function(id) {
@@ -3420,7 +3428,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.7.9",
+        version: "minimal-text-v0.8.0",
         exportedAt: nowIso(),
         works,
         seriesRecords,
