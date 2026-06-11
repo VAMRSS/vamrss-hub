@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.9.9</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1595,11 +1595,58 @@
       padding-bottom: 32px;
     }
 
+  
+    /* Mono font for ledger/control information */
+    :root {
+      --mono: "SF Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono", ui-monospace, monospace;
+    }
+
+    .fixed-version-mark,
+    .text-nav,
+    .text-button,
+    .section-title,
+    .list-header,
+    .work-no,
+    .work-year,
+    .field label,
+    .form input:not(#title):not(#memo):not(#seriesInlineInput):not(#exhibitionInlineInput),
+    .form select:not(#series),
+    #dataScreen input,
+    #dataScreen select,
+    #dataScreen .option-action,
+    #dataScreen .file-label,
+    #dataScreen .hint,
+    .selected-list,
+    .font-sampler-title {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    .work-title,
+    .work-title .title-scroll,
+    #title,
+    #memo,
+    #series,
+    #seriesInlineInput,
+    #exhibitionInlineInput,
+    #dataScreen .option-name,
+    .work-detail,
+    .work-detail p,
+    .work-detail .detail-value,
+    .series-detail,
+    .series-detail p,
+    .series-detail .detail-value,
+    textarea {
+      font-family: var(--font);
+      letter-spacing: normal;
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.9.9</div>
+    <div class="fixed-version-mark">v1.0.0</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -3969,7 +4016,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.9.9",
+        version: "minimal-text-v1.0.0",
         exportedAt: nowIso(),
         works,
         seriesRecords,
