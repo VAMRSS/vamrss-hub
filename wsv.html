@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.9.6</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.9.8</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1543,11 +1543,36 @@
       box-sizing: border-box !important;
     }
 
+  
+    /* ENTRY layout adjustment */
+    .entry-workno {
+      grid-template-columns: 100px;
+      justify-content: start;
+    }
+
+    .entry-technique {
+      grid-template-columns: 200px;
+      justify-content: start;
+    }
+
+    .entry-dates {
+      grid-template-columns: 130px 130px !important;
+      gap: 20px !important;
+      justify-content: start;
+    }
+
+  
+    .form input::placeholder,
+    .form textarea::placeholder {
+      color: var(--sub) !important;
+      opacity: 1 !important;
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.9.6</div>
+    <div class="fixed-version-mark">v0.9.8</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1598,11 +1623,14 @@
 
       <form id="workForm" class="form">
         <div class="entry-layout">
-          <div class="entry-row entry-workno-technique">
+          <div class="entry-row entry-workno">
             <div class="field">
               <label for="workNo"># / 作品番号</label>
               <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
             </div>
+          </div>
+
+          <div class="entry-row entry-technique">
             <div class="field">
               <label for="technique">Technique / 技法</label>
               <select id="technique"></select>
@@ -1680,9 +1708,9 @@
             <div class="field">
               <label>Dimensions / サイズ mm</label>
               <div class="three-grid">
-                <input id="sizeW" type="number" min="0" inputmode="numeric" placeholder="">
-                <input id="sizeH" type="number" min="0" inputmode="numeric" placeholder="">
-                <input id="sizeD" type="number" min="0" inputmode="numeric" placeholder="">
+                <input id="sizeW" type="number" min="0" inputmode="numeric" placeholder="H">
+                <input id="sizeH" type="number" min="0" inputmode="numeric" placeholder="W">
+                <input id="sizeD" type="number" min="0" inputmode="numeric" placeholder="D">
               </div>
             </div>
           </div>
@@ -3914,7 +3942,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.9.6",
+        version: "minimal-text-v0.9.8",
         exportedAt: nowIso(),
         works,
         seriesRecords,
