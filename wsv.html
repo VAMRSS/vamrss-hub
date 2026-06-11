@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.8.8</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.9.6</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -731,6 +731,9 @@
     }
 
 
+    }
+
+
     .entry-layout {
       display: grid;
       gap: 10px;
@@ -748,17 +751,27 @@
     }
 
     .entry-workno-technique {
-      grid-template-columns: 100px minmax(0, 1fr);
+      grid-template-columns: 100px 200px;
+      justify-content: start;
     }
 
     .entry-dates {
-      grid-template-columns: 100px 100px;
+      grid-template-columns: 130px 130px;
       justify-content: start;
     }
 
     .entry-price {
       grid-template-columns: 100px minmax(0, 1fr) auto;
       align-items: end;
+    }
+
+    .entry-exhibition {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .entry-add-selected {
+      align-self: end;
     }
 
     .inline-add {
@@ -782,13 +795,122 @@
       display: none;
     }
 
-    input[type="date"] {
+    .form input:not([type="checkbox"]),
+    .form textarea {
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .form select,
+    .form input[type="date"] {
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+
+    .form input[type="date"] {
       text-align: left;
     }
 
-    @media (max-width: 360px) {
-      .entry-price {
-        grid-template-columns: 100px minmax(0, 1fr) auto;
+    .form input:not([type="checkbox"]),
+    .form textarea,
+    .form select {
+      background: var(--bg) !important;
+      color: var(--ink);
+    }
+
+    .form input[type="date"] {
+      background: var(--bg) !important;
+      color: var(--ink);
+    }
+
+
+
+    .form input:not([type="checkbox"]),
+    .form textarea {
+      border-bottom-color: var(--ink) !important;
+    }
+
+    .form select,
+    .form input[type="date"] {
+      border-color: var(--ink) !important;
+    }
+
+
+    /* Readability-first form controls */
+    .form label {
+      color: var(--sub);
+    }
+
+    .form input:not([type="checkbox"]),
+    .form textarea,
+    .form select {
+      width: 100%;
+      color: var(--ink) !important;
+      -webkit-text-fill-color: var(--ink) !important;
+      background: var(--surface-soft) !important;
+      border: 1px solid var(--line-strong) !important;
+      border-radius: 0;
+      box-shadow: none;
+      opacity: 1;
+    }
+
+    .form input:not([type="checkbox"]),
+    .form textarea {
+      border-width: 0 0 1px 0 !important;
+      background: transparent !important;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .form select,
+    .form input[type="date"] {
+      border-width: 1px !important;
+      background: var(--surface-soft) !important;
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+
+    .form input::placeholder,
+    .form textarea::placeholder {
+      color: var(--muted);
+      opacity: 1;
+    }
+
+    .form input:focus,
+    .form textarea:focus,
+    .form select:focus {
+      outline: 1px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .form input[type="date"] {
+      text-align: left;
+    }
+
+    .form input[type="date"]::-webkit-date-and-time-value {
+      text-align: left;
+    }
+
+    .form input[type="checkbox"] {
+      opacity: 1;
+      accent-color: var(--ink);
+    }
+
+    @media (max-width: 380px) {
+      .entry-workno-technique {
+        grid-template-columns: 100px minmax(0, 1fr);
+      }
+
+      .entry-dates {
+        grid-template-columns: 130px 130px;
+        overflow-x: auto;
       }
     }
 
@@ -1129,11 +1251,303 @@
         justify-content: flex-end;
       }
     }
+  
+    /* Final form visibility override */
+    .form input:not([type="checkbox"]),
+    .form textarea,
+    .form select {
+      width: 100% !important;
+      min-height: 28px;
+      color: var(--ink) !important;
+      -webkit-text-fill-color: var(--ink) !important;
+      background: rgba(96, 112, 132, 0.10) !important;
+      border: 1px solid rgba(96, 112, 132, 0.38) !important;
+      border-radius: 0 !important;
+      padding: 3px 6px !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      appearance: auto;
+      -webkit-appearance: auto;
+    }
+
+    .theme-dark .form input:not([type="checkbox"]),
+    .theme-dark .form textarea,
+    .theme-dark .form select {
+      background: rgba(255, 255, 255, 0.10) !important;
+      border-color: rgba(255, 255, 255, 0.34) !important;
+      color: var(--ink) !important;
+      -webkit-text-fill-color: var(--ink) !important;
+    }
+
+    .form textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    .form input[type="date"] {
+      text-align: left !important;
+    }
+
+    .form input[type="date"]::-webkit-date-and-time-value {
+      text-align: left !important;
+    }
+
+    .form input:focus,
+    .form textarea:focus,
+    .form select:focus {
+      outline: 1px solid var(--ink) !important;
+      outline-offset: 1px !important;
+      border-color: var(--ink) !important;
+    }
+
+    .form input[type="checkbox"] {
+      opacity: 1 !important;
+      accent-color: var(--ink);
+    }
+
+  
+    /* DATA page controls visibility */
+    #dataScreen input:not([type="checkbox"]),
+    #dataScreen textarea,
+    #dataScreen select {
+      width: 100% !important;
+      min-height: 28px;
+      color: var(--ink) !important;
+      -webkit-text-fill-color: var(--ink) !important;
+      background: rgba(96, 112, 132, 0.10) !important;
+      border: 1px solid rgba(96, 112, 132, 0.38) !important;
+      border-radius: 0 !important;
+      padding: 3px 6px !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      appearance: auto;
+      -webkit-appearance: auto;
+    }
+
+    .theme-dark #dataScreen input:not([type="checkbox"]),
+    .theme-dark #dataScreen textarea,
+    .theme-dark #dataScreen select {
+      background: rgba(255, 255, 255, 0.10) !important;
+      border-color: rgba(255, 255, 255, 0.34) !important;
+      color: var(--ink) !important;
+      -webkit-text-fill-color: var(--ink) !important;
+    }
+
+    #dataScreen input:focus,
+    #dataScreen textarea:focus,
+    #dataScreen select:focus {
+      outline: 1px solid var(--ink) !important;
+      outline-offset: 1px !important;
+      border-color: var(--ink) !important;
+    }
+
+    #dataScreen input[type="file"] {
+      font-size: 12px;
+    }
+
+  
+    /* DATA compact layout */
+    #dataScreen .data-block,
+    #dataScreen .data-section,
+    #dataScreen .settings-section {
+      min-width: 0;
+    }
+
+    #dataScreen input[type="file"] {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box;
+      font-size: 11px;
+      line-height: 1.4;
+      padding: 4px 6px !important;
+      overflow: hidden;
+    }
+
+    #dataScreen .field input[type="file"] {
+      display: block;
+    }
+
+    #dataScreen .inline-add,
+    #dataScreen .data-import-row,
+    #dataScreen .csv-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    #dataScreen .setting-item,
+    #dataScreen .catalog-item,
+    #dataScreen .option-item,
+    #dataScreen .series-item,
+    #dataScreen .data-list-row {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: baseline;
+      min-width: 0;
+      padding: 0;
+      margin: 0;
+      line-height: 2;
+    }
+
+    #dataScreen .setting-item > *,
+    #dataScreen .catalog-item > *,
+    #dataScreen .option-item > *,
+    #dataScreen .series-item > *,
+    #dataScreen .data-list-row > * {
+      min-width: 0;
+    }
+
+    #dataScreen .setting-item span,
+    #dataScreen .catalog-item span,
+    #dataScreen .option-item span,
+    #dataScreen .series-item span,
+    #dataScreen .data-list-row span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #dataScreen .setting-item .text-button,
+    #dataScreen .catalog-item .text-button,
+    #dataScreen .option-item .text-button,
+    #dataScreen .series-item .text-button,
+    #dataScreen .data-list-row .text-button {
+      padding: 0;
+      min-height: 0;
+      line-height: 2;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    #dataScreen .settings-list,
+    #dataScreen .catalog-list,
+    #dataScreen .option-list,
+    #dataScreen .series-list,
+    #dataScreen .data-list {
+      display: grid;
+      gap: 0;
+    }
+
+    #dataScreen .data-actions,
+    #dataScreen .import-actions,
+    #dataScreen .csv-actions {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    @media (max-width: 380px) {
+      #dataScreen .inline-add,
+      #dataScreen .data-import-row,
+      #dataScreen .csv-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+  
+    /* DATA import/csv compact fix */
+    #dataScreen .hidden-file {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0 0 0 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #dataScreen .data-file-row {
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    #dataScreen .file-label {
+      display: inline-flex !important;
+      width: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      line-height: 2 !important;
+      background: transparent !important;
+      border: 0 !important;
+      color: var(--ink) !important;
+      -webkit-text-fill-color: var(--ink) !important;
+      letter-spacing: .18em;
+      cursor: pointer;
+    }
+
+    #dataScreen .file-label:hover {
+      text-decoration: underline;
+    }
+
+    #dataScreen .option-list {
+      display: grid !important;
+      gap: 0 !important;
+      margin-top: 8px;
+    }
+
+    #dataScreen .compact-option-item {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto auto !important;
+      gap: 14px !important;
+      align-items: baseline !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      line-height: 2 !important;
+    }
+
+    #dataScreen .compact-option-item .option-name {
+      min-width: 0 !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      color: var(--ink);
+    }
+
+    #dataScreen .compact-option-item .option-action {
+      padding: 0 !important;
+      margin: 0 !important;
+      min-height: 0 !important;
+      line-height: 2 !important;
+      font-size: 12px !important;
+      white-space: nowrap !important;
+      background: transparent !important;
+      border: 0 !important;
+    }
+
+    #dataScreen .search-line {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto !important;
+      gap: 12px !important;
+      align-items: center !important;
+      min-width: 0 !important;
+    }
+
+    #dataScreen input:not(.hidden-file):not([type="checkbox"]),
+    #dataScreen textarea,
+    #dataScreen select {
+      width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.8.8</div>
+    <div class="fixed-version-mark">v0.9.6</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1213,11 +1627,14 @@
             </div>
           </div>
 
-          <div class="entry-row cols-2">
+          <div class="entry-row">
             <div class="field">
               <label for="series">Series / シリーズ</label>
               <select id="series"></select>
             </div>
+          </div>
+
+          <div class="entry-row">
             <div class="field">
               <label for="seriesInlineInput">Series Add / シリーズADD</label>
               <div class="inline-add">
@@ -1285,13 +1702,20 @@
             </div>
           </div>
 
-          <div class="entry-row cols-2">
+          <div class="entry-row entry-exhibition">
             <div class="field">
               <label for="exhibitionSelect">Exhibition History / 展示履歴</label>
               <select id="exhibitionSelect"></select>
-              <button class="text-button active" type="button" id="addExhibitionToWorkButton" onclick="addSelectedExhibition()">ADD SELECTED</button>
-              <div id="selectedExhibitionList" class="selected-list"></div>
             </div>
+            <div class="field entry-add-selected">
+              <label>&nbsp;</label>
+              <button class="text-button active" type="button" id="addExhibitionToWorkButton" onclick="addSelectedExhibition()">ADD SELECTED</button>
+            </div>
+          </div>
+
+          <div id="selectedExhibitionList" class="selected-list"></div>
+
+          <div class="entry-row entry-hidden">
             <div class="field">
               <label for="exhibitionInlineInput">Exhibition Add / 展示履歴ADD</label>
               <div class="inline-add">
@@ -1378,13 +1802,16 @@
       <div class="data-block">
         <div class="section-title">Import</div>
         <p class="hint">JSONを読み込みます。現在のデータは上書きされます。</p>
-        <input id="importFile" type="file" accept="application/json,.json">
+        <div class="data-file-row">
+          <label class="text-button active file-label" for="importFile">IMPORT JSON</label>
+          <input id="importFile" class="hidden-file" type="file" accept="application/json,.json">
+        </div>
       </div>
 
       <div class="data-block">
         <div class="section-title">CSV</div>
         <p class="hint">series.csvを先に、works.csvを後から読み込んでください。同じ4桁番号は更新、無い番号は追加します。</p>
-        <div class="button-row">
+        <div class="data-file-row csv-file-row">
           <label class="text-button active file-label" for="seriesCsvFile">SERIES CSV</label>
           <input id="seriesCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
           <label class="text-button active file-label" for="worksCsvFile">WORKS CSV</label>
@@ -2351,12 +2778,10 @@
       const target = document.getElementById(kind + "OptionList");
       if (!target) return;
       target.innerHTML = items.map(item => `
-        <div class="option-item">
-          <div>${escapeHtml(item)}</div>
-          <div class="text-nav">
-            <button class="text-button" type="button" onclick="editOption('${kind}', '${escapeAttr(item)}')">EDIT</button>
-            <button class="text-button danger" type="button" onclick="deleteOption('${kind}', '${escapeAttr(item)}')">DELETE</button>
-          </div>
+        <div class="option-item compact-option-item">
+          <div class="option-name">${escapeHtml(item)}</div>
+          <button class="text-button option-action" type="button" onclick="editOption('${kind}', '${escapeAttr(item)}')">EDIT</button>
+          <button class="text-button danger option-action" type="button" onclick="deleteOption('${kind}', '${escapeAttr(item)}')">DELETE</button>
         </div>
       `).join("");
     }
@@ -3489,7 +3914,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.8.8",
+        version: "minimal-text-v0.9.6",
         exportedAt: nowIso(),
         works,
         seriesRecords,
