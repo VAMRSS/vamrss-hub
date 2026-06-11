@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.6.9</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.7.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1026,7 +1026,7 @@
   <main class="app">
     <section id="worksScreen" class="screen active">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.9</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" id="modeEntryButton" onclick="showModeEntry()">ENTRY</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1065,7 +1065,7 @@
 
     <section id="entryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.9</span> <span class="screen-label">/ ENTRY</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span> <span class="screen-label">/ ENTRY</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1186,7 +1186,7 @@
 
     <section id="seriesEntryScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.9</span> <span class="screen-label">/ SERIES</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span> <span class="screen-label">/ SERIES</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
           <button class="text-button" type="button" onclick="showScreen('data')">DATA</button>
@@ -1198,6 +1198,11 @@
           <div class="field">
             <label for="seriesNo"># / シリーズ番号</label>
             <input id="seriesNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
+          </div>
+
+          <div class="field">
+            <label for="seriesCode">CODE / 4文字コード</label>
+            <input id="seriesCode" type="text" maxlength="4" placeholder="">
           </div>
 
           <div class="field">
@@ -1225,7 +1230,7 @@
 
     <section id="dataScreen" class="screen">
       <div class="topbar">
-        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.6.9</span> <span class="screen-label">/ DATA</span></h1>
+        <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button> <span class="version-mark">v0.7.0</span> <span class="screen-label">/ DATA</span></h1>
         <nav class="text-nav">
           <button class="text-button" type="button" onclick="showScreen('works')">BACK</button>
         </nav>
@@ -1300,7 +1305,7 @@
     const LOCATION_STORAGE_KEY = "vamrss-wsv-minimal-text-locations-v3";
     const SERIES_STORAGE_KEY = "vamrss-wsv-minimal-text-series-v1";
     const EXHIBITION_STORAGE_KEY = "vamrss-wsv-minimal-text-exhibitions-v1";
-    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v2";
+    const SERIES_DATA_STORAGE_KEY = "vamrss-wsv-minimal-text-series-data-v3";
     const THEME_STORAGE_KEY = "vamrss-wsv-theme-v1";
 
     const DEFAULT_CATEGORIES = ["LED SIGN", "OBJECT", "DRAWING", "PHOTO", "POSTER", "DEVICE", "OTHER"];
@@ -1757,48 +1762,56 @@
     const SAMPLE_SERIES_RECORDS = [
       {
             "seriesNo": "0427",
+            "code": "VLNS",
             "title": "VLNS",
             "startDate": "2023-04-01",
             "description": "A series about luck, signs, and small artificial light."
       },
       {
             "seriesNo": "1283",
+            "code": "VNBX",
             "title": "VNBX",
             "startDate": "2023-09-15",
             "description": "Box shaped works and storage-like objects."
       },
       {
             "seriesNo": "2710",
+            "code": "SIGN",
             "title": "SIGN",
             "startDate": "2024-01-20",
             "description": "Text-based signs, warnings, and quiet instructions."
       },
       {
             "seriesNo": "3902",
+            "code": "DRWG",
             "title": "DRAWING",
             "startDate": "2024-05-03",
             "description": "Drawing studies for light, cable, and object structures."
       },
       {
             "seriesNo": "5632",
+            "code": "ARCH",
             "title": "ARCHIVE",
             "startDate": "2025-02-11",
             "description": "Works related to listing, indexing, and fictional records."
       },
       {
             "seriesNo": "7106",
+            "code": "SNGL",
             "title": "Single",
             "startDate": "2025-07-19",
             "description": "Standalone works that do not belong to a specific series."
       },
       {
             "seriesNo": "8401",
+            "code": "DVCE",
             "title": "DEVICE",
             "startDate": "2026-01-08",
             "description": "Small device-like works with light, cases, or screens."
       },
       {
             "seriesNo": "9635",
+            "code": "PHTO",
             "title": "PHOTO",
             "startDate": "2026-03-22",
             "description": "Photographic records and image-based works."
@@ -1921,6 +1934,10 @@
       currentExhibitions = currentExhibitions.filter(item => item !== value);
       renderSelectedExhibitions();
     };
+
+    function normalizeSeriesCode(value) {
+      return String(value || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
+    }
 
     function normalizeWorkNo(value) {
       const digits = String(value || "").replace(/\D/g, "");
@@ -2631,6 +2648,7 @@
     const seriesForm = document.getElementById("seriesForm");
     const seriesFields = {
       seriesNo: document.getElementById("seriesNo"),
+      code: document.getElementById("seriesCode"),
       title: document.getElementById("seriesTitle"),
       startDate: document.getElementById("seriesStartDate"),
       description: document.getElementById("seriesDescription")
@@ -2660,6 +2678,7 @@
         ...existing,
         id: existing.id || createId(),
         seriesNo,
+        code: normalizeSeriesCode(seriesFields.code ? seriesFields.code.value : ""),
         title: seriesFields.title.value.trim(),
         startDate: seriesFields.startDate.value,
         description: seriesFields.description.value.trim(),
@@ -2697,6 +2716,7 @@
           if (!query) return true;
           return [
             s.seriesNo,
+            s.code,
             s.title,
             s.startDate,
             s.description
@@ -2725,6 +2745,7 @@
             <div class="work-detail">
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(no)}</div></div>
+                <div class="detail-row"><div class="detail-key">Code</div><div class="detail-value">${escapeHtml(s.code || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(s.title || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(s.startDate || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(s.description || "")}</div></div>
@@ -2762,6 +2783,7 @@
 
       editingSeriesId = id;
       seriesFields.seriesNo.value = normalizeWorkNo(s.seriesNo);
+      if (seriesFields.code) seriesFields.code.value = normalizeSeriesCode(s.code || "");
       seriesFields.title.value = s.title || "";
       seriesFields.startDate.value = s.startDate || "";
       seriesFields.description.value = s.description || "";
@@ -2782,6 +2804,12 @@
     seriesFields.seriesNo.addEventListener("input", () => {
       seriesFields.seriesNo.value = seriesFields.seriesNo.value.replace(/\D/g, "").slice(0, 4);
     });
+
+    if (seriesFields.code) {
+      seriesFields.code.addEventListener("input", () => {
+        seriesFields.code.value = normalizeSeriesCode(seriesFields.code.value);
+      });
+    }
 
     seriesForm.addEventListener("submit", event => {
       event.preventDefault();
@@ -2931,12 +2959,6 @@
       showScreen("works");
     });
 
-    if (seriesCodeInput) {
-      seriesCodeInput.addEventListener("input", () => {
-        seriesCodeInput.value = normalizeSeriesCode(seriesCodeInput.value);
-      });
-    }
-
     searchInput.addEventListener("input", render);
 
     document.getElementById("addSeriesButton").addEventListener("click", () => addOption("series"));
@@ -2956,7 +2978,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.6.9",
+        version: "minimal-text-v0.7.0",
         exportedAt: nowIso(),
         works,
         seriesRecords,
