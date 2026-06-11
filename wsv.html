@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.8.1</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.8.2</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -633,6 +633,7 @@
 
 
 
+
     .work-title {
       position: relative;
       min-width: 0;
@@ -642,7 +643,7 @@
     }
 
     .work-title .title-scroll {
-      display: inline;
+      display: inline-block;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -650,25 +651,6 @@
       vertical-align: top;
     }
 
-    .work.open .work-summary {
-      align-items: start;
-    }
-
-    .work.open .work-title {
-      overflow: visible;
-      white-space: normal;
-      text-overflow: clip;
-      word-break: break-word;
-      overflow-wrap: anywhere;
-    }
-
-    .work.open .work-title .title-scroll {
-      display: inline;
-      max-width: none;
-      overflow: visible;
-      text-overflow: clip;
-      white-space: normal;
-    }
 
     }
 
@@ -1085,7 +1067,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.8.1</div>
+    <div class="fixed-version-mark">v0.8.2</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -3398,7 +3380,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.8.1",
+        version: "minimal-text-v0.8.2",
         exportedAt: nowIso(),
         works,
         seriesRecords,
