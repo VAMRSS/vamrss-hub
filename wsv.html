@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.7.8</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.7.9</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -630,16 +630,56 @@
       font-variant-numeric: tabular-nums;
     }
 
+
     .work-title {
-      display: block;
-      width: 100%;
+      position: relative;
       min-width: 0;
-      color: var(--ink);
-      text-align: left;
+      overflow: hidden;
       white-space: nowrap;
+    }
+
+    .work-title .title-scroll {
+      display: inline-block;
+      max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: top;
     }
+
+    .work-summary:hover .title-scroll,
+    .work-summary:focus-visible .title-scroll,
+    .work-summary.auto-scroll .title-scroll {
+      max-width: none;
+      padding-right: 2em;
+      animation: title-marquee 9s linear infinite;
+    }
+
+    @keyframes title-marquee {
+      0% {
+        transform: translateX(0);
+      }
+      18% {
+        transform: translateX(0);
+      }
+      82% {
+        transform: translateX(calc(-100% + var(--title-window, 100%)));
+      }
+      100% {
+        transform: translateX(calc(-100% + var(--title-window, 100%)));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-summary:hover .title-scroll,
+      .work-summary:focus-visible .title-scroll,
+      .work-summary.auto-scroll .title-scroll {
+        animation: none;
+        max-width: 100%;
+        text-overflow: ellipsis;
+      }
+    }
+
 
     .work-year {
       display: block;
@@ -1051,7 +1091,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.7.8</div>
+    <div class="fixed-version-mark">v0.7.9</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -2596,6 +2636,23 @@
     };
 
 
+
+    function updateTitleMarquee() {
+      document.querySelectorAll(".work-summary").forEach(summary => {
+        const title = summary.querySelector(".work-title");
+        const scroll = summary.querySelector(".title-scroll");
+        if (!title || !scroll) return;
+        const overflow = scroll.scrollWidth > title.clientWidth + 1;
+        summary.classList.toggle("auto-scroll", overflow);
+        if (overflow) {
+          title.style.setProperty("--title-window", title.clientWidth + "px");
+        } else {
+          title.style.removeProperty("--title-window");
+        }
+      });
+    }
+
+
     function renderWorksList() {
       renderFilters();
 
@@ -2653,7 +2710,7 @@
           <article class="work" id="work-${escapeAttr(w.id)}">
             <button class="work-summary" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
               <div class="work-no">${escapeHtml(workNo)}</div>
-              <div class="work-title">${escapeHtml(w.title || "Untitled")}</div>
+              <div class="work-title"><span class="title-scroll">${escapeHtml(w.title || "Untitled")}</span></div>
               <div class="work-year">${escapeHtml(w.completedDate || "")}</div>
             </button>
             <div class="work-detail">
@@ -2860,7 +2917,7 @@
           <article class="work" id="series-${escapeAttr(s.id)}">
             <button class="work-summary" type="button" onclick="toggleSeries('${escapeAttr(s.id)}')">
               <div class="work-no">${escapeHtml(no)}</div>
-              <div class="work-title">${escapeHtml(s.code ? s.code + " / " : "")}${escapeHtml(s.title || "Untitled Series")}</div>
+              <div class="work-title"><span class="title-scroll">${escapeHtml(s.code ? s.code + " / " : "")}${escapeHtml(s.title || "Untitled Series")}</span></div>
               <div class="work-year">${escapeHtml(s.startDate || "")}</div>
             </button>
             <div class="work-detail">
@@ -2891,6 +2948,7 @@
           </article>
         `;
       }).join("");
+      setTimeout(updateTitleMarquee, 0);
     }
 
     window.toggleSeries = function(id) {
@@ -3083,6 +3141,7 @@
     });
 
     searchInput.addEventListener("input", render);
+    window.addEventListener("resize", updateTitleMarquee);
 
     document.getElementById("addSeriesButton").addEventListener("click", () => addOption("series"));
     document.getElementById("addExhibitionButton").addEventListener("click", () => addOption("exhibition"));
@@ -3361,7 +3420,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.7.8",
+        version: "minimal-text-v0.7.9",
         exportedAt: nowIso(),
         works,
         seriesRecords,
