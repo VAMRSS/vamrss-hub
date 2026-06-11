@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v0.8.4</title>
+  <title>(VAMRSS) WSV Minimal Text / v0.8.7</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -727,6 +727,48 @@
       text-align: left;
     }
 
+
+    .entry-layout {
+      display: grid;
+      gap: 10px;
+    }
+
+    .entry-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px 14px;
+      min-width: 0;
+    }
+
+    .entry-row.cols-2 {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .entry-row.cols-3 {
+      grid-template-columns: 0.65fr 1fr 1fr;
+    }
+
+    .inline-add {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .price-row .ask-line {
+      min-height: 24px;
+      align-items: center;
+      display: flex;
+      gap: 6px;
+    }
+
+    @media (max-width: 360px) {
+      .entry-row.cols-3 {
+        grid-template-columns: 0.7fr 1fr 1fr;
+      }
+    }
+
     .form {
       display: grid;
       gap: 10px;
@@ -1068,7 +1110,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v0.8.4</div>
+    <div class="fixed-version-mark">v0.8.7</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1118,106 +1160,132 @@
       </div>
 
       <form id="workForm" class="form">
-        <div class="form-grid">
-          <div class="field">
-            <label for="workNo"># / 作品番号</label>
-            <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
-          </div>
-
-          <div class="field">
-            <label for="year">Start Date / 制作開始日</label>
-            <input id="year" type="date" placeholder="">
-          </div>
-
-          <div class="field">
-            <label for="title">Title / 作品名</label>
-            <input id="title" type="text" required placeholder="">
-          </div>
-
-          <div class="field">
-            <label for="completedDate">Completed / 完成日</label>
-            <input id="completedDate" type="date" placeholder="">
-          </div>
-
-          <div class="field">
-            <label for="series">Series / シリーズ</label>
-            <select id="series"></select>
-            <div class="inline-add">
-              <input id="seriesInlineInput" type="text" placeholder="">
-              <button class="text-button" type="button" id="addSeriesInlineButton">ADD</button>
+        <div class="entry-layout">
+          <div class="entry-row cols-2">
+            <div class="field">
+              <label for="workNo"># / 作品番号</label>
+              <input id="workNo" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="">
+            </div>
+            <div class="field">
+              <label for="technique">Technique / 技法</label>
+              <select id="technique"></select>
             </div>
           </div>
 
-          <div class="field">
-            <label for="productionStatus">Production / 制作状態</label>
-            <select id="productionStatus"></select>
-          </div>
-
-          <div class="field">
-            <label for="managementStatus">Management / 管理状態</label>
-            <select id="managementStatus"></select>
-          </div>
-
-          <div class="field">
-            <label for="technique">Technique / 技法</label>
-            <select id="technique"></select>
-          </div>
-
-          <div class="field">
-            <label for="materials">Materials / 素材</label>
-            <input id="materials" type="text" placeholder="">
-          </div>
-
-          <div class="field">
-            <label>Dimensions / サイズ mm</label>
-            <div class="three-grid">
-              <input id="sizeW" type="number" inputmode="numeric" min="0" placeholder="">
-              <input id="sizeH" type="number" inputmode="numeric" min="0" placeholder="">
-              <input id="sizeD" type="number" inputmode="numeric" min="0" placeholder="">
+          <div class="entry-row">
+            <div class="field">
+              <label for="title">Title / タイトル</label>
+              <input id="title" type="text" required placeholder="">
             </div>
           </div>
 
-          <div class="field">
-            <label>Ledger / 価格記録</label>
-            <div class="two-grid">
-              <div class="sub-field">
-                <label for="price">Sale Price / 販売価格</label>
-                <input id="price" type="number" inputmode="numeric" min="0" placeholder="">
-                <label class="ask-line" for="priceAsk"><input id="priceAsk" type="checkbox"> ASK</label>
-              </div>
-              <div class="sub-field">
-                <label for="cost">Cost / 原価</label>
-                <input id="cost" type="number" inputmode="numeric" min="0" placeholder="">
+          <div class="entry-row cols-2">
+            <div class="field">
+              <label for="year">Start Date / 制作開始日</label>
+              <input id="year" type="date" placeholder="">
+            </div>
+            <div class="field">
+              <label for="completedDate">Completed / 完成日</label>
+              <input id="completedDate" type="date" placeholder="">
+            </div>
+          </div>
+
+          <div class="entry-row cols-2">
+            <div class="field">
+              <label for="series">Series / シリーズ</label>
+              <select id="series"></select>
+            </div>
+            <div class="field">
+              <label for="seriesInlineInput">Series Add / シリーズADD</label>
+              <div class="inline-add">
+                <input id="seriesInlineInput" type="text" placeholder="">
+                <button class="text-button active" type="button" id="addSeriesInlineButton" onclick="addInlineOption('series')">ADD</button>
               </div>
             </div>
           </div>
 
-          <div class="field">
-            <label for="location">Location / 保管場所</label>
-            <select id="location"></select>
-          </div>
-
-          <div class="field">
-            <label for="owner">Owner / 所蔵先</label>
-            <input id="owner" type="text" placeholder="">
-          </div>
-
-          <div class="field">
-            <label for="exhibitionSelect">Exhibition History / 展示履歴</label>
-            <select id="exhibitionSelect"></select>
-            <div class="inline-add single-action">
-              <button class="text-button" type="button" id="addExhibitionToWorkButton">ADD SELECTED</button>
+          <div class="entry-row cols-2">
+            <div class="field">
+              <label for="productionStatus">Production / 制作状態</label>
+              <select id="productionStatus"></select>
             </div>
-            <div id="selectedExhibitionList" class="selected-list"></div>
-            <div class="inline-add">
-              <input id="exhibitionInlineInput" type="text" placeholder="">
-              <button class="text-button" type="button" id="addExhibitionInlineButton">ADD NEW</button>
+            <div class="field">
+              <label for="managementStatus">Management / 管理状態</label>
+              <select id="managementStatus"></select>
             </div>
           </div>
 
-          <div class="field">
-            <label for="memo">Memo / メモ</label>
-            <textarea id="memo" placeholder=""></textarea>
+          <div class="entry-row">
+            <div class="field">
+              <label for="location">Location / 保管場所</label>
+              <select id="location"></select>
+            </div>
+          </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="materials">Materials / 素材</label>
+              <input id="materials" type="text" placeholder="">
+            </div>
+          </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label>Dimensions / サイズ mm</label>
+              <div class="three-grid">
+                <input id="sizeW" type="number" min="0" inputmode="numeric" placeholder="">
+                <input id="sizeH" type="number" min="0" inputmode="numeric" placeholder="">
+                <input id="sizeD" type="number" min="0" inputmode="numeric" placeholder="">
+              </div>
+            </div>
+          </div>
+
+          <div class="entry-row cols-3 price-row">
+            <div class="field">
+              <label for="priceAsk">ASK</label>
+              <label class="ask-line"><input id="priceAsk" type="checkbox"> ASK</label>
+            </div>
+            <div class="field">
+              <label for="price">Sale Price / 販売価格</label>
+              <input id="price" type="number" min="0" inputmode="numeric" placeholder="">
+            </div>
+            <div class="field">
+              <label for="cost">Cost / 原価</label>
+              <input id="cost" type="number" min="0" inputmode="numeric" placeholder="">
+            </div>
+          </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="owner">Owner / 所蔵先</label>
+              <input id="owner" type="text" placeholder="">
+            </div>
+          </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="exhibitionSelect">Exhibition History / 展示履歴</label>
+              <select id="exhibitionSelect"></select>
+              <button class="text-button active" type="button" id="addExhibitionToWorkButton" onclick="addSelectedExhibition()">ADD SELECTED</button>
+              <div id="selectedExhibitionList" class="selected-list"></div>
+            </div>
+          </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="exhibitionInlineInput">Exhibition Add / 展示履歴ADD</label>
+              <div class="inline-add">
+                <input id="exhibitionInlineInput" type="text" placeholder="">
+                <button class="text-button active" type="button" id="addExhibitionInlineButton" onclick="addInlineOption('exhibition')">ADD</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="memo">Memo / メモ</label>
+              <textarea id="memo" placeholder=""></textarea>
+            </div>
           </div>
         </div>
 
@@ -3381,7 +3449,7 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        version: "minimal-text-v0.8.4",
+        version: "minimal-text-v0.8.7",
         exportedAt: nowIso(),
         works,
         seriesRecords,
