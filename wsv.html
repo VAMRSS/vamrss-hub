@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v1.0.8</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1634,11 +1634,25 @@
       display: none !important;
     }
 
+  
+    .fixed-copyright-mark {
+      position: fixed !important;
+      left: 20px !important;
+      bottom: max(12px, env(safe-area-inset-bottom)) !important;
+      z-index: 20;
+      pointer-events: none;
+      font-size: 10px;
+      line-height: 1;
+      color: var(--sub);
+      letter-spacing: 0.04em;
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v1.0.8</div>
+    <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
+  <div class="fixed-version-mark">v1.0</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1909,14 +1923,14 @@
       </div>
 
       <div class="data-block">
-        <div class="section-title">Export</div>
-        <p class="hint">現在の作品データをJSONで保存します。</p>
+        <div class="section-title">Export / JSON Backup</div>
+        <p class="hint">登録済みの作品・シリーズ・各種候補データをJSON形式で書き出します。定期バックアップや別端末への移行に使用します。</p>
         <button class="text-button active" type="button" id="exportButton">EXPORT</button>
       </div>
 
       <div class="data-block">
-        <div class="section-title">Import</div>
-        <p class="hint">JSONを読み込みます。現在のデータは上書きされます。</p>
+        <div class="section-title">Import / JSON Restore</div>
+        <p class="hint">WSV形式のJSONバックアップを読み込みます。読み込み後、現在のブラウザ内データはバックアップ内容で置き換えられます。</p>
         <div class="data-file-row">
           <label class="text-button active file-label" for="importFile">IMPORT JSON</label>
           <input id="importFile" class="hidden-file" type="file" accept="application/json,.json">
@@ -1924,8 +1938,8 @@
       </div>
 
       <div class="data-block">
-        <div class="section-title">CSV</div>
-        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。タイトル/説明文は主項目とEN項目で管理、サイズ列はsizeH,sizeW,sizeDです。</p>
+        <div class="section-title">CSV Import</div>
+        <p class="hint">CSVから初期データを取り込みます。先にSERIES CSV、次にWORKS CSVを読み込んでください。タイトルと説明文は主項目とEN項目で管理し、サイズはsizeH,sizeW,sizeDのH/W/D順で取り込みます。</p>
         <div class="data-file-row csv-file-row">
           <label class="text-button active file-label" for="seriesCsvFile">SERIES CSV</label>
           <input id="seriesCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
@@ -1973,16 +1987,11 @@
 
 
       <div class="data-block">
-        <div class="section-title">Reset</div>
-        <p class="hint">ブラウザ内のWSVデータを削除します。必要な場合は先にEXPORTしてください。</p>
+        <div class="section-title">Reset / Delete All</div>
+        <p class="hint">ブラウザ内に保存された作品・シリーズ・各種候補データをすべて削除します。実行前に必要なデータをEXPORTしてください。</p>
         <button class="text-button danger" type="button" id="resetButton">DELETE ALL</button>
       </div>
-
-      <div class="font-sampler">
-        <p class="font-sampler-title">Font sampler</p>
-        <div class="font-list" id="fontList"></div>
-      </div>
-    </section>
+</section>
   </main>
 
   <script>
@@ -4162,7 +4171,7 @@
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
         schemaVersion: 8,
-        version: "minimal-text-v1.0.8",
+        version: "minimal-text-v1.0",
         exportedAt: nowIso(),
         data: {
           works: works.map(w => ({ ...w })),
@@ -4392,21 +4401,6 @@
       showScreen("works");
     });
 
-    function setFont(fontValue) {
-      document.documentElement.style.setProperty("--font-main", fontValue);
-    }
-
-    function renderFontSampler() {
-      const target = document.getElementById("fontList");
-      if (!target || typeof FONT_OPTIONS === "undefined") return;
-      target.innerHTML = FONT_OPTIONS.map(font => `
-        <button class="font-option" type="button" style="font-family:${escapeAttr(font.value)}" onclick="setFont('${escapeAttr(font.value)}')">
-          <span class="font-name">${escapeHtml(font.name)}</span>
-          <span class="font-preview">＊ (VAMRSS) WSV / WHO CURATED YOUR LUCK / 光の保管庫 / Serendipity 光量記録</span>
-        </button>
-      `).join("");
-      setFont(FONT_OPTIONS[0].value);
-    }
 
     load();
     loadSeriesRecords();
@@ -4418,7 +4412,6 @@
     resetSeriesForm();
     applyTheme(localStorage.getItem(THEME_STORAGE_KEY) || "light");
     render();
-    renderFontSampler();
   </script>
 </body>
 </html>
