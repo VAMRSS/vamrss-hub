@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v1.0.4</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0.6</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1638,7 +1638,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v1.0.4</div>
+    <div class="fixed-version-mark">v1.0.6</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1705,7 +1705,7 @@
 
           <div class="entry-row">
             <div class="field">
-              <label for="titleJa">Title JA / タイトル日本語</label>
+              <label for="titleJa">Title / タイトル</label>
               <input id="titleJa" type="text" placeholder="">
             </div>
           </div>
@@ -1830,10 +1830,19 @@
 
           <div class="entry-row">
             <div class="field">
-              <label for="memo">Memo / メモ</label>
-              <textarea id="memo" placeholder=""></textarea>
+              <label for="description">Description / 説明文</label>
+              <textarea id="description" placeholder=""></textarea>
             </div>
           </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="descriptionEn">Description EN / 説明文英語</label>
+              <textarea id="descriptionEn" placeholder=""></textarea>
+            </div>
+          </div>
+
+          <textarea id="memo" class="entry-hidden"></textarea>
         </div>
 
         <div class="button-row">
@@ -1871,7 +1880,7 @@
           </div>
 
           <div class="field">
-            <label for="seriesTitleJa">Title JA / シリーズ名日本語</label>
+            <label for="seriesTitleJa">Title / シリーズ名日本語</label>
             <input id="seriesTitleJa" type="text" placeholder="">
           </div>
 
@@ -1881,7 +1890,7 @@
           </div>
 
           <div class="field">
-            <label for="seriesDescriptionJa">Description JA / 説明文日本語</label>
+            <label for="seriesDescriptionJa">Description / 説明文</label>
             <textarea id="seriesDescriptionJa" placeholder=""></textarea>
           </div>
 
@@ -1926,7 +1935,7 @@
 
       <div class="data-block">
         <div class="section-title">CSV</div>
-        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。タイトル/説明文はJA/EN分離、サイズ列はsizeH,sizeW,sizeDです。</p>
+        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。タイトル/説明文は主項目とEN項目で管理、サイズ列はsizeH,sizeW,sizeDです。</p>
         <div class="data-file-row csv-file-row">
           <label class="text-button active file-label" for="seriesCsvFile">SERIES CSV</label>
           <input id="seriesCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
@@ -2587,6 +2596,8 @@
       location: document.getElementById("location"),
       owner: document.getElementById("owner"),
       exhibitionSelect: document.getElementById("exhibitionSelect"),
+      description: document.getElementById("description"),
+      descriptionEn: document.getElementById("descriptionEn"),
       memo: document.getElementById("memo")
     };
 
@@ -2610,15 +2621,19 @@
     }
 
     function workTitle(work = {}) {
-      return String(work.titleJa || work.titleEn || work.title || "Untitled");
+      return String(work.title || work.titleJa || work.titleEn || "Untitled");
+    }
+
+    function workDescription(work = {}) {
+      return String(work.description || work.memo || "");
     }
 
     function seriesTitle(series = {}) {
-      return String(series.titleJa || series.titleEn || series.title || "Untitled Series");
+      return String(series.title || series.titleJa || series.titleEn || "Untitled Series");
     }
 
     function seriesDescription(series = {}) {
-      return String(series.descriptionJa || series.descriptionEn || series.description || "");
+      return String(series.description || series.descriptionJa || series.descriptionEn || "");
     }
 
     function seriesCodeExists(code, exceptId = null) {
@@ -3176,7 +3191,7 @@
         throw new Error("DUPLICATE_WORK_NO");
       }
 
-      const titleJa = fields.titleJa.value.trim();
+      const title = fields.titleJa.value.trim();
       const titleEn = fields.titleEn.value.trim();
 
       const price = fields.price.value === "" ? "" : Math.max(0, Math.round(Number(fields.price.value) || 0));
@@ -3187,9 +3202,10 @@
         ...existing,
         id: existing.id || createId(),
         workNo,
-        titleJa,
+        title,
+        titleJa: title,
         titleEn,
-        title: titleJa || titleEn,
+        title: title || titleEn,
         completedDate: fields.completedDate.value,
         seriesNo: normalizeWorkNo(fields.series.value),
         series: linkedSeries ? seriesTitle(linkedSeries) : "Single",
@@ -3207,7 +3223,9 @@
         location: fields.managementStatus.value === "保管中" ? fields.location.value : "",
         owner: (fields.managementStatus.value !== "保管中" && fields.managementStatus.value !== "処分済") ? fields.owner.value.trim() : "",
         exhibitionHistory: currentExhibitions.join("\n"),
-        memo: fields.memo.value.trim(),
+        description: fields.description.value.trim(),
+        descriptionEn: fields.descriptionEn.value.trim(),
+        memo: fields.description.value.trim(),
         createdAt: existing.createdAt || nowIso(),
         updatedAt: nowIso()
       };
@@ -3303,7 +3321,8 @@
           <div class="detail-row"><div class="detail-key">Management</div><div class="detail-value">${escapeHtml(statuses.managementStatus)}</div></div>
           <div class="detail-row"><div class="detail-key">Technique</div><div class="detail-value">${escapeHtml(w.technique || "")}</div></div>
           <div class="detail-row"><div class="detail-key">Price</div><div class="detail-value">${escapeHtml(priceText)}</div></div>
-          <div class="detail-row"><div class="detail-key">Memo</div><div class="detail-value">${escapeHtml(w.memo || "")}</div></div>
+          <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(workDescription(w))}</div></div>
+                <div class="detail-row"><div class="detail-key">Description EN</div><div class="detail-value">${escapeHtml(w.descriptionEn || "")}</div></div>
         </div>
       `;
     };
@@ -3352,6 +3371,8 @@
             w.location,
             w.owner,
             w.exhibitionHistory,
+            w.description,
+            w.descriptionEn,
             w.memo
           ].some(value => String(value || "").toLowerCase().includes(query));
         })
@@ -3377,7 +3398,7 @@
             <div class="work-detail">
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(workNo)}</div></div>
-                <div class="detail-row"><div class="detail-key">Title JA</div><div class="detail-value">${escapeHtml(w.titleJa || w.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || w.titleJa || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Title EN</div><div class="detail-value">${escapeHtml(w.titleEn || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
                 <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
@@ -3393,7 +3414,8 @@
                 <div class="detail-row"><div class="detail-key">Location</div><div class="detail-value">${escapeHtml(w.location || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Owner</div><div class="detail-value">${escapeHtml(w.owner || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Exhibition</div><div class="detail-value">${escapeHtml(w.exhibitionHistory || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Memo</div><div class="detail-value">${escapeHtml(w.memo || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(workDescription(w))}</div></div>
+                <div class="detail-row"><div class="detail-key">Description EN</div><div class="detail-value">${escapeHtml(w.descriptionEn || "")}</div></div>
               </div>
               <div class="detail-actions">
                 <button class="text-button" type="button" onclick="startEdit('${escapeAttr(w.id)}')">EDIT</button>
@@ -3434,7 +3456,7 @@
 
       editingId = id;
       fields.workNo.value = normalizeWorkNo(w.workNo);
-      fields.titleJa.value = w.titleJa || w.title || "";
+      fields.titleJa.value = w.title || w.titleJa || "";
       fields.titleEn.value = w.titleEn || "";
       fields.completedDate.value = w.completedDate || "";
       renderSeriesSelect(fields.series, normalizeWorkNo(w.seriesNo) || getSeriesRecordByTitle(w.series)?.seriesNo || "");
@@ -3462,7 +3484,9 @@
       renderCatalogSelect(fields.location, locations, w.location || "");
       fields.owner.value = w.owner || "";
       setCurrentExhibitions(normalizeExhibitions(w.exhibitionHistory));
-      fields.memo.value = w.memo || "";
+      fields.description.value = w.description || w.memo || "";
+      fields.descriptionEn.value = w.descriptionEn || "";
+      fields.memo.value = w.description || w.memo || "";
 
       document.getElementById("submitButton").textContent = "UPDATE";
       document.getElementById("cancelButton").style.display = "inline-block";
@@ -3529,9 +3553,9 @@
         throw new Error("DUPLICATE_SERIES_CODE");
       }
 
-      const titleJa = seriesFields.titleJa.value.trim();
+      const title = seriesFields.titleJa.value.trim();
       const titleEn = seriesFields.titleEn.value.trim();
-      const descriptionJa = seriesFields.descriptionJa.value.trim();
+      const description = seriesFields.descriptionJa.value.trim();
       const descriptionEn = seriesFields.descriptionEn.value.trim();
 
       return {
@@ -3539,9 +3563,10 @@
         id: existing.id || createId(),
         seriesNo,
         code,
-        titleJa,
+        title,
+        titleJa: title,
         titleEn,
-        title: titleJa || titleEn,
+        title: title || titleEn,
         startDate: seriesFields.startDate.value,
         descriptionJa,
         descriptionEn,
@@ -3616,10 +3641,10 @@
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(no)}</div></div>
                 <div class="detail-row"><div class="detail-key">Code</div><div class="detail-value">${escapeHtml(s.code || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Title JA</div><div class="detail-value">${escapeHtml(s.titleJa || s.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(s.title || s.titleJa || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Title EN</div><div class="detail-value">${escapeHtml(s.titleEn || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(s.startDate || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Description JA</div><div class="detail-value">${escapeHtml(s.descriptionJa || s.description || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(s.description || s.descriptionJa || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Description EN</div><div class="detail-value">${escapeHtml(s.descriptionEn || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Works</div><div class="detail-value">${escapeHtml(String(relatedWorks.length))}</div></div>
               </div>
@@ -3657,10 +3682,10 @@
       editingSeriesId = id;
       seriesFields.seriesNo.value = normalizeWorkNo(s.seriesNo);
       if (seriesFields.code) seriesFields.code.value = normalizeSeriesCode(s.code || "");
-      seriesFields.titleJa.value = s.titleJa || s.title || "";
+      seriesFields.titleJa.value = s.title || s.titleJa || "";
       seriesFields.titleEn.value = s.titleEn || "";
       seriesFields.startDate.value = s.startDate || "";
-      seriesFields.descriptionJa.value = s.descriptionJa || s.description || "";
+      seriesFields.descriptionJa.value = s.description || s.descriptionJa || "";
       seriesFields.descriptionEn.value = s.descriptionEn || "";
 
       document.getElementById("seriesSubmitButton").textContent = "UPDATE";
@@ -3689,7 +3714,7 @@
     seriesForm.addEventListener("submit", event => {
       event.preventDefault();
       if (!seriesFields.titleJa.value.trim() && !seriesFields.titleEn.value.trim()) {
-        alert("シリーズ名を日本語または英語で入力してください。");
+        alert("シリーズ名を入力してください。");
         return;
       }
 
@@ -3811,7 +3836,7 @@
     form.addEventListener("submit", event => {
       event.preventDefault();
       if (!fields.titleJa.value.trim() && !fields.titleEn.value.trim()) {
-        alert("作品名を日本語または英語で入力してください。");
+        alert("タイトルを入力してください。");
         return;
       }
 
@@ -3950,10 +3975,10 @@
 
       rows.forEach((row, index) => {
         const seriesNo = normalizeWorkNo(row.seriesNo);
-        const titleJa = String(row.titleJa || row.title || "").trim();
+        const title = String(row.title || row.titleJa || "").trim();
         const titleEn = String(row.titleEn || "").trim();
-        const title = titleJa || titleEn;
-        if (!/^\d{4}$/.test(seriesNo) || !title || seen.has(seriesNo)) {
+        const displayTitle = title || titleEn;
+        if (!/^\d{4}$/.test(seriesNo) || !displayTitle || seen.has(seriesNo)) {
           invalid.push(index + 2);
           return;
         }
@@ -3967,7 +3992,7 @@
           return;
         }
 
-        const descriptionJa = String(row.descriptionJa || row.description || "").trim();
+        const description = String(row.description || row.descriptionJa || "").trim();
         const descriptionEn = String(row.descriptionEn || "").trim();
 
         const record = {
@@ -3975,13 +4000,15 @@
           id: existing?.id || createId(),
           seriesNo,
           code,
-          titleJa,
-          titleEn,
           title,
+          titleJa: title,
+          titleEn,
+          title: displayTitle,
           startDate: csvDate(row.startDate),
-          descriptionJa,
+          description,
+          descriptionJa: description,
           descriptionEn,
-          description: descriptionJa || descriptionEn,
+          description: description || descriptionEn,
           createdAt: existing?.createdAt || now,
           updatedAt: now
         };
@@ -4036,15 +4063,16 @@
 
         const existing = works.find(w => normalizeWorkNo(w.workNo) === workNo);
         const priceAsk = csvBool(row.priceAsk);
-        const titleJa = String(row.titleJa || row.title || "").trim();
+        const title = String(row.title || row.titleJa || "").trim();
         const titleEn = String(row.titleEn || "").trim();
         const record = {
           ...(existing || {}),
           id: existing?.id || createId(),
           workNo,
-          titleJa,
+          title,
+          titleJa: title,
           titleEn,
-          title: titleJa || titleEn || "Untitled",
+          title: title || titleEn || "Untitled",
           seriesNo,
           series: linkedSeries ? seriesTitle(linkedSeries) : (seriesNo ? "" : "Single"),
           year: csvDate(row.startDate),
@@ -4062,7 +4090,9 @@
           location: String(row.location || "").trim(),
           owner: String(row.owner || "").trim(),
           exhibitionHistory: String(row.exhibitionHistory || "").replace(/\s*\|\s*/g, "\n"),
-          memo: String(row.memo || "").trim(),
+          description: String(row.description || row.memo || "").trim(),
+          descriptionEn: String(row.descriptionEn || "").trim(),
+          memo: String(row.description || row.memo || "").trim(),
           createdAt: existing?.createdAt || now,
           updatedAt: now
         };
@@ -4148,8 +4178,8 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        schemaVersion: 4,
-        version: "minimal-text-v1.0.4",
+        schemaVersion: 6,
+        version: "minimal-text-v1.0.6",
         exportedAt: nowIso(),
         data: {
           works: works.map(w => ({ ...w })),
@@ -4240,9 +4270,9 @@
             return {
               id: w.id || createId(),
               workNo,
-              titleJa: String(w.titleJa || w.title || ""),
+              title: String(w.title || w.titleJa || w.titleEn || "Untitled"),
+              titleJa: String(w.title || w.titleJa || ""),
               titleEn: String(w.titleEn || ""),
-              title: String(w.titleJa || w.titleEn || w.title || "Untitled"),
               completedDate: String(w.completedDate || ""),
               seriesNo: rawSeriesNo,
               series: String(w.series || ""),
@@ -4260,7 +4290,9 @@
               location: String(w.location || ""),
               owner: String(w.owner || ""),
               exhibitionHistory: normalizeExhibitions(w.exhibitionHistory).join("\n"),
-              memo: String(w.memo || ""),
+              description: String(w.description || w.memo || ""),
+              descriptionEn: String(w.descriptionEn || ""),
+              memo: String(w.description || w.memo || ""),
               createdAt: w.createdAt || now,
               updatedAt: w.updatedAt || now
             };
@@ -4281,13 +4313,13 @@
               id: s.id || createId(),
               seriesNo,
               code: normalizeSeriesCode(s.code || s.seriesCode || ""),
-              titleJa: String(s.titleJa || s.title || ""),
+              title: String(s.title || s.titleJa || s.titleEn || "Untitled Series"),
+              titleJa: String(s.title || s.titleJa || ""),
               titleEn: String(s.titleEn || ""),
-              title: String(s.titleJa || s.titleEn || s.title || "Untitled Series"),
               startDate: String(s.startDate || ""),
-              descriptionJa: String(s.descriptionJa || s.description || ""),
+              description: String(s.description || s.descriptionJa || s.descriptionEn || ""),
+              descriptionJa: String(s.description || s.descriptionJa || ""),
               descriptionEn: String(s.descriptionEn || ""),
-              description: String(s.descriptionJa || s.descriptionEn || s.description || ""),
               createdAt: s.createdAt || now,
               updatedAt: s.updatedAt || now
             };
