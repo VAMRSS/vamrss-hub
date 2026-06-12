@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v1.0.2</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0.3</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1633,7 +1633,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v1.0.2</div>
+    <div class="fixed-version-mark">v1.0.3</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1767,10 +1767,10 @@
 
           <div class="entry-row">
             <div class="field">
-              <label>Dimensions / サイズ mm</label>
+              <label>Dimensions H / W / D mm</label>
               <div class="three-grid">
-                <input id="sizeW" type="number" min="0" inputmode="numeric" placeholder="H">
-                <input id="sizeH" type="number" min="0" inputmode="numeric" placeholder="W">
+                <input id="sizeH" type="number" min="0" inputmode="numeric" placeholder="H">
+                <input id="sizeW" type="number" min="0" inputmode="numeric" placeholder="W">
                 <input id="sizeD" type="number" min="0" inputmode="numeric" placeholder="D">
               </div>
             </div>
@@ -1899,7 +1899,7 @@
 
       <div class="data-block">
         <div class="section-title">CSV</div>
-        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。同じ4桁番号は更新、無い番号は追加します。</p>
+        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。サイズ列は sizeH,sizeW,sizeD のHWD順です。</p>
         <div class="data-file-row csv-file-row">
           <label class="text-button active file-label" for="seriesCsvFile">SERIES CSV</label>
           <input id="seriesCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
@@ -3028,27 +3028,33 @@
     }
 
     function normalizeDimensions(w = {}) {
-      if (w.sizeW || w.sizeH || w.sizeD) {
+      if (w.sizeH || w.sizeW || w.sizeD || w.height || w.width || w.depth || w.h || w.w || w.d) {
         return {
-          w: String(w.sizeW || ""),
-          h: String(w.sizeH || ""),
-          d: String(w.sizeD || "")
+          h: String(w.sizeH ?? w.height ?? w.h ?? ""),
+          w: String(w.sizeW ?? w.width ?? w.w ?? ""),
+          d: String(w.sizeD ?? w.depth ?? w.d ?? "")
         };
       }
+
       const size = String(w.size || "");
-      const match = size.match(/W?\s*(\d+)\D+H?\s*(\d+)\D+D?\s*(\d+)/i);
+      const hwd = size.match(/H?\s*(\d+)\D+W?\s*(\d+)\D+D?\s*(\d+)/i);
+      if (hwd) {
+        return { h: hwd[1], w: hwd[2], d: hwd[3] };
+      }
+
+      const whd = size.match(/W?\s*(\d+)\D+H?\s*(\d+)\D+D?\s*(\d+)/i);
       return {
-        w: match ? match[1] : "",
-        h: match ? match[2] : "",
-        d: match ? match[3] : ""
+        h: whd ? whd[2] : "",
+        w: whd ? whd[1] : "",
+        d: whd ? whd[3] : ""
       };
     }
 
     function formatDimensions(w = {}) {
       const d = normalizeDimensions(w);
       const parts = [];
-      if (d.w) parts.push(`W${d.w}`);
       if (d.h) parts.push(`H${d.h}`);
+      if (d.w) parts.push(`W${d.w}`);
       if (d.d) parts.push(`D${d.d}`);
       return parts.length ? `${parts.join(" × ")} mm` : "";
     }
@@ -3123,8 +3129,8 @@
         managementStatus: fields.managementStatus.value,
         technique: fields.technique.value,
         materials: fields.materials.value.trim(),
-        sizeW: fields.sizeW.value.trim(),
         sizeH: fields.sizeH.value.trim(),
+        sizeW: fields.sizeW.value.trim(),
         sizeD: fields.sizeD.value.trim(),
         price,
         priceAsk: fields.priceAsk.checked,
@@ -3909,9 +3915,9 @@
           managementStatus: MANAGEMENT_STATUSES.includes(row.managementStatus) ? row.managementStatus : "保管中",
           technique: String(row.technique || "").trim(),
           materials: String(row.materials || "").trim(),
-          sizeW: String(row.sizeW || "").trim(),
-          sizeH: String(row.sizeH || "").trim(),
-          sizeD: String(row.sizeD || "").trim(),
+          sizeH: String(row.sizeH || row.height || row.h || "").trim(),
+          sizeW: String(row.sizeW || row.width || row.w || "").trim(),
+          sizeD: String(row.sizeD || row.depth || row.d || "").trim(),
           price: priceAsk ? "" : String(row.price || "").trim(),
           priceAsk,
           cost: String(row.cost || "").trim(),
@@ -4003,8 +4009,8 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        schemaVersion: 2,
-        version: "minimal-text-v1.0.2",
+        schemaVersion: 3,
+        version: "minimal-text-v1.0.3",
         exportedAt: nowIso(),
         data: {
           works: works.map(w => ({ ...w })),
@@ -4104,8 +4110,8 @@
               managementStatus: statuses.managementStatus,
               technique: String(w.technique || w.category || w.workCategory || ""),
               materials: String(w.materials || ""),
-              sizeW: dims.w,
               sizeH: dims.h,
+              sizeW: dims.w,
               sizeD: dims.d,
               price: String(w.price || "").toUpperCase() === "ASK" ? "" : (w.price === "" || w.price == null ? "" : Math.max(0, Math.round(Number(w.price) || 0))),
               priceAsk: Boolean(w.priceAsk) || String(w.price || "").toUpperCase() === "ASK",
