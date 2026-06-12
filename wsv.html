@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v1.0.3</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0.4</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1629,11 +1629,16 @@
       text-align: left !important;
     }
 
+      input[type="hidden"],
+    textarea.entry-hidden {
+      display: none !important;
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v1.0.3</div>
+    <div class="fixed-version-mark">v1.0.4</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1700,10 +1705,19 @@
 
           <div class="entry-row">
             <div class="field">
-              <label for="title">Title / タイトル</label>
-              <input id="title" type="text" required placeholder="">
+              <label for="titleJa">Title JA / タイトル日本語</label>
+              <input id="titleJa" type="text" placeholder="">
             </div>
           </div>
+
+          <div class="entry-row">
+            <div class="field">
+              <label for="titleEn">Title EN / タイトル英語</label>
+              <input id="titleEn" type="text" placeholder="">
+            </div>
+          </div>
+
+          <input id="title" type="hidden" value="">
 
           <div class="entry-row entry-dates">
             <div class="field">
@@ -1857,14 +1871,27 @@
           </div>
 
           <div class="field">
-            <label for="seriesTitle">Title / シリーズ名</label>
-            <input id="seriesTitle" type="text" required placeholder="">
+            <label for="seriesTitleJa">Title JA / シリーズ名日本語</label>
+            <input id="seriesTitleJa" type="text" placeholder="">
           </div>
 
           <div class="field">
-            <label for="seriesDescription">Description / 説明文</label>
-            <textarea id="seriesDescription" placeholder=""></textarea>
+            <label for="seriesTitleEn">Title EN / シリーズ名英語</label>
+            <input id="seriesTitleEn" type="text" placeholder="">
           </div>
+
+          <div class="field">
+            <label for="seriesDescriptionJa">Description JA / 説明文日本語</label>
+            <textarea id="seriesDescriptionJa" placeholder=""></textarea>
+          </div>
+
+          <div class="field">
+            <label for="seriesDescriptionEn">Description EN / 説明文英語</label>
+            <textarea id="seriesDescriptionEn" placeholder=""></textarea>
+          </div>
+
+          <input id="seriesTitle" type="hidden" value="">
+          <textarea id="seriesDescription" class="entry-hidden"></textarea>
         </div>
 
         <div class="button-row">
@@ -1899,7 +1926,7 @@
 
       <div class="data-block">
         <div class="section-title">CSV</div>
-        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。サイズ列は sizeH,sizeW,sizeD のHWD順です。</p>
+        <p class="hint">series.csvを先に、works.csvを後から読み込んでください。タイトル/説明文はJA/EN分離、サイズ列はsizeH,sizeW,sizeDです。</p>
         <div class="data-file-row csv-file-row">
           <label class="text-button active file-label" for="seriesCsvFile">SERIES CSV</label>
           <input id="seriesCsvFile" class="hidden-file" type="file" accept=".csv,text/csv">
@@ -2542,6 +2569,8 @@
     const fields = {
       workNo: document.getElementById("workNo"),
       title: document.getElementById("title"),
+      titleJa: document.getElementById("titleJa"),
+      titleEn: document.getElementById("titleEn"),
       completedDate: document.getElementById("completedDate"),
       series: document.getElementById("series"),
       year: document.getElementById("year"),
@@ -2578,6 +2607,38 @@
 
     function escapeAttr(text) {
       return escapeHtml(text).replaceAll("`", "&#096;");
+    }
+
+    function workTitle(work = {}) {
+      return String(work.titleJa || work.titleEn || work.title || "Untitled");
+    }
+
+    function seriesTitle(series = {}) {
+      return String(series.titleJa || series.titleEn || series.title || "Untitled Series");
+    }
+
+    function seriesDescription(series = {}) {
+      return String(series.descriptionJa || series.descriptionEn || series.description || "");
+    }
+
+    function seriesCodeExists(code, exceptId = null) {
+      const normalized = normalizeSeriesCode(code);
+      if (!normalized) return false;
+      return seriesRecords.some(series => {
+        if (exceptId && series.id === exceptId) return false;
+        return normalizeSeriesCode(series.code) === normalized;
+      });
+    }
+
+    function dedupeImportedSeriesCodes() {
+      const used = new Set();
+      seriesRecords = seriesRecords.map(series => {
+        const code = normalizeSeriesCode(series.code);
+        if (!code) return series;
+        if (used.has(code)) return { ...series, code: "" };
+        used.add(code);
+        return { ...series, code };
+      });
     }
 
     function cleanOptions(items, fallback = []) {
@@ -2626,8 +2687,9 @@
     }
 
     function getSeriesRecordByTitle(title) {
-      return seriesRecords.find(s => String(s.title || "") === String(title || "")) || null;
+      return seriesRecords.find(s => seriesTitle(s) === String(title || "") || seriesTitle(s) === String(title || "")) || null;
     }
+
 
     function getSeriesRecordForWork(work) {
       if (!work) return null;
@@ -2637,10 +2699,11 @@
     function seriesLabel(series) {
       if (!series) return "Single";
       const code = normalizeSeriesCode(series.code || "");
-      const title = String(series.title || "").trim();
+      const title = seriesTitle(series);
       if (code && title) return code + " / " + title;
       return code || title || "Untitled Series";
     }
+
 
     function normalizeWorkNo(value) {
       const digits = String(value || "").replace(/\D/g, "");
@@ -3113,17 +3176,23 @@
         throw new Error("DUPLICATE_WORK_NO");
       }
 
+      const titleJa = fields.titleJa.value.trim();
+      const titleEn = fields.titleEn.value.trim();
+
       const price = fields.price.value === "" ? "" : Math.max(0, Math.round(Number(fields.price.value) || 0));
       const cost = fields.cost.value === "" ? "" : Math.max(0, Math.round(Number(fields.cost.value) || 0));
+      const linkedSeries = getSeriesRecordByNo(fields.series.value);
 
       return {
         ...existing,
         id: existing.id || createId(),
         workNo,
-        title: fields.title.value.trim(),
+        titleJa,
+        titleEn,
+        title: titleJa || titleEn,
         completedDate: fields.completedDate.value,
         seriesNo: normalizeWorkNo(fields.series.value),
-        series: getSeriesRecordByNo(fields.series.value)?.title || "Single",
+        series: linkedSeries ? seriesTitle(linkedSeries) : "Single",
         year: fields.year.value.trim(),
         productionStatus: fields.productionStatus.value,
         managementStatus: fields.managementStatus.value,
@@ -3144,6 +3213,7 @@
       };
     }
 
+
     function compareWorks(a, b) {
       let av = "";
       let bv = "";
@@ -3152,8 +3222,8 @@
         av = normalizeWorkNo(a.workNo);
         bv = normalizeWorkNo(b.workNo);
       } else if (sortKey === "title") {
-        av = String(a.title || "");
-        bv = String(b.title || "");
+        av = workTitle(a);
+        bv = workTitle(b);
       } else if (sortKey === "year") {
         av = String(a.completedDate || "");
         bv = String(b.completedDate || "");
@@ -3164,8 +3234,9 @@
     }
 
 
+
     function findSeriesByTitle(title) {
-      return seriesRecords.find(s => String(s.title || "") === String(title || ""));
+      return seriesRecords.find(s => seriesTitle(s) === String(title || ""));
     }
 
     function seriesLinkHtml(title) {
@@ -3261,6 +3332,8 @@
           const statuses = normalizeStatuses(w);
           return [
             w.workNo,
+            w.titleJa,
+            w.titleEn,
             w.title,
             w.completedDate,
             w.seriesNo,
@@ -3298,13 +3371,14 @@
           <article class="work" id="work-${escapeAttr(w.id)}">
             <button class="work-summary" type="button" onclick="toggleWork('${escapeAttr(w.id)}')">
               <div class="work-no">${escapeHtml(workNo)}</div>
-              <div class="work-title"><span class="title-scroll">${escapeHtml(w.title || "Untitled")}</span></div>
+              <div class="work-title"><span class="title-scroll">${escapeHtml(workTitle(w))}</span></div>
               <div class="work-year">${escapeHtml(w.completedDate || "")}</div>
             </button>
             <div class="work-detail">
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(workNo)}</div></div>
-                <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(w.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Title JA</div><div class="detail-value">${escapeHtml(w.titleJa || w.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Title EN</div><div class="detail-value">${escapeHtml(w.titleEn || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(normalizeProductionDate(w))}</div></div>
                 <div class="detail-row"><div class="detail-key">Completed</div><div class="detail-value">${escapeHtml(w.completedDate || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Series</div><div class="detail-value">${seriesLinkHtml(w.series)}</div></div>
@@ -3330,6 +3404,7 @@
         `;
       }).join("");
     }
+
 
     function render() {
       const isSeries = activeListMode === "series";
@@ -3359,7 +3434,8 @@
 
       editingId = id;
       fields.workNo.value = normalizeWorkNo(w.workNo);
-      fields.title.value = w.title || "";
+      fields.titleJa.value = w.titleJa || w.title || "";
+      fields.titleEn.value = w.titleEn || "";
       fields.completedDate.value = w.completedDate || "";
       renderSeriesSelect(fields.series, normalizeWorkNo(w.seriesNo) || getSeriesRecordByTitle(w.series)?.seriesNo || "");
       fields.series.value = normalizeWorkNo(w.seriesNo) || getSeriesRecordByTitle(w.series)?.seriesNo || "";
@@ -3374,8 +3450,8 @@
       fields.materials.value = w.materials || "";
 
       const dims = normalizeDimensions(w);
-      fields.sizeW.value = dims.w;
       fields.sizeH.value = dims.h;
+      fields.sizeW.value = dims.w;
       fields.sizeD.value = dims.d;
 
       fields.priceAsk.checked = Boolean(w.priceAsk) || String(w.price || "").toUpperCase() === "ASK";
@@ -3419,8 +3495,12 @@
       seriesNo: document.getElementById("seriesNo"),
       code: document.getElementById("seriesCode"),
       title: document.getElementById("seriesTitle"),
+      titleJa: document.getElementById("seriesTitleJa"),
+      titleEn: document.getElementById("seriesTitleEn"),
       startDate: document.getElementById("seriesStartDate"),
-      description: document.getElementById("seriesDescription")
+      description: document.getElementById("seriesDescription"),
+      descriptionJa: document.getElementById("seriesDescriptionJa"),
+      descriptionEn: document.getElementById("seriesDescriptionEn")
     };
 
     function resetSeriesForm() {
@@ -3429,6 +3509,7 @@
       document.getElementById("seriesSubmitButton").textContent = "SAVE";
       document.getElementById("seriesCancelButton").style.display = "none";
     }
+
 
     function seriesFormToRecord(existing = {}) {
       let seriesNo = normalizeWorkNo(seriesFields.seriesNo.value);
@@ -3443,18 +3524,33 @@
         throw new Error("DUPLICATE_SERIES_NO");
       }
 
+      const code = normalizeSeriesCode(seriesFields.code ? seriesFields.code.value : "");
+      if (seriesCodeExists(code, existing.id || null)) {
+        throw new Error("DUPLICATE_SERIES_CODE");
+      }
+
+      const titleJa = seriesFields.titleJa.value.trim();
+      const titleEn = seriesFields.titleEn.value.trim();
+      const descriptionJa = seriesFields.descriptionJa.value.trim();
+      const descriptionEn = seriesFields.descriptionEn.value.trim();
+
       return {
         ...existing,
         id: existing.id || createId(),
         seriesNo,
-        code: normalizeSeriesCode(seriesFields.code ? seriesFields.code.value : ""),
-        title: seriesFields.title.value.trim(),
+        code,
+        titleJa,
+        titleEn,
+        title: titleJa || titleEn,
         startDate: seriesFields.startDate.value,
-        description: seriesFields.description.value.trim(),
+        descriptionJa,
+        descriptionEn,
+        description: descriptionJa || descriptionEn,
         createdAt: existing.createdAt || nowIso(),
         updatedAt: nowIso()
       };
     }
+
 
     function compareSeries(a, b) {
       let av = "";
@@ -3464,8 +3560,8 @@
         av = normalizeWorkNo(a.seriesNo);
         bv = normalizeWorkNo(b.seriesNo);
       } else if (sortKey === "title") {
-        av = String(a.title || "");
-        bv = String(b.title || "");
+        av = seriesTitle(a);
+        bv = seriesTitle(b);
       } else if (sortKey === "year") {
         av = String(a.startDate || "");
         bv = String(b.startDate || "");
@@ -3474,6 +3570,7 @@
       const result = av.localeCompare(bv, "ja", { numeric: true });
       return sortDirection === "asc" ? result : -result;
     }
+
 
     function renderSeriesList() {
       renderFilters();
@@ -3486,8 +3583,12 @@
           return [
             s.seriesNo,
             s.code,
+            s.titleJa,
+            s.titleEn,
             s.title,
             s.startDate,
+            s.descriptionJa,
+            s.descriptionEn,
             s.description
           ].some(value => String(value || "").toLowerCase().includes(query));
         })
@@ -3501,23 +3602,25 @@
       workList.innerHTML = filtered.map(s => {
         const no = normalizeWorkNo(s.seriesNo);
         const relatedWorks = works
-          .filter(w => normalizeWorkNo(w.seriesNo) === normalizeWorkNo(s.seriesNo) || String(w.series || "") === String(s.title || ""))
+          .filter(w => normalizeWorkNo(w.seriesNo) === normalizeWorkNo(s.seriesNo) || String(w.series || "") === seriesTitle(s) || String(w.series || "") === seriesTitle(s))
           .sort(compareWorks);
 
         return `
           <article class="work" id="series-${escapeAttr(s.id)}">
             <button class="work-summary" type="button" onclick="toggleSeries('${escapeAttr(s.id)}')">
               <div class="work-no">${escapeHtml(no)}</div>
-              <div class="work-title"><span class="title-scroll">${escapeHtml(s.code ? s.code + " / " : "")}${escapeHtml(s.title || "Untitled Series")}</span></div>
+              <div class="work-title"><span class="title-scroll">${escapeHtml(s.code ? s.code + " / " : "")}${escapeHtml(seriesTitle(s))}</span></div>
               <div class="work-year">${escapeHtml(s.startDate || "")}</div>
             </button>
             <div class="work-detail">
               <div class="detail-grid">
                 <div class="detail-row"><div class="detail-key">#</div><div class="detail-value">${escapeHtml(no)}</div></div>
                 <div class="detail-row"><div class="detail-key">Code</div><div class="detail-value">${escapeHtml(s.code || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Title</div><div class="detail-value">${escapeHtml(s.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Title JA</div><div class="detail-value">${escapeHtml(s.titleJa || s.title || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Title EN</div><div class="detail-value">${escapeHtml(s.titleEn || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Start</div><div class="detail-value">${escapeHtml(s.startDate || "")}</div></div>
-                <div class="detail-row"><div class="detail-key">Description</div><div class="detail-value">${escapeHtml(s.description || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Description JA</div><div class="detail-value">${escapeHtml(s.descriptionJa || s.description || "")}</div></div>
+                <div class="detail-row"><div class="detail-key">Description EN</div><div class="detail-value">${escapeHtml(s.descriptionEn || "")}</div></div>
                 <div class="detail-row"><div class="detail-key">Works</div><div class="detail-value">${escapeHtml(String(relatedWorks.length))}</div></div>
               </div>
               ${relatedWorks.length ? `
@@ -3525,7 +3628,7 @@
                   ${relatedWorks.map(w => `
                     <div class="detail-row">
                       <div class="detail-key">${escapeHtml(normalizeWorkNo(w.workNo))}</div>
-                      <div class="detail-value"><button class="inline-series-link" type="button" onclick="toggleNestedWork('series-${escapeAttr(s.id)}', '${escapeAttr(w.id)}')">${escapeHtml(w.title || "Untitled")}</button></div>
+                      <div class="detail-value"><button class="inline-series-link" type="button" onclick="toggleNestedWork('series-${escapeAttr(s.id)}', '${escapeAttr(w.id)}')">${escapeHtml(workTitle(w))}</button></div>
                     </div>
                     <div id="series-${escapeAttr(s.id)}-work-${escapeAttr(w.id)}"></div>
                   `).join("")}
@@ -3541,6 +3644,7 @@
       }).join("");
     }
 
+
     window.toggleSeries = function(id) {
       const target = document.getElementById("series-" + id);
       if (target) target.classList.toggle("open");
@@ -3553,9 +3657,11 @@
       editingSeriesId = id;
       seriesFields.seriesNo.value = normalizeWorkNo(s.seriesNo);
       if (seriesFields.code) seriesFields.code.value = normalizeSeriesCode(s.code || "");
-      seriesFields.title.value = s.title || "";
+      seriesFields.titleJa.value = s.titleJa || s.title || "";
+      seriesFields.titleEn.value = s.titleEn || "";
       seriesFields.startDate.value = s.startDate || "";
-      seriesFields.description.value = s.description || "";
+      seriesFields.descriptionJa.value = s.descriptionJa || s.description || "";
+      seriesFields.descriptionEn.value = s.descriptionEn || "";
 
       document.getElementById("seriesSubmitButton").textContent = "UPDATE";
       document.getElementById("seriesCancelButton").style.display = "inline-block";
@@ -3582,8 +3688,8 @@
 
     seriesForm.addEventListener("submit", event => {
       event.preventDefault();
-      if (!seriesFields.title.value.trim()) {
-        alert("シリーズ名を入力してください。");
+      if (!seriesFields.titleJa.value.trim() && !seriesFields.titleEn.value.trim()) {
+        alert("シリーズ名を日本語または英語で入力してください。");
         return;
       }
 
@@ -3598,6 +3704,10 @@
           alert("この番号は作品またはシリーズで既に使用されています。");
           return;
         }
+        if (error.message === "DUPLICATE_SERIES_CODE") {
+          alert("同じ4文字CODEのシリーズが既に存在します。別のCODEを入力してください。");
+          return;
+        }
         if (error.message === "INVALID_SERIES_NO") {
           alert("シリーズ番号は0000〜9999の4桁で入力してください。");
           return;
@@ -3606,13 +3716,18 @@
         return;
       }
 
-      const title = seriesFields.title.value.trim();
+      const title = seriesFields.titleJa.value.trim() || seriesFields.titleEn.value.trim();
       if (title && !seriesOptions.includes(title)) {
         seriesOptions.push(title);
         saveSettings();
       }
 
-      works = works.map(w => normalizeWorkNo(w.seriesNo) === normalizeWorkNo(seriesRecords.find(s => s.id === editingSeriesId)?.seriesNo || "") ? { ...w, series: seriesRecords.find(s => s.id === editingSeriesId)?.title || w.series, updatedAt: nowIso() } : w);
+      if (editingSeriesId) {
+        const editedSeries = seriesRecords.find(s => s.id === editingSeriesId);
+        if (editedSeries) {
+          works = works.map(w => normalizeWorkNo(w.seriesNo) === normalizeWorkNo(editedSeries.seriesNo) ? { ...w, series: seriesTitle(editedSeries), updatedAt: nowIso() } : w);
+        }
+      }
       save();
       saveSeriesRecords();
       setupOptions();
@@ -3695,8 +3810,8 @@
 
     form.addEventListener("submit", event => {
       event.preventDefault();
-      if (!fields.title.value.trim()) {
-        alert("作品名を入力してください。");
+      if (!fields.titleJa.value.trim() && !fields.titleEn.value.trim()) {
+        alert("作品名を日本語または英語で入力してください。");
         return;
       }
 
@@ -3831,10 +3946,13 @@
       let added = 0;
       let updated = 0;
       const invalid = [];
+      const duplicatedCodes = [];
 
       rows.forEach((row, index) => {
         const seriesNo = normalizeWorkNo(row.seriesNo);
-        const title = String(row.title || "").trim();
+        const titleJa = String(row.titleJa || row.title || "").trim();
+        const titleEn = String(row.titleEn || "").trim();
+        const title = titleJa || titleEn;
         if (!/^\d{4}$/.test(seriesNo) || !title || seen.has(seriesNo)) {
           invalid.push(index + 2);
           return;
@@ -3842,14 +3960,28 @@
         seen.add(seriesNo);
 
         const existing = seriesRecords.find(s => normalizeWorkNo(s.seriesNo) === seriesNo);
+        const code = normalizeSeriesCode(row.code || "");
+        const duplicateCode = code ? seriesRecords.find(s => normalizeSeriesCode(s.code) === code && normalizeWorkNo(s.seriesNo) !== seriesNo) : null;
+        if (duplicateCode) {
+          duplicatedCodes.push(`${index + 2}行目:${code}`);
+          return;
+        }
+
+        const descriptionJa = String(row.descriptionJa || row.description || "").trim();
+        const descriptionEn = String(row.descriptionEn || "").trim();
+
         const record = {
           ...(existing || {}),
           id: existing?.id || createId(),
           seriesNo,
-          code: normalizeSeriesCode(row.code || ""),
+          code,
+          titleJa,
+          titleEn,
           title,
           startDate: csvDate(row.startDate),
-          description: String(row.description || "").trim(),
+          descriptionJa,
+          descriptionEn,
+          description: descriptionJa || descriptionEn,
           createdAt: existing?.createdAt || now,
           updatedAt: now
         };
@@ -3866,6 +3998,7 @@
       });
 
       if (invalid.length) alert(`series.csvに取り込めない行があります: ${invalid.join(", ")}行目`);
+      if (duplicatedCodes.length) alert(`重複しているシリーズCODEがあります。該当行は取り込みませんでした。\n${duplicatedCodes.join("\n")}`);
 
       saveSeriesRecords();
       saveSettings();
@@ -3873,6 +4006,7 @@
       render();
       alert(`SERIES CSVを取り込みました。\n追加: ${added}\n更新: ${updated}`);
     }
+
 
     function importWorksCsvText(text) {
       const rows = parseCsv(text);
@@ -3902,13 +4036,17 @@
 
         const existing = works.find(w => normalizeWorkNo(w.workNo) === workNo);
         const priceAsk = csvBool(row.priceAsk);
+        const titleJa = String(row.titleJa || row.title || "").trim();
+        const titleEn = String(row.titleEn || "").trim();
         const record = {
           ...(existing || {}),
           id: existing?.id || createId(),
           workNo,
-          title: String(row.title || "").trim() || "Untitled",
+          titleJa,
+          titleEn,
+          title: titleJa || titleEn || "Untitled",
           seriesNo,
-          series: linkedSeries?.title || (seriesNo ? "" : "Single"),
+          series: linkedSeries ? seriesTitle(linkedSeries) : (seriesNo ? "" : "Single"),
           year: csvDate(row.startDate),
           completedDate: csvDate(row.completedDate),
           productionStatus: PRODUCTION_STATUSES.includes(row.productionStatus) ? row.productionStatus : "制作中",
@@ -3956,6 +4094,7 @@
       render();
       alert(`WORKS CSVを取り込みました。\n追加: ${added}\n更新: ${updated}`);
     }
+
 
     function readCsvFile(file, callback) {
       if (!file) return;
@@ -4009,8 +4148,8 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        schemaVersion: 3,
-        version: "minimal-text-v1.0.3",
+        schemaVersion: 4,
+        version: "minimal-text-v1.0.4",
         exportedAt: nowIso(),
         data: {
           works: works.map(w => ({ ...w })),
@@ -4101,7 +4240,9 @@
             return {
               id: w.id || createId(),
               workNo,
-              title: String(w.title || "Untitled"),
+              titleJa: String(w.titleJa || w.title || ""),
+              titleEn: String(w.titleEn || ""),
+              title: String(w.titleJa || w.titleEn || w.title || "Untitled"),
               completedDate: String(w.completedDate || ""),
               seriesNo: rawSeriesNo,
               series: String(w.series || ""),
@@ -4140,13 +4281,19 @@
               id: s.id || createId(),
               seriesNo,
               code: normalizeSeriesCode(s.code || s.seriesCode || ""),
-              title: String(s.title || "Untitled Series"),
+              titleJa: String(s.titleJa || s.title || ""),
+              titleEn: String(s.titleEn || ""),
+              title: String(s.titleJa || s.titleEn || s.title || "Untitled Series"),
               startDate: String(s.startDate || ""),
-              description: String(s.description || ""),
+              descriptionJa: String(s.descriptionJa || s.description || ""),
+              descriptionEn: String(s.descriptionEn || ""),
+              description: String(s.descriptionJa || s.descriptionEn || s.description || ""),
               createdAt: s.createdAt || now,
               updatedAt: s.updatedAt || now
             };
           });
+
+          dedupeImportedSeriesCodes();
 
           works = works.map(w => {
             if (normalizeWorkNo(w.seriesNo)) {
@@ -4170,7 +4317,7 @@
           categories = cleanOptions([...(importedCatalogs.categories || data.categories || categories), ...works.map(w => w.category)], DEFAULT_CATEGORIES);
           techniques = cleanOptions([...(importedCatalogs.techniques || data.techniques || techniques), ...works.map(w => w.technique)], DEFAULT_TECHNIQUES);
           locations = cleanOptions([...(importedCatalogs.locations || data.locations || locations), ...works.map(w => w.location)], DEFAULT_LOCATIONS);
-          seriesOptions = cleanOptions([...(importedCatalogs.seriesOptions || data.seriesOptions || data.series || seriesOptions), ...seriesRecords.map(s => s.title), ...works.map(w => w.series)], DEFAULT_SERIES);
+          seriesOptions = cleanOptions([...(importedCatalogs.seriesOptions || data.seriesOptions || data.series || seriesOptions), ...seriesRecords.map(s => seriesTitle(s)), ...works.map(w => w.series)], DEFAULT_SERIES);
           exhibitionOptions = cleanOptions([...(importedCatalogs.exhibitionOptions || data.exhibitionOptions || data.exhibitions || exhibitionOptions), ...works.flatMap(w => normalizeExhibitions(w.exhibitionHistory))], DEFAULT_EXHIBITIONS);
 
           saveSettings();
