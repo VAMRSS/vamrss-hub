@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>(VAMRSS) WSV Minimal Text / v1.0.6</title>
+  <title>(VAMRSS) WSV Minimal Text / v1.0.8</title>
   <style>
     :root {
       --bg: #f8f9f9;
@@ -1638,7 +1638,7 @@
 </head>
 <body>
   <main class="app">
-    <div class="fixed-version-mark">v1.0.6</div>
+    <div class="fixed-version-mark">v1.0.8</div>
     <section id="worksScreen" class="screen active">
       <div class="topbar">
         <h1 class="site-title"><button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme"><img class="site-logo-img" src="./assets/wsv-logo.svg" alt="(VAMRSS) WSV"></button></h1>
@@ -1734,16 +1734,6 @@
             <div class="field">
               <label for="series">Series / シリーズ</label>
               <select id="series"></select>
-            </div>
-          </div>
-
-          <div class="entry-row">
-            <div class="field">
-              <label for="seriesInlineInput">Series Add / シリーズADD</label>
-              <div class="inline-add">
-                <input id="seriesInlineInput" type="text" placeholder="">
-                <button class="text-button active" type="button" id="addSeriesInlineButton" onclick="addInlineOption('series')">ADD</button>
-              </div>
             </div>
           </div>
 
@@ -1946,24 +1936,6 @@
 
 
       <div class="data-block">
-        <div class="section-title">Series</div>
-        <div class="search-line">
-          <input id="seriesOptionInput" type="text" placeholder="Single">
-          <button class="text-button" type="button" id="addSeriesButton">ADD</button>
-        </div>
-        <div id="seriesOptionList" class="option-list"></div>
-      </div>
-
-      <div class="data-block">
-        <div class="section-title">Exhibition</div>
-        <div class="search-line">
-          <input id="exhibitionOptionInput" type="text" placeholder="None">
-          <button class="text-button" type="button" id="addExhibitionButton">ADD</button>
-        </div>
-        <div id="exhibitionOptionList" class="option-list"></div>
-      </div>
-
-      <div class="data-block">
         <div class="section-title">Technique</div>
         <div class="search-line">
           <input id="techniqueOptionInput" type="text" placeholder="Installation">
@@ -1980,6 +1952,25 @@
         </div>
         <div id="locationOptionList" class="option-list"></div>
       </div>
+
+      <div class="data-block">
+        <div class="section-title">Exhibition</div>
+        <div class="search-line">
+          <input id="exhibitionOptionInput" type="text" placeholder="None">
+          <button class="text-button" type="button" id="addExhibitionButton">ADD</button>
+        </div>
+        <div id="exhibitionOptionList" class="option-list"></div>
+      </div>
+
+      <div class="data-block">
+        <div class="section-title">Series</div>
+        <div class="search-line">
+          <input id="seriesOptionInput" type="text" placeholder="Single">
+          <button class="text-button" type="button" id="addSeriesButton">ADD</button>
+        </div>
+        <div id="seriesOptionList" class="option-list"></div>
+      </div>
+
 
       <div class="data-block">
         <div class="section-title">Reset</div>
@@ -2935,10 +2926,10 @@
     }
 
     function renderOptionLists() {
-      renderOptionList("series", seriesOptions);
-      renderOptionList("exhibition", exhibitionOptions);
       renderOptionList("technique", techniques);
       renderOptionList("location", locations);
+      renderOptionList("exhibition", exhibitionOptions);
+      renderOptionList("series", seriesOptions);
     }
 
     function renderOptionList(kind, items) {
@@ -3563,19 +3554,17 @@
         id: existing.id || createId(),
         seriesNo,
         code,
-        title,
+        title: title || titleEn,
         titleJa: title,
         titleEn,
-        title: title || titleEn,
         startDate: seriesFields.startDate.value,
-        descriptionJa,
+        description: description || descriptionEn,
+        descriptionJa: description,
         descriptionEn,
-        description: descriptionJa || descriptionEn,
         createdAt: existing.createdAt || nowIso(),
         updatedAt: nowIso()
       };
     }
-
 
     function compareSeries(a, b) {
       let av = "";
@@ -3817,15 +3806,9 @@
       }
     }
 
-    document.getElementById("addSeriesInlineButton").addEventListener("click", addSeriesFromEntry);
     document.getElementById("addExhibitionInlineButton").addEventListener("click", addExhibitionOptionFromEntry);
     document.getElementById("addExhibitionToWorkButton").addEventListener("click", addSelectedExhibitionToWork);
 
-    document.getElementById("seriesInlineInput").addEventListener("keydown", event => {
-      if (event.key !== "Enter") return;
-      event.preventDefault();
-      addSeriesFromEntry();
-    });
 
     document.getElementById("exhibitionInlineInput").addEventListener("keydown", event => {
       if (event.key !== "Enter") return;
@@ -4178,8 +4161,8 @@
       const backup = {
         app: "(VAMRSS) WORKSHEET VAULT SYSTEM",
         abbreviation: "WSV",
-        schemaVersion: 6,
-        version: "minimal-text-v1.0.6",
+        schemaVersion: 8,
+        version: "minimal-text-v1.0.8",
         exportedAt: nowIso(),
         data: {
           works: works.map(w => ({ ...w })),
@@ -4371,14 +4354,40 @@
     });
 
     document.getElementById("resetButton").addEventListener("click", () => {
-      if (!confirm("すべての作品データを削除しますか？")) return;
+      if (!confirm("すべての作品・シリーズ・DATA候補を削除しますか？")) return;
       if (!confirm("本当に削除しますか？この操作は元に戻せません。")) return;
+
       works = [];
       seriesRecords = [];
+      categories = [];
+      techniques = [];
+      locations = [];
+      seriesOptions = [];
+      exhibitionOptions = [];
+      currentExhibitions = [];
+
+      activeTechnique = "ALL";
+      activeProduction = "ALL";
+      activeManagement = "ALL";
+      searchInput.value = "";
+
+      [
+        STORAGE_KEY,
+        CATEGORY_STORAGE_KEY,
+        TECHNIQUE_STORAGE_KEY,
+        LOCATION_STORAGE_KEY,
+        SERIES_STORAGE_KEY,
+        EXHIBITION_STORAGE_KEY,
+        SERIES_DATA_STORAGE_KEY
+      ].forEach(key => localStorage.removeItem(key));
+
       save();
       saveSeriesRecords();
+      saveSettings();
+      setupOptions();
       resetForm();
       resetSeriesForm();
+      renderOptionLists();
       render();
       showScreen("works");
     });
