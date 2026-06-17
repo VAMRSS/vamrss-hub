@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.1</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.4</title>
   <style>
 
     :root {
@@ -24,6 +24,7 @@
       --invert-ink: #f8f9f9;
       --danger: #9b3144;
       --font-main: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+      --font-weight-main: 300;
     }
 
     html[data-theme="dark"] {
@@ -114,6 +115,7 @@
       align-items: start;
       column-gap: 18px;
       margin-bottom: 48px;
+      min-width: 0;
     }
 
     .brand {
@@ -142,6 +144,16 @@
       text-align: right;
       line-height: 1;
       white-space: nowrap;
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .text-nav::-webkit-scrollbar {
+      display: none;
     }
 
     .text-button,
@@ -704,7 +716,7 @@
     }
 
 
-    /* v1.1.1 - FTR typography alignment */
+    /* v1.1.4 - FTR typography alignment */
     body,
     button,
     input,
@@ -741,11 +753,24 @@
     @media (max-width: 420px) {
       .container { padding-left: 16px; padding-right: 16px; }
       .topbar {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 10px;
+        grid-template-columns: minmax(0, 1fr) max-content;
+        column-gap: 12px;
+        row-gap: 0;
         margin-bottom: 36px;
       }
-      .text-nav { justify-content: flex-start; flex-wrap: wrap; gap: 0 10px; }
+      .brand {
+        max-width: 32vw;
+      }
+      .text-nav {
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+        gap: 8px;
+        max-width: calc(68vw - 32px);
+      }
+      .text-button,
+      .nav-button {
+        font-size: 11px;
+      }
       .schedule-row { grid-template-columns: 4.2em minmax(0, 1fr) 6.5ch; column-gap: .8em; }
       .date-time-pair { grid-template-columns: minmax(0, 1fr) minmax(90px, 34%); }
       .form-actions,
@@ -764,14 +789,58 @@
       }
     }
 
+
+    /* v1.1.4 - Google Fonts + unified typography weight */
+    html,
+    body,
+    button,
+    input,
+    textarea,
+    select {
+      font-family: var(--font-main) !important;
+    }
+
+    body,
+    body * {
+      font-weight: var(--font-weight-main) !important;
+    }
+
+
+    /* v1.1.4 - topbar vertical alignment */
+    .topbar {
+      align-items: start !important;
+    }
+
+    .topbar .brand,
+    .topbar .text-nav,
+    .topbar .text-button,
+    .topbar .nav-button,
+    .topbar .nav-button span {
+      line-height: 1 !important;
+    }
+
+    .topbar .text-nav {
+      align-items: flex-start !important;
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+    }
+
+    .topbar .text-button,
+    .topbar .nav-button {
+      display: inline-flex !important;
+      align-items: flex-start !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.1</div>
+  <div class="fixed-version-mark">v1.1.4</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -1029,7 +1098,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.1 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.4 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -1053,7 +1122,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.1';
+    const APP_VERSION = 'v1.1.4';
 
     /*
       Supabase settings:
