@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f8f9f9">
-  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.1</title>
+  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.2</title>
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -1057,7 +1057,7 @@
 <body>
   <main class="app">
     <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-    <div class="fixed-version-mark">v1.1.1</div>
+    <div class="fixed-version-mark">v1.1.2</div>
     <div class="topbar">
       <h1 class="site-title">
         <button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme">＊(VAMRSS) FTR</button>
@@ -1119,11 +1119,11 @@
               <div class="split-panel" id="entrySplitPanel">
                 <div class="split-grid">
                   <div class="field percent-field">
-                    <label for="entrySplitA">Person A</label>
+                    <label for="entrySplitA" id="entrySplitALabel">Person A</label>
                     <input id="entrySplitA" type="number" inputmode="numeric" min="0" max="100" step="1">
                   </div>
                   <div class="field percent-field">
-                    <label for="entrySplitB">Person B</label>
+                    <label for="entrySplitB" id="entrySplitBLabel">Person B</label>
                     <input id="entrySplitB" type="number" inputmode="numeric" min="0" max="100" step="1">
                   </div>
                 </div>
@@ -1219,11 +1219,11 @@
               <p class="setting-title">Default</p>
               <div class="split-grid">
                 <div class="field percent-field">
-                  <label for="defaultSplitA">Person A</label>
+                  <label for="defaultSplitA" id="defaultSplitALabel">Person A</label>
                   <input id="defaultSplitA" type="number" inputmode="numeric" min="0" max="100" step="1">
                 </div>
                 <div class="field percent-field">
-                  <label for="defaultSplitB">Person B</label>
+                  <label for="defaultSplitB" id="defaultSplitBLabel">Person B</label>
                   <input id="defaultSplitB" type="number" inputmode="numeric" min="0" max="100" step="1">
                 </div>
               </div>
@@ -1251,7 +1251,7 @@
   <script>
     const APP_TITLE = "(VAMRSS) FUTARI SEISAN";
     const APP_ABBREVIATION = "FTR";
-    const APP_VERSION = "v1.1.1";
+    const APP_VERSION = "v1.1.2";
 
     const THEME_STORAGE_KEY = "ftrTheme";
 
@@ -1318,6 +1318,10 @@
     const defaultSplitBInput = document.getElementById("defaultSplitB");
     const entrySplitAInput = document.getElementById("entrySplitA");
     const entrySplitBInput = document.getElementById("entrySplitB");
+    const entrySplitALabel = document.getElementById("entrySplitALabel");
+    const entrySplitBLabel = document.getElementById("entrySplitBLabel");
+    const defaultSplitALabel = document.getElementById("defaultSplitALabel");
+    const defaultSplitBLabel = document.getElementById("defaultSplitBLabel");
     const toggleSplitButton = document.getElementById("toggleSplitButton");
     const entrySplitPanel = document.getElementById("entrySplitPanel");
     const settlementResetButton = document.getElementById("settlementResetButton");
@@ -1497,6 +1501,10 @@
       payerBButton.textContent = names.personB;
       document.getElementById("personAStatLabel").textContent = `${names.personA} / 支払い`;
       document.getElementById("personBStatLabel").textContent = `${names.personB} / 支払い`;
+      if (entrySplitALabel) entrySplitALabel.textContent = names.personA;
+      if (entrySplitBLabel) entrySplitBLabel.textContent = names.personB;
+      if (defaultSplitALabel) defaultSplitALabel.textContent = names.personA;
+      if (defaultSplitBLabel) defaultSplitBLabel.textContent = names.personB;
       defaultSplitAInput.value = settings.defaultSplitA;
       defaultSplitBInput.value = settings.defaultSplitB;
     }
