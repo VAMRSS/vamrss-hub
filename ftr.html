@@ -850,6 +850,11 @@
       line-height: 2 !important;
     }
 
+    #newButton {
+      width: auto !important;
+      margin-bottom: 6px !important;
+    }
+
     .reset-box p {
       display: none !important;
     }
@@ -958,7 +963,67 @@
       text-decoration: none;
     }
 
+    #newButton {
+      display: none !important;
+    }
 
+
+
+    /* Requested alignment refinements / 2026-06-18 */
+    .topbar {
+      align-items: start !important;
+    }
+
+    .site-title,
+    .site-logo,
+    .text-nav,
+    .topbar .text-button {
+      line-height: 1 !important;
+    }
+
+    .text-nav {
+      align-items: flex-start !important;
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+    }
+
+    .topbar .text-button {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    .settlement-message .amount-large {
+      display: block !important;
+      margin: 0 !important;
+      text-align: right !important;
+      font-size: 12px !important;
+      font-weight: 300 !important;
+      line-height: 2 !important;
+      letter-spacing: 0.02em !important;
+      font-variant-numeric: tabular-nums !important;
+    }
+
+    .split-summary.split-edit-row {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto !important;
+      gap: 12px !important;
+      align-items: baseline !important;
+      padding: 0 !important;
+      border: 0 !important;
+      text-align: left !important;
+    }
+
+    .split-summary.split-edit-row #entrySplitValue {
+      justify-self: start !important;
+      text-align: left !important;
+      color: var(--ink) !important;
+    }
+
+    .split-summary.split-edit-row #toggleSplitButton {
+      justify-self: end !important;
+      text-align: right !important;
+      padding-right: 0 !important;
+    }
 
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -977,7 +1042,6 @@
         <button class="text-button active" type="button" id="mainNavButton" onclick="showScreen('main')">INPUT</button>
         <button class="text-button" type="button" id="historyNavButton" onclick="showScreen('history')">HISTORY</button>
         <button class="text-button" type="button" id="settingsNavButton" onclick="showScreen('settings')">SETTING</button>
-        <button class="text-button" type="button" id="themeButton" onclick="toggleTheme()">THEME</button>
       </nav>
     </div>
     <section id="mainScreen" class="screen active">
@@ -994,9 +1058,10 @@
 
         <section class="section balance-panel">
           <div class="section-head">
-            <h2>Current<span class="jp-note">精算</span></h2>
+            <div class="section-number">Balance</div>
+            <h2>Current</h2>
           </div>
-          <p class="settlement-message" id="settlementText">Settled<span class="jp-note">精算は不要です</span></p>
+          <p class="settlement-message" id="settlementText">Settled</p>
           <div class="stats">
             <div class="stat"><span>Total / 共有出費</span><strong id="total">¥0</strong></div>
             <div class="stat"><span id="personAStatLabel">Person A / 支払い</span><strong id="personAPaid">¥0</strong></div>
@@ -1006,7 +1071,8 @@
 
         <section class="section" id="entrySection">
           <div class="section-head">
-            <h2 id="formTitle">Entry<span class="jp-note">入力</span></h2>
+            <div class="section-number">Entry</div>
+            <h2 id="formTitle">Entry</h2>
           </div>
           <form id="expenseForm">
             <div class="field"><label for="date">Date / 日付</label><input id="date" type="date"></div>
@@ -1022,11 +1088,10 @@
 
             <div class="field">
               <label>Split / 分担</label>
-              <div class="split-summary">
-                <span id="entrySplitLabel">Default<br>基本</span>
+              <div class="split-summary split-edit-row">
                 <strong id="entrySplitValue">50 / 50</strong>
+                <button class="secondary" type="button" id="toggleSplitButton">EDIT</button>
               </div>
-              <button class="secondary" type="button" id="toggleSplitButton">Custom</button>
               <div class="split-panel" id="entrySplitPanel">
                 <div class="split-grid">
                   <div class="field percent-field">
@@ -1050,6 +1115,7 @@
 
         <section class="section">
           <div class="section-head">
+            <div class="section-number">History</div>
             <h2>Entries<span class="jp-note">出費</span></h2>
           </div>
           <div id="expenseList"></div>
@@ -1073,6 +1139,7 @@
 
         <section class="section">
           <div class="section-head">
+            <div class="section-number">Archive</div>
             <h2>Settled<span class="jp-note">精算済み</span></h2>
           </div>
           <div id="settlementGroupList"></div>
@@ -1095,6 +1162,7 @@
 
         <section class="section">
           <div class="section-head">
+            <div class="section-number">Members</div>
             <h2>Members<span class="jp-note">名前</span></h2>
           </div>
           <p class="hint">Only display names are changed. Existing expense records remain usable.<br>表示名だけを変更します。過去の出費データはそのまま使えます。</p>
@@ -1118,6 +1186,7 @@
 
         <section class="section">
           <div class="section-head">
+            <div class="section-number">Default</div>
             <h2>Default Split<span class="jp-note">基本割合</span></h2>
           </div>
           <p class="hint">This split is applied to new entries only. Existing entries remain unchanged.<br>この割合は新しく追加する出費に適用されます。既存の出費には影響しません。</p>
@@ -1141,6 +1210,7 @@
 
         <section class="section">
           <div class="section-head">
+            <div class="section-number">Reset</div>
             <h2>Reset<span class="jp-note">リセット</span></h2>
           </div>
           <div class="reset-box">
@@ -1413,7 +1483,7 @@
       entrySplitBInput.value = entrySplitB;
       isCustomSplitOpen = customOpen;
       entrySplitPanel.classList.toggle("show", isCustomSplitOpen);
-      toggleSplitButton.textContent = isCustomSplitOpen ? "Close / 閉じる" : "Custom";
+      toggleSplitButton.textContent = isCustomSplitOpen ? "CLOSE" : "EDIT";
       updateEntrySplitDisplay();
     }
     function updateEntrySplitDisplay() {
@@ -1432,7 +1502,7 @@
       amountInput.value = "";
       setSelectedPayer("personA");
       setEntrySplit(settings.defaultSplitA, settings.defaultSplitB, false);
-      document.getElementById("formTitle").innerHTML = 'Entry<span class="jp-note">入力</span>';
+      document.getElementById("formTitle").textContent = 'Entry';
       document.getElementById("submitButton").textContent = "Save";
       document.getElementById("cancelButton").style.display = "none";
     }
@@ -1487,13 +1557,13 @@
       document.getElementById("personBPaid").textContent = yen.format(s.personBPaid);
 
       if (s.direction === "SETTLED") {
-        document.getElementById("settlementText").innerHTML = 'Settled<span class="jp-note">精算は不要です</span>';
+        document.getElementById("settlementText").textContent = 'Settled';
       } else if (s.direction === "A_TO_B") {
         document.getElementById("settlementText").innerHTML =
-          `${escapeHtml(names.personA)} → ${escapeHtml(names.personB)}<span class="jp-note">渡す金額</span><span class="amount-large">${yen.format(s.amount)}</span>`;
+          `${escapeHtml(names.personA)} → ${escapeHtml(names.personB)}<span class="amount-large">${yen.format(s.amount)}</span>`;
       } else {
         document.getElementById("settlementText").innerHTML =
-          `${escapeHtml(names.personB)} → ${escapeHtml(names.personA)}<span class="jp-note">渡す金額</span><span class="amount-large">${yen.format(s.amount)}</span>`;
+          `${escapeHtml(names.personB)} → ${escapeHtml(names.personA)}<span class="amount-large">${yen.format(s.amount)}</span>`;
       }
 
       const active = getActiveExpenses().sort((a, b) => b.date.localeCompare(a.date));
@@ -1675,7 +1745,7 @@
       amountInput.value = e.amount;
       setSelectedPayer(e.paidBy);
       setEntrySplit(e.splitA, e.splitB, true);
-      document.getElementById("formTitle").innerHTML = 'Edit<span class="jp-note">編集</span>';
+      document.getElementById("formTitle").textContent = 'Edit';
       document.getElementById("submitButton").textContent = "Update";
       document.getElementById("cancelButton").style.display = "block";
       showScreen("main");
