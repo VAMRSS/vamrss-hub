@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f8f9f9">
-  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.4</title>
+  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.5</title>
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -25,7 +25,7 @@
       --field-bg: rgba(104, 115, 111, 0.10);
       --font-main: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
       --font-weight-main: 300;
-      --font-weight-title: 600;
+      --font-weight-title: 300;
     }
 
     html[data-theme="dark"] {
@@ -1052,7 +1052,7 @@
     }
 
 
-    /* v1.1.4 - Google Fonts + unified typography weight */
+    /* v1.1.5 - Google Fonts + unified typography weight */
     html,
     body,
     button,
@@ -1067,7 +1067,7 @@
       font-weight: var(--font-weight-main) !important;
     }
 
-    /* v1.1.4 - title and navigation weight */
+    /* v1.1.5 - title and navigation weight */
     .site-title,
     .site-logo,
     .topbar .text-nav,
@@ -1088,15 +1088,120 @@
       font-weight: var(--font-weight-title) !important;
     }
 
+
+    /* v1.1.5 - WSV color hierarchy + unified typography */
+    :root {
+      --font-weight-main: 300;
+      --font-weight-title: 300;
+    }
+
+    html,
+    body,
+    button,
+    input,
+    textarea,
+    select,
+    * {
+      font-family: var(--font-main) !important;
+    }
+
+    body,
+    body * {
+      font-weight: var(--font-weight-main) !important;
+    }
+
+    body {
+      font-size: 12px !important;
+      line-height: 2 !important;
+      letter-spacing: 0.01em !important;
+    }
+
+    .site-logo,
+    .text-button.active,
+    .text-button.selected,
+    .nav-button.active,
+    .payer-button.selected,
+    .section-title,
+    .settlement-route,
+    .amount-large,
+    .expense-title,
+    .setting-title,
+    .settlement-title,
+    .data-title,
+    .detail-title,
+    .name-chip,
+    .shopping-history-title {
+      color: var(--ink) !important;
+      font-weight: var(--font-weight-main) !important;
+    }
+
+    .text-button,
+    .nav-button,
+    .payer-button,
+    .secondary,
+    .top-action,
+    label,
+    .label,
+    .detail-key,
+    .expense-date,
+    .expense-meta,
+    .settlement-meta,
+    .stat span,
+    .status,
+    .empty,
+    .hint,
+    .jp-note,
+    .section-description,
+    .site-footer,
+    .fixed-copyright-mark,
+    .fixed-version-mark {
+      color: var(--sub) !important;
+      font-weight: var(--font-weight-main) !important;
+    }
+
+    .text-button.danger,
+    .danger,
+    .danger-button {
+      color: var(--danger) !important;
+    }
+
+    .text-button,
+    .nav-button,
+    .payer-button,
+    label,
+    input,
+    textarea,
+    select,
+    .section-title,
+    .expense-title,
+    .setting-title,
+    .settlement-title,
+    .detail-row,
+    .detail-value,
+    .expense-meta,
+    .settlement-meta,
+    .hint {
+      line-height: 2 !important;
+    }
+
+    .topbar,
+    .topbar .site-logo,
+    .topbar .text-nav,
+    .topbar .text-button,
+    .fixed-copyright-mark,
+    .fixed-version-mark {
+      line-height: 1 !important;
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
   <main class="app">
     <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-    <div class="fixed-version-mark">v1.1.4</div>
+    <div class="fixed-version-mark">v1.1.5</div>
     <div class="topbar">
       <h1 class="site-title">
         <button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme">＊(VAMRSS) FTR</button>
@@ -1290,7 +1395,7 @@
   <script>
     const APP_TITLE = "(VAMRSS) FUTARI SEISAN";
     const APP_ABBREVIATION = "FTR";
-    const APP_VERSION = "v1.1.4";
+    const APP_VERSION = "v1.1.5";
 
     const THEME_STORAGE_KEY = "ftrTheme";
 
