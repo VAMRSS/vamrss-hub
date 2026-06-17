@@ -698,6 +698,268 @@
       }
     }
 
+
+    /* FTR compact portfolio mode / explanations minimized */
+    .topbar {
+      margin-bottom: 30px !important;
+    }
+
+    .hero,
+    .lead,
+    .hint,
+    .kicker,
+    .powered-by {
+      display: none !important;
+    }
+
+    h1,
+    h2,
+    .section-title,
+    .settlement-message,
+    .setting-title,
+    .settlement-title,
+    .expense-title {
+      font-size: 12px !important;
+      font-weight: 300 !important;
+      line-height: 2 !important;
+      letter-spacing: 0.09em !important;
+      text-transform: uppercase !important;
+    }
+
+    .jp-note {
+      margin-left: 0.65em !important;
+      font-size: 11px !important;
+      letter-spacing: 0.04em !important;
+      text-transform: none !important;
+    }
+
+    .section,
+    .balance-panel {
+      margin: 0 0 24px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-top: 1px solid var(--line) !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .balance-panel {
+      border-top-color: var(--ink) !important;
+      color: var(--ink) !important;
+    }
+
+    .section-head {
+      margin: 0 0 4px !important;
+      padding-top: 2px !important;
+      gap: 0 !important;
+    }
+
+    .section-number,
+    label,
+    .expense-date,
+    .stat span,
+    .detail-key {
+      font-size: 11px !important;
+      line-height: 2 !important;
+      letter-spacing: 0.1em !important;
+    }
+
+    .settlement-message {
+      margin: 0 !important;
+      overflow-wrap: anywhere;
+    }
+
+    .amount-large {
+      display: inline !important;
+      margin: 0 0 0 0.8em !important;
+      color: var(--ink) !important;
+      font-size: 12px !important;
+      font-weight: 300 !important;
+      line-height: 2 !important;
+      letter-spacing: 0.02em !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stats {
+      margin-top: 2px !important;
+      border-top: 1px solid var(--line-soft) !important;
+    }
+
+    .stat {
+      padding: 0 !important;
+      border-bottom: 1px solid var(--line-soft) !important;
+    }
+
+    .stat strong,
+    .expense-amount,
+    .split-summary strong {
+      font-size: 12px !important;
+      line-height: 2 !important;
+      font-weight: 300 !important;
+    }
+
+    form,
+    .form,
+    .setting-list,
+    .settlement-summary,
+    .split-panel,
+    .reset-box {
+      gap: 8px !important;
+    }
+
+    input,
+    textarea,
+    select {
+      min-height: 26px !important;
+      padding: 2px 6px !important;
+      font-size: 12px !important;
+      line-height: 2 !important;
+    }
+
+    .split-summary,
+    .split-panel,
+    .reset-box,
+    .empty {
+      padding: 2px 0 !important;
+      border-top: 1px solid var(--line-soft) !important;
+      border-bottom: 1px solid var(--line-soft) !important;
+    }
+
+    .expense-item,
+    .settlement-group,
+    .setting-group {
+      padding: 3px 0 5px !important;
+      border-top: 1px solid var(--line-soft) !important;
+    }
+
+    .expense-top {
+      grid-template-columns: minmax(0, 1fr) 9.5ch !important;
+    }
+
+    .button-row,
+    .payer-buttons,
+    .item-actions,
+    .detail-actions {
+      gap: 0 10px !important;
+      margin-top: 0 !important;
+    }
+
+    .primary {
+      padding: 0 6px !important;
+      font-size: 12px !important;
+      line-height: 2 !important;
+    }
+
+    .reset-box p {
+      display: none !important;
+    }
+
+    @media (max-width: 420px) {
+      .topbar {
+        grid-template-columns: 1fr !important;
+        grid-template-areas:
+          "logo"
+          "nav" !important;
+        row-gap: 12px !important;
+      }
+
+      .text-nav {
+        justify-content: flex-start !important;
+        flex-wrap: wrap !important;
+      }
+    }
+
+
+    /* Minimal rule mode / final adjustment */
+    .section-number {
+      display: none !important;
+    }
+
+    .section,
+    .balance-panel {
+      border-top: 0 !important;
+      margin-bottom: 22px !important;
+    }
+
+    .section-head {
+      margin-bottom: 4px !important;
+      padding-top: 0 !important;
+    }
+
+    .stats {
+      margin-top: 2px !important;
+      border-top: 0 !important;
+    }
+
+    .stat {
+      border-bottom: 0 !important;
+      padding: 0 !important;
+    }
+
+    .split-summary,
+    .split-panel,
+    .reset-box,
+    .empty {
+      border-top: 0 !important;
+      border-bottom: 0 !important;
+      padding: 0 !important;
+    }
+
+    .expense-item,
+    .settlement-group,
+    .setting-group {
+      border-top: 0 !important;
+      padding: 2px 0 5px !important;
+    }
+
+    .expense-list .expense-item + .expense-item,
+    .settlement-detail .expense-item + .expense-item,
+    .settlement-group + .settlement-group {
+      border-top: 1px solid var(--line-soft) !important;
+    }
+
+    .setting-group + .setting-group {
+      margin-top: 8px !important;
+    }
+
+    .balance-panel .section-head,
+    #entrySection .section-head {
+      margin-bottom: 6px !important;
+    }
+
+    .settlement-message {
+      margin-top: 0 !important;
+    }
+
+    .item-actions {
+      margin-top: 0 !important;
+    }
+
+    .reset-box {
+      gap: 0 !important;
+    }
+
+    .primary {
+      background: transparent !important;
+      color: var(--ink) !important;
+      padding: 0 2px !important;
+    }
+
+    .primary::before {
+      content: "[";
+    }
+
+    .primary::after {
+      content: "]";
+    }
+
+    .primary:hover {
+      opacity: 1 !important;
+      text-decoration: none;
+    }
+
+
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -715,7 +977,7 @@
         <button class="text-button active" type="button" id="mainNavButton" onclick="showScreen('main')">INPUT</button>
         <button class="text-button" type="button" id="historyNavButton" onclick="showScreen('history')">HISTORY</button>
         <button class="text-button" type="button" id="settingsNavButton" onclick="showScreen('settings')">SETTING</button>
-        <button class="text-button theme-symbol" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme">THEME</button>
+        <button class="text-button" type="button" id="themeButton" onclick="toggleTheme()">THEME</button>
       </nav>
     </div>
     <section id="mainScreen" class="screen active">
@@ -732,8 +994,7 @@
 
         <section class="section balance-panel">
           <div class="section-head">
-            <div class="section-number">Balance</div>
-            <h2>Current Balance<span class="jp-note">現在の精算</span></h2>
+            <h2>Current<span class="jp-note">精算</span></h2>
           </div>
           <p class="settlement-message" id="settlementText">Settled<span class="jp-note">精算は不要です</span></p>
           <div class="stats">
@@ -745,15 +1006,14 @@
 
         <section class="section" id="entrySection">
           <div class="section-head">
-            <div class="section-number">Entry</div>
-            <h2 id="formTitle">New Entry<span class="jp-note">出費を追加</span></h2>
+            <h2 id="formTitle">Entry<span class="jp-note">入力</span></h2>
           </div>
           <form id="expenseForm">
             <div class="field"><label for="date">Date / 日付</label><input id="date" type="date"></div>
-            <div class="field"><label for="title">Place or Purpose / 場所・用途</label><input id="title" type="text" placeholder="例：スーパー、外食、日用品"></div>
+            <div class="field"><label for="title">Title / 内容</label><input id="title" type="text" placeholder="例：スーパー、外食、日用品"></div>
             <div class="field"><label for="amount">Amount / 金額</label><input id="amount" type="number" inputmode="numeric" min="1" placeholder="例：4000"></div>
             <div class="field">
-              <label>Paid by / 支払った人</label>
+              <label>Paid by / 支払者</label>
               <div class="payer-buttons">
                 <button class="payer-button selected" type="button" id="payerAButton">Person A</button>
                 <button class="payer-button" type="button" id="payerBButton">Person B</button>
@@ -761,12 +1021,12 @@
             </div>
 
             <div class="field">
-              <label>Split / 分担割合</label>
+              <label>Split / 分担</label>
               <div class="split-summary">
-                <span id="entrySplitLabel">Default Split<br>基本分担割合</span>
+                <span id="entrySplitLabel">Default<br>基本</span>
                 <strong id="entrySplitValue">50 / 50</strong>
               </div>
-              <button class="secondary" type="button" id="toggleSplitButton">Change Split / 個別変更</button>
+              <button class="secondary" type="button" id="toggleSplitButton">Custom</button>
               <div class="split-panel" id="entrySplitPanel">
                 <div class="split-grid">
                   <div class="field percent-field">
@@ -782,7 +1042,7 @@
               </div>
             </div>
             <div class="button-row">
-              <button class="primary" type="submit" id="submitButton">Save Entry</button>
+              <button class="primary" type="submit" id="submitButton">Save</button>
               <button class="secondary" type="button" id="cancelButton" style="display:none;">Cancel</button>
             </div>
           </form>
@@ -790,10 +1050,8 @@
 
         <section class="section">
           <div class="section-head">
-            <div class="section-number">History</div>
-            <h2>Expense History<span class="jp-note">出費履歴</span></h2>
+            <h2>Entries<span class="jp-note">出費</span></h2>
           </div>
-          <button class="secondary" type="button" id="newButton" style="width:100%; margin-bottom:14px;">New Entry / 新規入力</button>
           <div id="expenseList"></div>
         </section>
         <footer class="site-footer">＊(VAMRSS) FUTARI SEISAN / © 2026 VAMRSS</footer>
@@ -815,8 +1073,7 @@
 
         <section class="section">
           <div class="section-head">
-            <div class="section-number">Archive</div>
-            <h2>Settled History<span class="jp-note">精算済み一覧</span></h2>
+            <h2>Settled<span class="jp-note">精算済み</span></h2>
           </div>
           <div id="settlementGroupList"></div>
         </section>
@@ -838,22 +1095,21 @@
 
         <section class="section">
           <div class="section-head">
-            <div class="section-number">Members</div>
-            <h2>Member Names<span class="jp-note">名前設定</span></h2>
+            <h2>Members<span class="jp-note">名前</span></h2>
           </div>
           <p class="hint">Only display names are changed. Existing expense records remain usable.<br>表示名だけを変更します。過去の出費データはそのまま使えます。</p>
           <div class="setting-list">
             <div class="setting-group">
               <p class="setting-title">Person A<span class="jp-note">1人目</span></p>
               <div class="field">
-                <label for="personAName">Display Name / 表示名</label>
+                <label for="personAName">Name / 表示名</label>
                 <input id="personAName" type="text" placeholder="例：自分">
               </div>
             </div>
             <div class="setting-group">
               <p class="setting-title">Person B<span class="jp-note">2人目</span></p>
               <div class="field">
-                <label for="personBName">Display Name / 表示名</label>
+                <label for="personBName">Name / 表示名</label>
                 <input id="personBName" type="text" placeholder="例：相手">
               </div>
             </div>
@@ -862,13 +1118,12 @@
 
         <section class="section">
           <div class="section-head">
-            <div class="section-number">Default</div>
-            <h2>Default Split<span class="jp-note">基本分担割合</span></h2>
+            <h2>Default Split<span class="jp-note">基本割合</span></h2>
           </div>
           <p class="hint">This split is applied to new entries only. Existing entries remain unchanged.<br>この割合は新しく追加する出費に適用されます。既存の出費には影響しません。</p>
           <div class="setting-list">
             <div class="setting-group">
-              <p class="setting-title">Standard Ratio<span class="jp-note">通常の割合</span></p>
+              <p class="setting-title">Default</p>
               <div class="split-grid">
                 <div class="field percent-field">
                   <label for="defaultSplitA">Person A</label>
@@ -886,21 +1141,12 @@
 
         <section class="section">
           <div class="section-head">
-            <div class="section-number">Reset</div>
-            <h2>Settlement Reset<span class="jp-note">精算リセット</span></h2>
+            <h2>Reset<span class="jp-note">リセット</span></h2>
           </div>
           <div class="reset-box">
             <p>Mark all current unsettled entries as settled. The history remains, but the current balance starts from zero.<br>現在の未精算分をすべて精算済みにします。履歴は残り、現在の精算額だけがゼロから再計算されます。</p>
-            <button class="secondary" type="button" id="settlementResetButton">Reset Current Balance / 現在の精算をリセット</button>
+            <button class="secondary" type="button" id="settlementResetButton">Reset</button>
           </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <div class="section-number">Data Scope</div>
-            <h2>Shared Book<span class="jp-note">共有範囲</span></h2>
-          </div>
-          <div class="empty">This page uses the book ID in the URL query. Default book is used when no query is provided.<br>URLの <span class="mono">?book=...</span> で共有台帳を切り替えます。指定がない場合はdefaultを使用します。</div>
         </section>
         <footer class="site-footer">＊(VAMRSS) FUTARI SEISAN / © 2026 VAMRSS</footer>
       </div>
@@ -1167,7 +1413,7 @@
       entrySplitBInput.value = entrySplitB;
       isCustomSplitOpen = customOpen;
       entrySplitPanel.classList.toggle("show", isCustomSplitOpen);
-      toggleSplitButton.textContent = isCustomSplitOpen ? "Hide Split / 閉じる" : "Change Split / 個別変更";
+      toggleSplitButton.textContent = isCustomSplitOpen ? "Close / 閉じる" : "Custom";
       updateEntrySplitDisplay();
     }
     function updateEntrySplitDisplay() {
@@ -1186,8 +1432,8 @@
       amountInput.value = "";
       setSelectedPayer("personA");
       setEntrySplit(settings.defaultSplitA, settings.defaultSplitB, false);
-      document.getElementById("formTitle").innerHTML = 'New Entry<span class="jp-note">出費を追加</span>';
-      document.getElementById("submitButton").textContent = "Save Entry";
+      document.getElementById("formTitle").innerHTML = 'Entry<span class="jp-note">入力</span>';
+      document.getElementById("submitButton").textContent = "Save";
       document.getElementById("cancelButton").style.display = "none";
     }
     function validateEntrySplit(show = true) {
@@ -1252,7 +1498,7 @@
 
       const active = getActiveExpenses().sort((a, b) => b.date.localeCompare(a.date));
       if (active.length === 0) {
-        list.innerHTML = '<div class="empty">No unsettled entries.<br>現在の未精算分はありません。</div>';
+        list.innerHTML = '<div class="empty">No entries.<br>未精算なし</div>';
       } else {
         list.innerHTML = '<div class="expense-list">' + active.map(e => {
           const splitA = Number.isFinite(Number(e.splitA)) ? Number(e.splitA) : 50;
@@ -1282,7 +1528,7 @@
     function renderSettlementGroups() {
       const groups = [...settlements].sort((a, b) => String(b.settledAt).localeCompare(String(a.settledAt)));
       if (groups.length === 0) {
-        settlementGroupList.innerHTML = '<div class="empty">No settled groups yet.<br>まだ精算済みグループはありません。</div>';
+        settlementGroupList.innerHTML = '<div class="empty">No archive.<br>履歴なし</div>';
         return;
       }
       settlementGroupList.innerHTML = '<div class="expense-list">' + groups.map(group => {
@@ -1295,10 +1541,10 @@
             <div class="settlement-summary">
               <p class="settlement-title">${escapeHtml(group.label || formatDateLabel(group.settledAt))}<span class="jp-note">精算日</span></p>
               <p class="settlement-meta">${escapeHtml(settlementDirectionText(group.direction))} / ${yen.format(amount)}<br>${groupEntries.length} entries / Total ${yen.format(total)}</p>
-              <button class="secondary" type="button" onclick="toggleSettlementGroup('${detailId}')">View Entries / 内訳を見る</button>
+              <button class="secondary" type="button" onclick="toggleSettlementGroup('${detailId}')">View / 内訳</button>
             </div>
             <div class="settlement-detail" id="${detailId}">
-              ${groupEntries.length === 0 ? '<div class="empty">No entries found.<br>該当する出費が見つかりません。</div>' : groupEntries.map(e => {
+              ${groupEntries.length === 0 ? '<div class="empty">No entries.<br>該当なし</div>' : groupEntries.map(e => {
                 const splitA = Number.isFinite(Number(e.splitA)) ? Number(e.splitA) : 50;
                 const splitB = Number.isFinite(Number(e.splitB)) ? Number(e.splitB) : 100 - splitA;
                 return `
@@ -1376,7 +1622,6 @@
     payerAButton.addEventListener("click", () => setSelectedPayer("personA"));
     payerBButton.addEventListener("click", () => setSelectedPayer("personB"));
     document.getElementById("cancelButton").addEventListener("click", resetForm);
-    document.getElementById("newButton").addEventListener("click", () => { resetForm(); showScreen("main"); });
 
     form.addEventListener("submit", async event => {
       event.preventDefault();
@@ -1430,8 +1675,8 @@
       amountInput.value = e.amount;
       setSelectedPayer(e.paidBy);
       setEntrySplit(e.splitA, e.splitB, true);
-      document.getElementById("formTitle").innerHTML = 'Edit Entry<span class="jp-note">出費を編集</span>';
-      document.getElementById("submitButton").textContent = "Update Entry";
+      document.getElementById("formTitle").innerHTML = 'Edit<span class="jp-note">編集</span>';
+      document.getElementById("submitButton").textContent = "Update";
       document.getElementById("cancelButton").style.display = "block";
       showScreen("main");
 
