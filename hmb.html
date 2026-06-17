@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.0</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.1</title>
   <style>
 
     :root {
@@ -217,17 +217,45 @@
 
     h1, h2, h3, p { margin: 0; }
 
-    h1, h2, h3,
+    h1,
+    h2,
+    h3,
     .schedule-title,
     .detail-title,
     .data-title,
     .name-chip {
-      font-family: inherit;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font-main);
+      font-weight: 300;
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.35;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2,
+    .section-title {
       font-size: 12px;
       font-weight: 300;
       line-height: 2;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
+    }
+
+    h3,
+    .schedule-title,
+    .detail-title,
+    .data-title,
+    .name-chip {
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 2;
+      letter-spacing: 0.03em;
+      text-transform: none;
     }
 
     .section,
@@ -271,7 +299,7 @@
       font-size: 12px;
       font-weight: 300;
       line-height: 2;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
     }
 
@@ -354,7 +382,7 @@
       font-size: 12px;
       font-weight: 300;
       line-height: 2;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.03em;
       text-transform: none;
       white-space: normal;
       overflow-wrap: anywhere;
@@ -374,7 +402,7 @@
       background: transparent;
       opacity: 1;
       white-space: nowrap;
-      font-size: 11px;
+      font-size: 12px;
       line-height: 2;
     }
 
@@ -396,7 +424,7 @@
       border-radius: 0;
       background: transparent;
       color: var(--sub);
-      font-size: 11px;
+      font-size: 12px;
       line-height: 2;
     }
 
@@ -675,17 +703,49 @@
       color: var(--sub);
     }
 
+
+    /* v1.1.1 - FTR typography alignment */
+    body,
+    button,
+    input,
+    textarea,
+    select {
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 2;
+    }
+
+    .schedule-title,
+    .schedule-monthday,
+    .detail-title,
+    .data-title,
+    .name-chip,
+    .shopping-history-title {
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 2;
+      letter-spacing: 0.03em;
+      text-transform: none;
+    }
+
+    .data-text,
+    .data-meta,
+    .placeholder-row,
+    .detail-memo {
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 2;
+      letter-spacing: 0.01em;
+    }
+
     @media (max-width: 420px) {
       .container { padding-left: 16px; padding-right: 16px; }
       .topbar {
-        grid-template-columns: minmax(0, 1fr) max-content;
-        column-gap: 12px;
-        row-gap: 0;
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 10px;
         margin-bottom: 36px;
       }
-      .brand { font-size: 10px; letter-spacing: 0.08em; }
-      .text-nav { justify-content: flex-end; flex-wrap: nowrap; gap: 6px; }
-      .text-button, .nav-button { font-size: 10px; letter-spacing: 0.06em; }
+      .text-nav { justify-content: flex-start; flex-wrap: wrap; gap: 0 10px; }
       .schedule-row { grid-template-columns: 4.2em minmax(0, 1fr) 6.5ch; column-gap: .8em; }
       .date-time-pair { grid-template-columns: minmax(0, 1fr) minmax(90px, 34%); }
       .form-actions,
@@ -711,7 +771,7 @@
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.0</div>
+  <div class="fixed-version-mark">v1.1.1</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -969,7 +1029,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.0 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.1 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -993,7 +1053,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.0';
+    const APP_VERSION = 'v1.1.1';
 
     /*
       Supabase settings:
