@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f8f9f9">
-  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.9</title>
+  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.10</title>
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -55,7 +55,7 @@
       background: var(--bg);
       font-family: var(--font-main);
       font-size: 12px;
-      font-weight: 300;
+      font-weight: var(--font-weight-main);
       line-height: 2;
       letter-spacing: 0.01em;
     }
@@ -1052,7 +1052,7 @@
     }
 
 
-    /* v1.1.9 - Google Fonts + unified typography weight 400 */
+    /* v1.1.10 - Google Fonts + unified typography weight 400 */
     html,
     body,
     button,
@@ -1067,7 +1067,7 @@
       font-weight: var(--font-weight-main) !important;
     }
 
-    /* v1.1.9 - title and navigation weight */
+    /* v1.1.10 - title and navigation weight */
     .site-title,
     .site-logo,
     .topbar .text-nav,
@@ -1089,7 +1089,7 @@
     }
 
 
-    /* v1.1.9 - WSV color hierarchy + unified typography 400 */
+    /* v1.1.10 - WSV color hierarchy + unified typography 400 */
     :root {
       --font-weight-main: 400;
       --font-weight-title: 400;
@@ -1194,7 +1194,7 @@
     }
 
 
-    /* v1.1.9 - FTR top-right nav active state uses color only */
+    /* v1.1.10 - FTR top-right nav active state uses color only */
     .topbar .text-nav .text-button.active::before,
     .topbar .text-nav .text-button.selected::before,
     .topbar .text-nav .text-button.active::after,
@@ -1208,7 +1208,7 @@
     }
 
 
-    /* v1.1.9 - date / number / time field frames use 40% width */
+    /* v1.1.10 - date / number / time field frames use 40% width */
     form > .field:has(> input[type="date"]),
     form > .field:has(> input[type="number"]),
     form > .field:has(> input[type="time"]) {
@@ -1245,7 +1245,7 @@
 
   
 
-    /* v1.1.9 - two-line header: title above / nav below */
+    /* v1.1.10 - two-line header: title above / nav below */
     .topbar {
       display: grid !important;
       grid-template-columns: minmax(0, 1fr) !important;
@@ -1290,6 +1290,49 @@
       line-height: 1 !important;
     }
 
+  
+
+    /* v1.1.10 - iPhone Safari optimized canvas width */
+    :root {
+      --app-max-width: 430px;
+      --page-pad-x: 16px;
+      --pair-gap: 10px;
+    }
+
+    .app,
+    .container {
+      width: 100% !important;
+      max-width: var(--app-max-width) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      padding-left: var(--page-pad-x) !important;
+      padding-right: var(--page-pad-x) !important;
+      box-sizing: border-box !important;
+    }
+
+    .fixed-copyright-mark {
+      left: var(--page-pad-x) !important;
+    }
+
+    .fixed-version-mark {
+      right: var(--page-pad-x) !important;
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 380px) {
+      :root {
+        --page-pad-x: 14px;
+        --pair-gap: 8px;
+      }
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1298,7 +1341,7 @@
 <body>
   <main class="app">
     <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-    <div class="fixed-version-mark">v1.1.9</div>
+    <div class="fixed-version-mark">v1.1.10</div>
     <div class="topbar">
       <h1 class="site-title">
         <button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme">＊(VAMRSS) FTR</button>
@@ -1492,7 +1535,7 @@
   <script>
     const APP_TITLE = "(VAMRSS) FUTARI SEISAN";
     const APP_ABBREVIATION = "FTR";
-    const APP_VERSION = "v1.1.9";
+    const APP_VERSION = "v1.1.10";
 
     const THEME_STORAGE_KEY = "ftrTheme";
 

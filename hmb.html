@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.16</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.17</title>
   <style>
 
     :root {
@@ -58,7 +58,7 @@
       color: var(--ink);
       font-family: var(--font-main);
       font-size: 12px;
-      font-weight: 300;
+      font-weight: var(--font-weight-main);
       line-height: 2;
       letter-spacing: 0.01em;
     }
@@ -719,7 +719,7 @@
     }
 
 
-    /* v1.1.16 - FTR typography alignment */
+    /* v1.1.17 - FTR typography alignment */
     body,
     button,
     input,
@@ -793,7 +793,7 @@
     }
 
 
-    /* v1.1.16 - Google Fonts + unified typography weight 400 */
+    /* v1.1.17 - Google Fonts + unified typography weight 400 */
     html,
     body,
     button,
@@ -809,7 +809,7 @@
     }
 
 
-    /* v1.1.16 - topbar vertical alignment */
+    /* v1.1.17 - topbar vertical alignment */
     .topbar {
       align-items: start !important;
     }
@@ -837,7 +837,7 @@
     }
 
 
-    /* v1.1.16 - title elements use bold weight */
+    /* v1.1.17 - title elements use bold weight */
     h1,
     h2,
     h3,
@@ -858,7 +858,7 @@
     }
 
 
-    /* v1.1.16 - WSV color hierarchy + unified typography 400 */
+    /* v1.1.17 - WSV color hierarchy + unified typography 400 */
     :root {
       --font-weight-main: 400;
       --font-weight-title: 400;
@@ -966,7 +966,7 @@
     }
 
 
-    /* v1.1.16 - Date/Time pair layout: equal split inside parent */
+    /* v1.1.17 - Date/Time pair layout: equal split inside parent */
     input[type="date"],
     input[type="number"],
     input[type="time"],
@@ -1044,7 +1044,7 @@
     }
 
 
-    /* v1.1.16 - 15-minute time select */
+    /* v1.1.17 - 15-minute time select */
     select.time-select {
       color: var(--ink) !important;
       background: var(--field) !important;
@@ -1057,7 +1057,7 @@
     }
 
 
-    /* v1.1.16 - split TIME into hour/minute selects */
+    /* v1.1.17 - split TIME into hour/minute selects */
     .time-field {
       width: 100% !important;
       max-width: 100% !important;
@@ -1097,7 +1097,7 @@
 
   
 
-    /* v1.1.16 - two-line header: title above / nav below */
+    /* v1.1.17 - two-line header: title above / nav below */
     .topbar {
       display: grid !important;
       grid-template-columns: minmax(0, 1fr) !important;
@@ -1134,6 +1134,78 @@
       line-height: 1 !important;
     }
 
+  
+
+    /* v1.1.17 - iPhone Safari optimized canvas width */
+    :root {
+      --app-max-width: 430px;
+      --page-pad-x: 16px;
+      --pair-gap: 10px;
+    }
+
+    .app,
+    .container {
+      width: 100% !important;
+      max-width: var(--app-max-width) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      padding-left: var(--page-pad-x) !important;
+      padding-right: var(--page-pad-x) !important;
+      box-sizing: border-box !important;
+    }
+
+    .fixed-copyright-mark {
+      left: var(--page-pad-x) !important;
+    }
+
+    .fixed-version-mark {
+      right: var(--page-pad-x) !important;
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 380px) {
+      :root {
+        --page-pad-x: 14px;
+        --pair-gap: 8px;
+      }
+    }
+
+
+    /* v1.1.17 - HMB iPhone date/time pairs: fixed gap + equal split */
+    .date-time-pair {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: var(--pair-gap) !important;
+      min-width: 0 !important;
+    }
+
+    .date-time-pair .field,
+    .date-time-pair .date-field,
+    .date-time-pair .time-field,
+    .time-part-grid,
+    .time-part-grid select.time-part-select {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .time-part-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: 6px !important;
+    }
+
+    @media (max-width: 380px) {
+      .time-part-grid {
+        gap: 4px !important;
+      }
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1141,7 +1213,7 @@
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.16</div>
+  <div class="fixed-version-mark">v1.1.17</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -1469,7 +1541,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.16 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.17 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -1493,7 +1565,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.16';
+    const APP_VERSION = 'v1.1.17';
 
     /*
       Supabase settings:
