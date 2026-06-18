@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f8f9f9">
-  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.6</title>
+  <title>(VAMRSS) FUTARI SEISAN / FTR v1.1.9</title>
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -1052,7 +1052,7 @@
     }
 
 
-    /* v1.1.6 - Google Fonts + unified typography weight 400 */
+    /* v1.1.9 - Google Fonts + unified typography weight 400 */
     html,
     body,
     button,
@@ -1067,7 +1067,7 @@
       font-weight: var(--font-weight-main) !important;
     }
 
-    /* v1.1.6 - title and navigation weight */
+    /* v1.1.9 - title and navigation weight */
     .site-title,
     .site-logo,
     .topbar .text-nav,
@@ -1089,7 +1089,7 @@
     }
 
 
-    /* v1.1.6 - WSV color hierarchy + unified typography 400 */
+    /* v1.1.9 - WSV color hierarchy + unified typography 400 */
     :root {
       --font-weight-main: 400;
       --font-weight-title: 400;
@@ -1194,7 +1194,7 @@
     }
 
 
-    /* v1.1.6 - FTR top-right nav active state uses color only */
+    /* v1.1.9 - FTR top-right nav active state uses color only */
     .topbar .text-nav .text-button.active::before,
     .topbar .text-nav .text-button.selected::before,
     .topbar .text-nav .text-button.active::after,
@@ -1207,6 +1207,89 @@
       color: var(--ink) !important;
     }
 
+
+    /* v1.1.9 - date / number / time field frames use 40% width */
+    form > .field:has(> input[type="date"]),
+    form > .field:has(> input[type="number"]),
+    form > .field:has(> input[type="time"]) {
+      width: 40%;
+      max-width: 40%;
+      justify-self: start;
+    }
+
+    input[type="date"],
+    input[type="number"],
+    input[type="time"] {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      justify-self: stretch !important;
+      box-sizing: border-box !important;
+    }
+
+    .split-grid {
+      grid-template-columns: minmax(0, 40%) minmax(0, 40%);
+      justify-content: start;
+    }
+
+    .split-grid .percent-field {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    @media (max-width: 420px) {
+      .split-grid {
+        grid-template-columns: minmax(0, 40%);
+      }
+    }
+
+  
+
+    /* v1.1.9 - two-line header: title above / nav below */
+    .topbar {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      grid-template-areas:
+        "logo"
+        "nav" !important;
+      align-items: start !important;
+      column-gap: 0 !important;
+      row-gap: 12px !important;
+      margin-bottom: 48px;
+      min-width: 0 !important;
+    }
+
+    .site-title {
+      grid-area: logo !important;
+      width: 100% !important;
+      justify-self: stretch !important;
+      align-self: start !important;
+      justify-content: flex-start !important;
+      text-align: left !important;
+      min-width: 0 !important;
+    }
+
+    .site-logo {
+      max-width: 100% !important;
+      text-align: left !important;
+    }
+
+    .text-nav {
+      grid-area: nav !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      justify-self: stretch !important;
+      align-self: start !important;
+      justify-content: flex-end !important;
+      text-align: right !important;
+      flex-wrap: nowrap !important;
+      min-width: 0 !important;
+    }
+
+    .topbar .text-button {
+      line-height: 1 !important;
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1215,7 +1298,7 @@
 <body>
   <main class="app">
     <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-    <div class="fixed-version-mark">v1.1.6</div>
+    <div class="fixed-version-mark">v1.1.9</div>
     <div class="topbar">
       <h1 class="site-title">
         <button class="site-logo" type="button" onclick="toggleTheme()" aria-label="Toggle light and dark theme">＊(VAMRSS) FTR</button>
@@ -1409,7 +1492,7 @@
   <script>
     const APP_TITLE = "(VAMRSS) FUTARI SEISAN";
     const APP_ABBREVIATION = "FTR";
-    const APP_VERSION = "v1.1.6";
+    const APP_VERSION = "v1.1.9";
 
     const THEME_STORAGE_KEY = "ftrTheme";
 

@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.15</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.16</title>
   <style>
 
     :root {
@@ -719,7 +719,7 @@
     }
 
 
-    /* v1.1.15 - FTR typography alignment */
+    /* v1.1.16 - FTR typography alignment */
     body,
     button,
     input,
@@ -793,7 +793,7 @@
     }
 
 
-    /* v1.1.15 - Google Fonts + unified typography weight 400 */
+    /* v1.1.16 - Google Fonts + unified typography weight 400 */
     html,
     body,
     button,
@@ -809,7 +809,7 @@
     }
 
 
-    /* v1.1.15 - topbar vertical alignment */
+    /* v1.1.16 - topbar vertical alignment */
     .topbar {
       align-items: start !important;
     }
@@ -837,7 +837,7 @@
     }
 
 
-    /* v1.1.15 - title elements use bold weight */
+    /* v1.1.16 - title elements use bold weight */
     h1,
     h2,
     h3,
@@ -858,7 +858,7 @@
     }
 
 
-    /* v1.1.15 - WSV color hierarchy + unified typography 400 */
+    /* v1.1.16 - WSV color hierarchy + unified typography 400 */
     :root {
       --font-weight-main: 400;
       --font-weight-title: 400;
@@ -966,7 +966,7 @@
     }
 
 
-    /* v1.1.15 - Date/Time pair layout: equal split inside parent */
+    /* v1.1.16 - Date/Time pair layout: equal split inside parent */
     input[type="date"],
     input[type="number"],
     input[type="time"],
@@ -1044,7 +1044,7 @@
     }
 
 
-    /* v1.1.15 - 15-minute time select */
+    /* v1.1.16 - 15-minute time select */
     select.time-select {
       color: var(--ink) !important;
       background: var(--field) !important;
@@ -1057,7 +1057,7 @@
     }
 
 
-    /* v1.1.15 - split TIME into hour/minute selects */
+    /* v1.1.16 - split TIME into hour/minute selects */
     .time-field {
       width: 100% !important;
       max-width: 100% !important;
@@ -1095,6 +1095,45 @@
       appearance: none;
     }
 
+  
+
+    /* v1.1.16 - two-line header: title above / nav below */
+    .topbar {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      align-items: start !important;
+      column-gap: 0 !important;
+      row-gap: 12px !important;
+      margin-bottom: 48px;
+      min-width: 0 !important;
+    }
+
+    .brand {
+      width: 100% !important;
+      max-width: 100% !important;
+      justify-self: stretch !important;
+      align-self: start !important;
+      text-align: left !important;
+      min-width: 0 !important;
+    }
+
+    .text-nav {
+      width: 100% !important;
+      max-width: 100% !important;
+      justify-self: stretch !important;
+      align-self: start !important;
+      justify-content: flex-end !important;
+      text-align: right !important;
+      flex-wrap: nowrap !important;
+      min-width: 0 !important;
+    }
+
+    .topbar .text-button,
+    .topbar .nav-button,
+    .topbar .nav-button span {
+      line-height: 1 !important;
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1102,7 +1141,7 @@
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.15</div>
+  <div class="fixed-version-mark">v1.1.16</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -1430,7 +1469,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.15 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.16 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -1454,7 +1493,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.15';
+    const APP_VERSION = 'v1.1.16';
 
     /*
       Supabase settings:
