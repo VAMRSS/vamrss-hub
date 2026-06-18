@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.6</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.7</title>
   <style>
 
     :root {
@@ -25,7 +25,7 @@
       --danger: #9b3144;
       --font-main: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
       --font-weight-main: 300;
-      --font-weight-title: 600;
+      --font-weight-title: 300;
     }
 
     html[data-theme="dark"] {
@@ -717,7 +717,7 @@
     }
 
 
-    /* v1.1.6 - FTR typography alignment */
+    /* v1.1.7 - FTR typography alignment */
     body,
     button,
     input,
@@ -791,7 +791,7 @@
     }
 
 
-    /* v1.1.6 - Google Fonts + unified typography weight */
+    /* v1.1.7 - Google Fonts + unified typography weight */
     html,
     body,
     button,
@@ -807,7 +807,7 @@
     }
 
 
-    /* v1.1.6 - topbar vertical alignment */
+    /* v1.1.7 - topbar vertical alignment */
     .topbar {
       align-items: start !important;
     }
@@ -835,7 +835,7 @@
     }
 
 
-    /* v1.1.6 - title elements use bold weight */
+    /* v1.1.7 - title elements use bold weight */
     h1,
     h2,
     h3,
@@ -855,14 +855,122 @@
       font-weight: var(--font-weight-title) !important;
     }
 
+
+    /* v1.1.7 - WSV color hierarchy + unified typography */
+    :root {
+      --font-weight-main: 300;
+      --font-weight-title: 300;
+    }
+
+    html,
+    body,
+    button,
+    input,
+    textarea,
+    select,
+    * {
+      font-family: var(--font-main) !important;
+    }
+
+    body,
+    body * {
+      font-weight: var(--font-weight-main) !important;
+    }
+
+    body {
+      font-size: 12px !important;
+      line-height: 2 !important;
+      letter-spacing: 0.01em !important;
+    }
+
+    .brand,
+    .nav-button.is-active,
+    .owner-button.is-active,
+    .text-button.selected,
+    .section-title,
+    .schedule-title,
+    .detail-title,
+    .data-title,
+    .name-chip,
+    .shopping-item-input,
+    .shopping-history-title,
+    .placeholder-row span:first-child {
+      color: var(--ink) !important;
+      font-weight: var(--font-weight-main) !important;
+    }
+
+    .text-button,
+    .nav-button,
+    .owner-button,
+    .label,
+    label,
+    .detail-meta,
+    .detail-memo,
+    .section-description,
+    .data-text,
+    .data-role,
+    .data-meta,
+    .schedule-weekday,
+    .schedule-time,
+    .days-left,
+    .owner-pill,
+    .form-note,
+    .owner-helper,
+    .empty,
+    .site-footer,
+    .fixed-copyright-mark,
+    .fixed-version-mark,
+    .shopping-history-date {
+      color: var(--sub) !important;
+      font-weight: var(--font-weight-main) !important;
+    }
+
+    .danger-button,
+    .small-action[data-action="delete"],
+    .days-left.is-today {
+      color: var(--danger) !important;
+    }
+
+    .text-button,
+    .nav-button,
+    .owner-button,
+    label,
+    input,
+    textarea,
+    select,
+    .section-title,
+    .schedule-title,
+    .detail-title,
+    .data-title,
+    .name-chip,
+    .shopping-item-input,
+    .shopping-history-title,
+    .placeholder-row,
+    .detail-memo,
+    .data-text,
+    .section-description {
+      line-height: 2 !important;
+    }
+
+    .topbar,
+    .topbar .brand,
+    .topbar .text-nav,
+    .topbar .text-button,
+    .topbar .nav-button,
+    .topbar .nav-button span,
+    .fixed-copyright-mark,
+    .fixed-version-mark {
+      line-height: 1 !important;
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.6</div>
+  <div class="fixed-version-mark">v1.1.7</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -1120,7 +1228,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.6 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.7 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -1144,7 +1252,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.6';
+    const APP_VERSION = 'v1.1.7';
 
     /*
       Supabase settings:
