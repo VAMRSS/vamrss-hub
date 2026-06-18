@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.9</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.15</title>
   <style>
 
     :root {
@@ -509,6 +509,7 @@
 
     input[type="date"],
     input[type="time"],
+    select.time-select,
     input[type="number"],
     input[type="search"],
     input[type="file"],
@@ -718,7 +719,7 @@
     }
 
 
-    /* v1.1.9 - FTR typography alignment */
+    /* v1.1.15 - FTR typography alignment */
     body,
     button,
     input,
@@ -792,7 +793,7 @@
     }
 
 
-    /* v1.1.9 - Google Fonts + unified typography weight 400 */
+    /* v1.1.15 - Google Fonts + unified typography weight 400 */
     html,
     body,
     button,
@@ -808,7 +809,7 @@
     }
 
 
-    /* v1.1.9 - topbar vertical alignment */
+    /* v1.1.15 - topbar vertical alignment */
     .topbar {
       align-items: start !important;
     }
@@ -836,7 +837,7 @@
     }
 
 
-    /* v1.1.9 - title elements use bold weight */
+    /* v1.1.15 - title elements use bold weight */
     h1,
     h2,
     h3,
@@ -857,7 +858,7 @@
     }
 
 
-    /* v1.1.9 - WSV color hierarchy + unified typography 400 */
+    /* v1.1.15 - WSV color hierarchy + unified typography 400 */
     :root {
       --font-weight-main: 400;
       --font-weight-title: 400;
@@ -964,6 +965,136 @@
       line-height: 1 !important;
     }
 
+
+    /* v1.1.15 - Date/Time pair layout: equal split inside parent */
+    input[type="date"],
+    input[type="number"],
+    input[type="time"],
+    select.time-select {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      min-inline-size: 0 !important;
+      justify-self: stretch !important;
+      box-sizing: border-box !important;
+    }
+
+    .date-time-grid {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .date-time-pair {
+      width: 100%;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: 10px !important;
+      align-items: end;
+      justify-content: stretch !important;
+      box-sizing: border-box;
+    }
+
+    .date-time-pair .field {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      justify-self: stretch;
+    }
+
+    .date-time-pair input[type="date"],
+    .date-time-pair input[type="time"],
+    .date-time-pair select.time-select {
+      display: block;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      min-inline-size: 0 !important;
+      box-sizing: border-box !important;
+      overflow: hidden;
+      text-overflow: clip;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .past-filter-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: 10px !important;
+      justify-content: stretch !important;
+    }
+
+    .past-filter-grid .wide {
+      grid-column: 1 / -1;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .form-card > .field:has(> input[type="date"]),
+    .form-card > .field:has(> input[type="number"]),
+    .form-card > .field:has(> input[type="time"]),
+    .form-card > .field:has(> select.time-select),
+    .data-card > .field:has(> input[type="date"]),
+    .data-card > .field:has(> input[type="number"]),
+    .data-card > .field:has(> input[type="time"]),
+    .data-card > .field:has(> select.time-select) {
+      width: 40%;
+      max-width: 40%;
+      justify-self: start;
+    }
+
+
+    /* v1.1.15 - 15-minute time select */
+    select.time-select {
+      color: var(--ink) !important;
+      background: var(--field) !important;
+      border: 1px solid var(--line) !important;
+      border-radius: 0 !important;
+      padding: 2px 6px !important;
+      text-align: left !important;
+      text-align-last: left !important;
+      box-sizing: border-box !important;
+    }
+
+
+    /* v1.1.15 - split TIME into hour/minute selects */
+    .time-field {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .time-part-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 6px;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .time-part-grid select.time-part-select,
+    .date-time-pair .time-part-grid select.time-part-select {
+      display: block;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      min-inline-size: 0 !important;
+      min-height: 28px;
+      box-sizing: border-box !important;
+      color: var(--ink) !important;
+      background: var(--field) !important;
+      border: 1px solid var(--line) !important;
+      border-radius: 0 !important;
+      padding: 2px 6px !important;
+      text-align: left !important;
+      text-align-last: left !important;
+      overflow: hidden;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -971,7 +1102,7 @@
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.9</div>
+  <div class="fixed-version-mark">v1.1.15</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -1023,9 +1154,44 @@
                   <label class="label" for="scheduleStartDate">Start Date</label>
                   <input id="scheduleStartDate" class="date-input" name="startDate" type="date" autocomplete="off" required>
                 </div>
-                <div class="field">
-                  <label class="label" for="scheduleStartTime">Start Time <span class="label-sub">Optional</span></label>
-                  <input id="scheduleStartTime" name="startTime" type="time" step="1800" autocomplete="off">
+                <div class="field time-field">
+                  <label class="label" for="scheduleStartHour">Time</label>
+                  <div class="time-part-grid" role="group" aria-label="Start time">
+                    <select id="scheduleStartHour" class="time-part-select time-hour-select" name="startHour" autocomplete="off" aria-label="Start hour">
+                    <option value=""></option>
+                    <option value="00">00</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    </select>
+                    <select id="scheduleStartMinute" class="time-part-select time-minute-select" name="startMinute" autocomplete="off" aria-label="Start minute">
+                    <option value=""></option>
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="date-time-pair">
@@ -1033,9 +1199,44 @@
                   <label class="label" for="scheduleEndDate">End Date</label>
                   <input id="scheduleEndDate" class="date-input" name="endDate" type="date" autocomplete="off" required>
                 </div>
-                <div class="field">
-                  <label class="label" for="scheduleEndTime">End Time <span class="label-sub">Optional</span></label>
-                  <input id="scheduleEndTime" name="endTime" type="time" step="1800" autocomplete="off">
+                <div class="field time-field">
+                  <label class="label" for="scheduleEndHour">Time</label>
+                  <div class="time-part-grid" role="group" aria-label="End time">
+                    <select id="scheduleEndHour" class="time-part-select time-hour-select" name="endHour" autocomplete="off" aria-label="End hour">
+                    <option value=""></option>
+                    <option value="00">00</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    </select>
+                    <select id="scheduleEndMinute" class="time-part-select time-minute-select" name="endMinute" autocomplete="off" aria-label="End minute">
+                    <option value=""></option>
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -1229,7 +1430,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.9 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.15 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -1253,7 +1454,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.9';
+    const APP_VERSION = 'v1.1.15';
 
     /*
       Supabase settings:
@@ -1301,9 +1502,11 @@
       navButtons: Array.from(document.querySelectorAll('.nav-button')),
       form: document.getElementById('scheduleForm'),
       startDate: document.getElementById('scheduleStartDate'),
-      startTime: document.getElementById('scheduleStartTime'),
+      startHour: document.getElementById('scheduleStartHour'),
+      startMinute: document.getElementById('scheduleStartMinute'),
       endDate: document.getElementById('scheduleEndDate'),
-      endTime: document.getElementById('scheduleEndTime'),
+      endHour: document.getElementById('scheduleEndHour'),
+      endMinute: document.getElementById('scheduleEndMinute'),
       title: document.getElementById('scheduleTitle'),
       memo: document.getElementById('scheduleMemo'),
       ownerButtons: document.getElementById('ownerButtons'),
@@ -1392,6 +1595,28 @@
       const m = Number(match[2]);
       if (h < 0 || h > 23 || m < 0 || m > 59) return '';
       return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+
+    function timePartsValue(hourEl, minuteEl) {
+      const hour = String(hourEl?.value || '').trim();
+      const minute = String(minuteEl?.value || '').trim();
+      if (!hour && !minute) return { value: '', incomplete: false };
+      if (!hour || !minute) return { value: '', incomplete: true };
+      const value = normalizeTimeInput(`${hour}:${minute}`);
+      return { value, incomplete: !value };
+    }
+
+    function setTimeParts(hourEl, minuteEl, value) {
+      const normalized = normalizeTimeInput(value);
+      if (!hourEl || !minuteEl || !normalized) {
+        if (hourEl) hourEl.value = '';
+        if (minuteEl) minuteEl.value = '';
+        return;
+      }
+      const [hour, minute] = normalized.split(':');
+      hourEl.value = hour;
+      minuteEl.value = minute;
     }
 
     function scheduleStartDate(item) {
@@ -1592,12 +1817,15 @@
     function toSchedulePayload() {
       const startDate = normalizeDateInput(els.startDate.value);
       const endDate = normalizeDateInput(els.endDate.value);
-      const startTime = normalizeTimeInput(els.startTime.value);
-      const endTime = normalizeTimeInput(els.endTime.value);
+      const startTimeParts = timePartsValue(els.startHour, els.startMinute);
+      const endTimeParts = timePartsValue(els.endHour, els.endMinute);
+      const startTime = startTimeParts.value;
+      const endTime = endTimeParts.value;
+      const timeInputIncomplete = startTimeParts.incomplete || endTimeParts.incomplete;
       const title = els.title.value.trim();
       const memo = els.memo.value.trim();
       const owners = getOwnersValue();
-      return { startDate, endDate, startTime, endTime, title, memo, owners };
+      return { startDate, endDate, startTime, endTime, timeInputIncomplete, title, memo, owners };
     }
 
     function dbSchedulePayload(payload) {
@@ -1981,8 +2209,8 @@
       const today = localDateString();
       els.startDate.value = displayDateInput(today);
       els.endDate.value = displayDateInput(today);
-      els.startTime.value = '';
-      els.endTime.value = '';
+      setTimeParts(els.startHour, els.startMinute, '');
+      setTimeParts(els.endHour, els.endMinute, '');
       setOwnersValue(['EVERYONE']);
       els.submit.textContent = 'Add Schedule';
       els.formMode.textContent = '新しい予定を追加します。';
@@ -1991,6 +2219,10 @@
     function validatePayload(payload) {
       if (!payload.startDate || !payload.endDate || !payload.title) {
         showToast('Date and title required');
+        return false;
+      }
+      if (payload.timeInputIncomplete) {
+        showToast('Set both hour and minute, or leave both blank');
         return false;
       }
       if ((payload.startTime && !payload.endTime) || (!payload.startTime && payload.endTime)) {
@@ -2066,9 +2298,9 @@
       state.currentPage = 'schedule';
       renderPages();
       els.startDate.value = displayDateInput(scheduleStartDate(item));
-      els.startTime.value = scheduleStartTime(item);
+      setTimeParts(els.startHour, els.startMinute, scheduleStartTime(item));
       els.endDate.value = displayDateInput(scheduleEndDate(item));
-      els.endTime.value = scheduleEndTime(item);
+      setTimeParts(els.endHour, els.endMinute, scheduleEndTime(item));
       els.title.value = item.title;
       setOwnersValue(normalizeOwners(item));
       els.memo.value = item.memo || '';
