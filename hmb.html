@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./hmb-favicon-16x16.png">
   <link rel="apple-touch-icon" href="./hmb-apple-touch-icon.png">
   <link rel="shortcut icon" href="./hmb-favicon.ico">
-  <title>(VAMRSS) HOME BOARD / HMB v1.1.7</title>
+  <title>(VAMRSS) HOME BOARD / HMB v1.1.9</title>
   <style>
 
     :root {
@@ -24,8 +24,8 @@
       --invert-ink: #f8f9f9;
       --danger: #9b3144;
       --font-main: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      --font-weight-main: 300;
-      --font-weight-title: 300;
+      --font-weight-main: 400;
+      --font-weight-title: 400;
     }
 
     html[data-theme="dark"] {
@@ -200,13 +200,14 @@
     .owner-button.is-active,
     .text-button.selected { color: var(--ink); }
 
-    .nav-button.is-active::before,
     .owner-button.is-active::before,
     .text-button.selected::before { content: "["; }
 
-    .nav-button.is-active::after,
     .owner-button.is-active::after,
     .text-button.selected::after { content: "]"; }
+
+    .nav-button.is-active::before,
+    .nav-button.is-active::after { content: ""; }
 
     .danger-button,
     .small-action[data-action="delete"] { color: var(--danger); }
@@ -717,7 +718,7 @@
     }
 
 
-    /* v1.1.7 - FTR typography alignment */
+    /* v1.1.9 - FTR typography alignment */
     body,
     button,
     input,
@@ -791,7 +792,7 @@
     }
 
 
-    /* v1.1.7 - Google Fonts + unified typography weight */
+    /* v1.1.9 - Google Fonts + unified typography weight 400 */
     html,
     body,
     button,
@@ -807,7 +808,7 @@
     }
 
 
-    /* v1.1.7 - topbar vertical alignment */
+    /* v1.1.9 - topbar vertical alignment */
     .topbar {
       align-items: start !important;
     }
@@ -835,7 +836,7 @@
     }
 
 
-    /* v1.1.7 - title elements use bold weight */
+    /* v1.1.9 - title elements use bold weight */
     h1,
     h2,
     h3,
@@ -856,10 +857,10 @@
     }
 
 
-    /* v1.1.7 - WSV color hierarchy + unified typography */
+    /* v1.1.9 - WSV color hierarchy + unified typography 400 */
     :root {
-      --font-weight-main: 300;
-      --font-weight-title: 300;
+      --font-weight-main: 400;
+      --font-weight-title: 400;
     }
 
     html,
@@ -966,11 +967,11 @@
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="fixed-copyright-mark">(C) 2026 VAMRSS</div>
-  <div class="fixed-version-mark">v1.1.7</div>
+  <div class="fixed-version-mark">v1.1.9</div>
   <main class="container">
     <div class="page">
       <header class="topbar" aria-label="Topbar">
@@ -1228,7 +1229,7 @@
         </section>
       </section>
 
-      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.7 / © 2026 VAMRSS</footer>
+      <footer class="site-footer">＊(VAMRSS) HOME BOARD / v1.1.9 / © 2026 VAMRSS</footer>
     </div>
   </main>
 
@@ -1252,7 +1253,7 @@
   <script>
     const APP_TITLE = '(VAMRSS) HOME BOARD';
     const APP_ABBREVIATION = 'HMB';
-    const APP_VERSION = 'v1.1.7';
+    const APP_VERSION = 'v1.1.9';
 
     /*
       Supabase settings:
